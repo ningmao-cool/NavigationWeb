@@ -1,0 +1,1061 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+
+  /* 全屏背景容器 */
+  .background-carousel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  /* 背景图片 */
+  .background-carousel img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 2s ease-in-out, filter 2s ease-in-out;
+  }
+
+  .background-carousel img.active {
+    opacity: 0.9;
+    z-index: 1;
+    filter: brightness(0.9);
+  }
+
+  /* 按钮样式 */
+  .controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    z-index: 10;
+  }
+
+  .controls button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
+    height: 50px;
+    border: 2px solid rgba(200, 245, 255, 0.5);
+    border-radius: 25px;
+    background: linear-gradient(135deg, #78aaff, #9dffce);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 255, 255, 0.3),
+      inset 0 0 10px rgba(255, 255, 255, 0.4);
+    transition: all 0.6s ease;
+  }
+
+  .controls button:hover {
+    background: linear-gradient(135deg, #a3daff, #aafff3);
+    transform: scale(1.08);
+    box-shadow: 0 10px 25px rgba(0, 255, 255, 0.4),
+      inset 0 0 15px rgba(255, 255, 255, 0.5);
+  }
+
+  .controls button:active {
+    transform: scale(0.96);
+    box-shadow: 0 6px 15px rgba(0, 255, 255, 0.2),
+      inset 0 0 8px rgba(255, 255, 255, 0.3);
+  }
+
+  /* 水墨粒子样式 */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgb(163, 243, 255);
+    opacity: 1;
+    pointer-events: none;
+    animation: fadeAndExpand 3s ease-out;
+  }
+
+  /* 水墨粒子动画 */
+  @keyframes fadeAndExpand {
+    0% {
+      transform: scale(0.5);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+  .profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+  }
+
+  .profile-content {
+    display: flex;
+    align-items: center; /* 垂直居中头像和名字 */
+    justify-content: center; /* 水平居中 */
+    gap: 15px; /* 头像和名字之间的间距 */
+    margin-bottom: 20px; /* 与网站介绍文字的间距 */
+  }
+
+  .profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, 0.6); /* 外边框 */
+    box-shadow: 0 8px 20px rgba(0, 251, 255, 0.5); /* 光晕效果 */
+    overflow: hidden;
+    position: relative; /* 用于定位光环动画 */
+    background: linear-gradient(
+      135deg,
+      #6ab1f7,
+      #fdc5f5
+    ); /* 圆形背景渐变 */
+  }
+  .profile-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 2px 6px rgba(0, 255, 255, 0.6); /* 添加文字阴影 */
+  }
+
+  /* 头像样式 */
+  .profile-avatar {
+    width: 150px;
+    height: 150px;
+    cursor: pointer; /* 鼠标移到头像时显示手型 */
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, 0.6); /* 外边框 */
+    box-shadow: 0 8px 20px rgba(0, 251, 255, 0.5); /* 光晕效果 */
+    overflow: hidden;
+    position: relative; /* 用于定位光环动画 */
+    background: linear-gradient(
+      135deg,
+      #6ab1f7,
+      #fdc5f5
+    ); /* 圆形背景渐变 */
+  }
+
+  /* 头像内的图片 */
+  .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  /* 跳跃动画 */
+  @keyframes jump-container {
+    0% {
+      transform: translateY(0); /* 起始位置 */
+    }
+    30% {
+      transform: translateY(-20px); /* 上升阶段 */
+    }
+
+    100% {
+      transform: translateY(0); /* 平稳落地 */
+    }
+  }
+
+  /* 动态添加跳跃效果 */
+  .profile-avatar.jump {
+    animation: jump-container 1.5s ease-out;
+  }
+  /* 动态光环效果 */
+  .profile-avatar::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    );
+    animation: pulse-glow 2.5s infinite ease-in-out;
+    z-index: -1; /* 保证光环在头像后面 */
+  }
+
+  /* 光环动画 */
+  @keyframes pulse-glow {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.3);
+      opacity: 0.4;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+  }
+  .profile-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 将头像及介绍居中 */
+    text-align: center;
+    z-index: 10;
+  }
+
+  /* 网站介绍 */
+  .site-intro {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 2px 6px rgba(0, 255, 255, 0.6); /* 科技感光晕 */
+  }
+
+  /* 网站链接容器 */
+  .site-links {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(150px, 1fr)
+    ); /* 自适应网格布局 */
+    gap: 20px;
+    margin: 40px auto;
+    padding: 0 20px;
+    max-width: 1000px;
+    justify-content: center;
+    align-items: center;
+  }
+  .site-card a {
+    text-decoration: none; /* 默认不显示下划线 */
+    color: inherit;
+  }
+
+  /* 单个网站卡片 */
+  .site-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1); /* 半透明背景 */
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 255, 255, 0.2); /* 光晕效果 */
+  }
+
+  .site-card:hover {
+    transform: translateY(-5px) rotateZ(2deg);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2),
+      rgba(0, 255, 255, 0.4)
+    );
+  }
+  .site-card:active {
+    transform: scale(0.95);
+    box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.5);
+  }
+
+  /* 网站链接中的图片 */
+  .site-card img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+    border-radius: 10px; /* 圆角 */
+    box-shadow: 0 4px 10px rgba(0, 255, 255, 0.3); /* 添加阴影 */
+    transition: transform 0.3s ease;
+  }
+
+  .site-card img:hover {
+    transform: scale(1.1); /* 鼠标悬停放大 */
+  }
+
+  /* 网站名称文本 */
+  .site-card span {
+    font-size: 16px;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.6); /* 发光文本 */
+    margin-top: 5px;
+  }
+  @media screen and (max-width: 768px) {
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+    }
+    .site-card {
+      padding: 10px;
+    }
+  }
+  /* 白天和夜晚模式的全局样式 */
+  body.day-mode {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  body.night-mode {
+    background: #000000;
+    color: #534747;
+  }
+
+  .night-mode .site-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 15px rgba(255, 255, 255, 0.2);
+  }
+
+  .night-mode .site-card:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(100, 100, 100, 0.3),
+      rgba(255, 255, 255, 0.4)
+    );
+  }
+
+  .night-mode .profile-avatar {
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.5);
+  }
+  .night-mode .profile-name {
+    text-shadow: 0 2px 6px rgba(255, 255, 255, 0.6);
+  }
+
+  .night-mode .site-intro {
+    text-shadow: 0 2px 6px rgba(255, 255, 255, 0.6);
+  }
+  /* 时间和访问次数 */
+  #info-box {
+    position: fixed;
+
+    right: 20px;
+    background: rgba(255, 255, 255, 0.8); /* 半透明背景 */
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+    font-family: "Arial", sans-serif; /* 美观字体 */
+    font-size: 14px;
+    text-align: right;
+    line-height: 1.5;
+    color: #333333;
+  }
+
+  #info-box p {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* 加载动画的背景容器 */
+  #loading-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.9); /* 半透明白色背景 */
+    z-index: 9999; /* 确保在最顶层 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease; /* 淡出动画 */
+  }
+
+  /* 加载动画的旋转效果 */
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgb(255, 207, 207); /* 边框的浅色部分 */
+    border-top: 5px solid #e3fff4; /* 边框的亮色部分 */
+    border-radius: 50%; /* 圆形 */
+    animation: spin 1s linear infinite; /* 旋转动画 */
+  }
+
+  /* 旋转动画的关键帧 */
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* 模态框的背景 */
+  .modal {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(0, 0, 0, 0.6); /* 半透明黑色背景 */
+    z-index: 1000; /* 确保在最上层 */
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* 模态框内容字体颜色 */
+  .modal-content {
+    background: #fff; /* 白色背景 */
+    padding: 20px;
+    border-radius: 10px; /* 圆角 */
+    text-align: center;
+    width: 90%;
+    position: relative;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s ease; /* 动画效果 */
+    color: #333; /* 修改字体颜色 */
+    font-family: "Arial", sans-serif; /* 设置字体样式 */
+  }
+
+  .close-btnAvatar {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .close-btnAvatar:hover {
+    color: #ffc6c6; /* 鼠标悬停时变为红色 */
+  }
+
+  /* 修改模态框标题和段落的颜色 */
+  .modal-content h2 {
+    color: #9ad1ef; /* 蓝色标题 */
+    margin-bottom: 15px;
+  }
+
+  .modal-content p {
+    color: #98afd1; /* 灰色段落文字 */
+    line-height: 1.6;
+  }
+
+  /* 动画效果 */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* 侧边栏样式 */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* 初始隐藏 */
+    width: 250px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1); /* 半透明背景 */
+    backdrop-filter: blur(10px); /* 模糊效果 */
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.5); /* 阴影效果 */
+    transition: all 0.4s ease; /* 平滑过渡 */
+    z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  /* 侧边栏显示状态 */
+  .sidebar.open {
+    left: 0;
+  }
+
+  /* 侧边栏内容 */
+  .sidebar h2 {
+    margin-top: 0;
+    color: #bcffe4;
+    text-align: center;
+    font-size: 24px;
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .sidebar ul li {
+    margin: 20px 0;
+  }
+
+  .sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.2); /* 鼠标悬停效果 */
+  }
+  .sidebar ul li a::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #bcffff;
+    transition: width 0.5s ease-in-out;
+  }
+  .sidebar ul li a:hover::after {
+    width: 100%;
+  }
+
+  #toggle-music::after {
+    content: "播放音乐";
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(171, 207, 255, 0.7);
+    color: white;
+    font-size: 12px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  #toggle-music:hover::after {
+    opacity: 1;
+  }
+  .toggle-btn::after {
+    content: "展开菜单";
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(171, 207, 255, 0.7);
+    color: white;
+    font-size: 12px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .toggle-btn:hover::after {
+    opacity: 1;
+  }
+  #toggle-mode::after {
+    content: "切换模式";
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(171, 207, 255, 0.7);
+    color: white;
+    font-size: 12px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  #toggle-mode:hover::after {
+    opacity: 1;
+  }
+
+  #toggle-slideshow::after {
+    content: "是否轮播";
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(171, 207, 255, 0.7);
+    color: white;
+    font-size: 12px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  #toggle-slideshow:hover::after {
+    opacity: 1;
+  }
+  #toggle-particles::after {
+    content: "鼠标拖尾";
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(171, 207, 255, 0.7);
+    color: white;
+    font-size: 12px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  #toggle-particles:hover::after {
+    opacity: 1;
+  }
+/* 学习模式背景容器 */
+.study-mode-container {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 1000;
+justify-content: center;
+align-items: center;
+backdrop-filter: blur(10px); /* 添加背景模糊效果 */
+opacity: 0; /* 初始透明度为0 */
+transform: scale(0.8); /* 初始缩放为0.8 */
+transition: opacity 0.5s ease, transform 0.5s ease; /* 添加过渡效果 */
+}
+
+/* 学习模式背景容器打开状态 */
+.study-mode-container.open {
+display: flex;
+opacity: 1; /* 打开时透明度为1 */
+transform: scale(1); /* 打开时缩放为1 */
+}
+
+/* 背景图片容器 */
+.background-image-wrapper {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: -1; /* 保证图片在内容后面 */
+overflow: hidden;
+}
+
+.background-image-wrapper img {
+width: 100%;
+height: 100%;
+object-fit: cover; /* 确保图片按比例填满区域 */
+opacity: 0.8; /* 设置图片透明度，突出内容 */
+}
+/* 学习模式内容区域 */
+.study-mode-content {
+background: rgba(255, 255, 255, 0.9);
+border-radius: 15px;
+padding: 25px 35px;
+width: 450px;
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+text-align: center;
+position: relative;
+overflow: hidden;
+z-index: 1; /* 确保内容在图片上方 */
+}
+
+/* 标题优化 */
+h2 {
+font-size: 1.8rem;
+color: #0077b6; /* 深蓝色 */
+margin-bottom: 20px;
+font-weight: bold;
+}
+
+h3 {
+font-size: 1.5rem;
+color: #0077b6; /* 深蓝色 */
+margin-top: 30px;
+margin-bottom: 15px;
+font-weight: bold;
+}
+
+/* 输入框样式优化 */
+.study-inputs {
+margin-bottom: 20px;
+text-align: left;
+}
+
+label {
+display: block;
+font-size: 1rem;
+color: #555;
+margin-bottom: 5px;
+font-weight: bold;
+}
+
+#subject-input {
+padding: 12px;
+border: 2px solid #d2e8ff;
+border-radius: 8px;
+width: 100%;
+font-size: 1rem;
+transition: border 0.3s ease;
+}
+
+#subject-input:focus {
+outline: none;
+border: 2px solid #42a5f5; /* 暖色调 */
+}
+
+/* 定时器样式优化 */
+.timer-display {
+font-size: 2.5rem;
+font-weight: bold;
+margin: 20px 0;
+color: #0077b6; /* 深蓝色 */
+text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* 按钮样式优化 */
+.timeFunctionBtn {
+padding: 12px 20px;
+margin: 5px;
+border: none;
+border-radius: 8px;
+background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)); /* 玻璃质感背景 */
+color: rgba(255, 255, 255, 0.9); /* 半透明白色字体 */
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+backdrop-filter: blur(8px); /* 玻璃模糊效果 */
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), inset 0 2px 2px rgba(255, 255, 255, 0.2); /* 内外阴影增强立体感 */
+transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.timeFunctionBtn:hover {
+transform: translateY(-3px);
+
+box-shadow: 0 5px 15px rgba(79, 172, 254, 0.692); /* 增强悬停时的阴影 */
+}
+
+.timeFunctionBtn:active {
+transform: translateY(0);
+box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* 点击时内凹效果 */
+}
+
+
+/* 历史记录容器 */
+.history-container {
+margin-top: 20px;
+position: relative;
+height: 300px;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+/* 卡片样式优化 */
+.history-card {
+position: relative;
+background: white;
+border-radius: 10px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+padding: 15px;
+margin: 10px 0;
+width: 90%;
+transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.history-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.history-card h4 {
+margin: 5px 0;
+font-size: 1rem;
+color: #5395ff; /* 暖色调 */
+font-weight: bold;
+}
+
+.history-card p {
+margin: 5px 0;
+font-size: 0.9rem;
+color: #555;
+}
+
+/* 关闭按钮样式优化 */
+.close-btn {
+position: absolute;
+top: 10px;
+right: 10px;
+font-size: 22px;
+color: #0277bd; /* 深蓝色 */
+cursor: pointer;
+font-weight: bold;
+transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+color: #ffaeac; /* 暖色调 */
+}
+/* 删除按钮样式 */
+.delete-btn {
+position: absolute;
+top: 10px;
+right: 10px;
+background-color: #ffa1a1 ; /* 红色按钮 */
+border: none;
+border-radius: 50%; /* 确保按钮为圆形 */
+width: 24px; /* 按钮宽度 */
+height: 24px; /* 按钮高度 */
+cursor: pointer;
+text-align: center;
+transition: transform 0.2s ease, box-shadow 0.3s ease;
+padding: 0; /* 去除内边距 */
+}
+
+.delete-btn:hover {
+transform: scale(1.2);
+box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
+}
+
+.delete-btn:active {
+transform: scale(0.9);
+}
+/* 联系方式弹窗背景容器 */
+.contact-mode-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px); /* 添加背景模糊效果 */
+  opacity: 0; /* 初始透明度为0 */
+  transform: scale(0.8); /* 初始缩放为0.8 */
+  transition: opacity 0.5s ease, transform 0.5s ease; /* 添加过渡效果 */
+}
+
+/* 联系方式弹窗背景容器打开状态 */
+.contact-mode-container.open {
+  display: flex;
+  opacity: 1; /* 打开时透明度为1 */
+  transform: scale(1); /* 打开时缩放为1 */
+}
+
+/* 联系方式内容区域 */
+.contact-mode-content {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 25px 35px;
+  width: 450px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 1; /* 确保内容在图片上方 */
+}
+
+/* 联系方式卡片容器 */
+.contact-cards {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+/* 单个联系方式卡片 */
+.contact-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  width: 100px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.contact-card h4 {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #5395ff; /* 暖色调 */
+  font-weight: bold;
+}
+
+.contact-card p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* 关闭按钮样式优化 */
+.contact-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 22px;
+  color: #0277bd; /* 深蓝色 */
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s ease;
+  z-index: 10; /* 确保按钮在最上层 */
+}
+
+.contact-close-btn:hover {
+  color: #ffaeac; /* 暖色调 */
+}
+/* About 页面样式 */
+.about-mode-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px); /* 添加背景模糊效果 */
+  opacity: 0; /* 初始透明度为0 */
+  transform: scale(0.8); /* 初始缩放为0.8 */
+  transition: opacity 0.5s ease, transform 0.5s ease; /* 添加过渡效果 */
+}
+
+/* About 页面打开状态 */
+.about-mode-container.open {
+  display: flex;
+  opacity: 1; /* 打开时透明度为1 */
+  transform: scale(1); /* 打开时缩放为1 */
+}
+
+/* About 内容区域 */
+.about-mode-content {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 25px 35px;
+  width: 80%;
+  max-width: 800px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 1; /* 确保内容在图片上方 */
+}
+
+/* About 标题 */
+.about-mode-content h2 {
+  font-size: 2rem;
+  color: #0077b6; /* 深蓝色 */
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* About 卡片容器 */
+.about-cards {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* 单个 About 卡片 */
+.about-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 150px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.about-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.about-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* 关闭按钮样式优化 */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 22px;
+  color: #0277bd; /* 深蓝色 */
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #ffaeac; /* 暖色调 */
+}
+
+/* 图片放大弹窗样式 */
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 1001;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;  /* 保证容器内内容不会超出容器 */
+  border-radius: 20px;  /* 保证弹窗本身也有圆角 */
+  background-color: rgba(50, 50, 50, 0.8); /* 初始背景透明度为0.8 */
+  backdrop-filter: blur(10px); /* 模糊效果 */
+  transition: opacity 0.5s ease; /* 背景透明度渐变 */
+}
+
+/* 放大后的图片 */
+.modal-content-image {
+  margin: auto;
+  display: block;
+  width: 100%;  /* 确保图片宽度不超过容器 */
+  max-width: 35%;  /* 确保宽度不超过屏幕宽度 */
+  max-height: 80vh;  /* 确保高度不超过屏幕高度 */
+  object-fit: contain;  /* 保持图片比例 */
+  border-radius: 20px;  /* 保证圆角效果 */
+  transition: transform 0.6s ease, opacity 0.6s ease; /* 图片的缩放和平滑过渡 */
+  transform: scale(0);  /* 初始缩放为0 */
+  opacity: 0;  /* 初始透明度为0 */
+}
+
+/* 弹窗容器打开时 */
+.image-modal.open {
+  display: block;
+  opacity: 1; /* 背景完全显示 */
+}
+
+/* 图片放大弹窗动画 */
+.image-modal-content,
+#caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+

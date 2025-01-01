@@ -634,6 +634,16 @@
   justify-content: center;
   align-items: center;
   backdrop-filter: blur(10px); /* 添加背景模糊效果 */
+  opacity: 0; /* 初始透明度为0 */
+  transform: scale(0.8); /* 初始缩放为0.8 */
+  transition: opacity 0.5s ease, transform 0.5s ease; /* 添加过渡效果 */
+}
+
+/* 学习模式背景容器打开状态 */
+.study-mode-container.open {
+  display: flex;
+  opacity: 1; /* 打开时透明度为1 */
+  transform: scale(1); /* 打开时缩放为1 */
 }
 
 /* 背景图片容器 */
@@ -1205,12 +1215,6 @@ label {
       avatarContainer.addEventListener("mouseleave", () => {
         avatarContainer.style.transform = "translateY(0)";
       });
-      document.onkeydown = function (e) {
-        if (e.keyCode == 123) {
-          // F12键
-          e.preventDefault();
-        }
-      };
 // 元素选择
 const studyModeBtn = document.getElementById("study-mode-btn");
 const studyModeContainer = document.getElementById("study-mode");
@@ -1228,16 +1232,31 @@ let isTimerRunning = false;
 let startTime = 0;
 let elapsedTime = 0;
 let history = [];
-
 // 打开学习模式
 studyModeBtn?.addEventListener("click", () => {
-  studyModeContainer.style.display = "flex";
+  studyModeContainer.style.display = "flex"; // 确保容器可见
+  setTimeout(() => {
+    studyModeContainer.classList.add("open");
+  }, 10); // 延迟添加 open 类以触发过渡效果
   renderHistory();
 });
 
 // 关闭学习模式
 closeBtn.addEventListener("click", () => {
-  studyModeContainer.style.display = "none";
+  studyModeContainer.classList.remove("open");
+  studyModeContainer.addEventListener("transitionend", () => {
+    studyModeContainer.style.display = "none";
+  }, { once: true }); // 监听过渡结束事件
+});
+
+// 点击学习模式背景关闭模态框
+studyModeContainer.addEventListener("click", (event) => {
+  if (event.target === studyModeContainer) {
+    studyModeContainer.classList.remove("open");
+    studyModeContainer.addEventListener("transitionend", () => {
+      studyModeContainer.style.display = "none";
+    }, { once: true }); // 监听过渡结束事件
+  }
 });
 
 // 格式化时间
@@ -1295,7 +1314,15 @@ saveRecordBtn.addEventListener("click", () => {
     duration: formatTime(elapsedTime),
     date: getCurrentDate(),
   };
+
+  // 从 localStorage 中获取现有历史记录
+  let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
+
+  // 将新记录添加到历史记录中
   history.unshift(record);
+
+  // 将更新后的历史记录保存到 localStorage
+  localStorage.setItem("studyHistory", JSON.stringify(history));
 
   renderHistory();
 
@@ -1314,6 +1341,9 @@ resetTimerBtn.addEventListener("click", () => {
 
 // 渲染历史记录
 function renderHistory() {
+  // 从 localStorage 中获取历史记录
+  let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
+
   historyContainer.innerHTML = ""; // 清空历史记录容器
   history.forEach((record, index) => {
     const card = document.createElement("div");
@@ -1333,6 +1363,10 @@ function renderHistory() {
     deleteBtn.addEventListener("click", () => {
       // 根据索引删除记录
       history.splice(index, 1);
+
+      // 更新 localStorage 中的历史记录
+      localStorage.setItem("studyHistory", JSON.stringify(history));
+
       renderHistory(); // 重新渲染历史记录
     });
 
@@ -1340,6 +1374,11 @@ function renderHistory() {
     historyContainer.appendChild(card);
   });
 }
+
+// 页面加载时渲染历史记录
+window.addEventListener("load", () => {
+  renderHistory();
+});
     </script>
   </body>
 </html>

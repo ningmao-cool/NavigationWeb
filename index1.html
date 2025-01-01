@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="assert/img/icons8-navigation-48.png" type="image/png" />
+    <title>Ning-Navigation</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- 加载动画 -->
+    <div id="loading-animation">
+      <div class="spinner"></div>
+    </div>
+
+    <div class="site-links">
+      <!-- 单个网站卡片 -->
+      <div class="site-card">
+        <a href="https://compressimage.io/" target="_blank">
+          <img src="assert/img/compresiing.png" alt="compressimage" />
+          <span>compressi</span>
+        </a>
+      </div>
+      <div class="site-card">
+        <a href="http://8.134.70.113/" target="_blank">
+          <img src="assert/img/拿枕头的小新.jpg" alt="NingMao-blog" />
+          <span>blog</span>
+        </a>
+      </div>
+      <div class="site-card">
+        <a href="https://www.bilibili.com" target="_blank">
+          <img src="assert/img/Bilibili.png" alt="Bilibili" />
+          <span>Bilibili</span>
+        </a>
+      </div>
+      <div class="site-card">
+        <a href="https://www.xiaozhongjishu.com/" target="_blank">
+          <img src="assert/img/熊.png" alt="xiaozhongjishu" />
+          <span>minority</span>
+        </a>
+      </div>
+      <div class="site-card">
+        <a href="https://haowallpaper.com/" target="_blank">
+          <img src="assert/img/【哲风壁纸】剑客-水墨.png" alt="zhefengbizhi" />
+          <span>wallpaper</span>
+        </a>
+      </div>
+      <!-- 添加更多链接 -->
+    </div>
+
+    <!-- 背景轮播容器 -->
+    <div class="background-carousel">
+      <img src="assert/img/初音未来 (1).png" class="active" alt="Background 1" />
+      <img src="assert/img/明日香泳装.png" alt="Background 2" />
+      <img src="assert/img/【哲风壁纸】02.png" alt="Background 3" />
+      <img src="assert/img/【哲风壁纸】桐崎千棘-泳装.png" alt="Background 4" />
+      <img src="assert/img/【哲风壁纸】一个人-海 .png" alt="Background 5" />
+    </div>
+
+    <!-- 模拟框（模态框） -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btnAvatar">&times;</span>
+        <h2>你好！</h2>
+        <p>
+          这是一个导航式的网站，里面有我的作品和我常用的网站，欢迎来了解我！
+        </p>
+        <p>什么？你问我为什么外面是英文？</p>
+        <p>zhuangbi!</p>
+      </div>
+    </div>
+    <!-- 作者头像和网站介绍 -->
+    <div class="profile-container">
+      <div class="profile-content">
+        <div class="profile-avatar" id="avatar">
+          <img src="assert/img/逢坂大河22.png" alt="Author Avatar" />
+        </div>
+        <div class="profile-name">
+          <span style="font-size: 50px; font-weight: bold; color: white">Ning Mao</span>
+        </div>
+      </div>
+      <div class="site-intro">
+        Welcome to this website<br />
+        <span style="font-size: 18px; font-weight: normal"
+          >A site that makes it easier to navigate to my work and my frequently
+          used sites</span
+        >
+      </div>
+    </div>
+    <!-- 时间和访问次数 -->
+    <div id="info-box">
+      <p id="current-time"></p>
+      <p id="visit-count"></p>
+    </div>
+
+    <!-- 控制按钮 -->
+    <div class="controls">
+      <button id="toggle-particles">Disable Particles</button>
+      <button id="toggle-slideshow">Pause Slideshow</button>
+      <button class="toggle-btn" id="toggle-btn">☰</button>
+      <button id="toggle-mode">Switch to Night Mode</button>
+      <button id="toggle-music">Play Music</button>
+
+    </div>
+    <!-- 音频播放器 -->
+    <audio id="background-music" loop>
+      <source src="assert/music/69918301815120004.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+
+    <!-- 侧边栏 -->
+    <div class="sidebar" id="sidebar">
+        <h2>Sidebar Menu</h2>
+        <ul>
+          <li><a href="#" id="home-link">Home</a></li>
+          <li><a href="#" id="about-link">About</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Portfolio</a></li>
+          <li><a href="#" id="contact-mode-btn">Contact</a></li>
+          <li><a href="#" id="study-mode-btn">Learning</a></li>
+        </ul>
+      </div>
+    <!-- 学习模式弹窗 -->
+    <div id="study-mode" class="study-mode-container">
+      <div class="study-mode-content">
+        <!-- 添加背景图片 -->
+        <div class="background-image-wrapper">
+          <img src="assert/img/明媚-阳光.png" alt="学习模式背景" />
+        </div>
+        <span class="close-btn">&times;</span>
+        <h2>Learning Pattern</h2>
+        <div class="study-inputs">
+          <label for="subject-input">Study subject:</label>
+          <input type="text" id="subject-input" placeholder="Please enter the subject you are studying." />
+          <button id="start-timer" class="timeFunctionBtn">start</button>
+        </div>
+        <div class="timer-display" id="timer-display">00:00:00</div>
+        <div class="timer-controls">
+          <button id="pause-timer" class="timeFunctionBtn">Pause</button>
+          <button id="save-record" class="timeFunctionBtn">store</button>
+          <button id="reset-timer" class="timeFunctionBtn">reset</button>
+        </div>
+        <h3>history</h3>
+        <div class="history-container" id="history-container">
+          <!-- 卡片堆叠效果 -->
+        </div>
+      </div>
+    </div>
+</div>
+
+
+  
+<!-- 联系方式弹窗 -->
+<div id="contact-mode" class="contact-mode-container">
+  <div class="contact-mode-content">
+    <span class="contact-close-btn">&times;</span>
+    <h2>Contact Me</h2>
+    <div class="contact-cards">
+      <!-- QQ卡片 -->
+      <div class="contact-card">
+        <h4>QQ</h4>
+        <p>3113143862</p>
+      </div>
+      <!-- 微信卡片 -->
+      <div class="contact-card">
+        <h4>WeChat</h4>
+        <p>ningmaohlyz</p>
+      </div>
+      <!-- 哔哩哔哩卡片 -->
+      <div class="contact-card">
+        <h4>Bilibili</h4>
+        <p>宁猫k</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- About 页面内容 -->
+<div id="about-mode" class="about-mode-container">
+  <div class="about-mode-content">
+    <span class="close-btn">&times;</span>
+    <h2>About Me</h2>
+    <div class="about-cards">
+      <!-- 卡片1 -->
+      <div class="about-card">
+        <img src="assert/img/55b70652dcabb14810b6a4263ac9012.jpg" alt="About Image 1" />
+      </div>
+      <!-- 卡片2 -->
+      <div class="about-card">
+        <img src="assert/img/aaade1c0780267b2e74a4becf173cea.jpg" alt="About Image 2" />
+      </div>
+      <!-- 卡片3 -->
+      <div class="about-card">
+        <img src="assert/img/67659dc66a45d9ba8c984ad1c3e721e.jpg" alt="About Image 3" />
+      </div>
+            <!-- 卡片4 -->
+            <div class="about-card">
+              <img src="assert/img/7542d81a5bcc84d96118fd9d00e48a5.jpg" alt="About Image 3" />
+            </div>
+                  <!-- 卡片5 -->
+      <div class="about-card">
+        <img src="assert/img/665025fc71ba98e49b968eb504ad1b3.jpg" alt="About Image 3" />
+      </div>
+            <!-- 卡片6 -->
+            <div class="about-card">
+              <img src="assert/img/7f2c8e18b16bff59364d78b1095dbdc.jpg" alt="About Image 3" />
+            </div>
+      <!-- 添加更多卡片 -->
+    </div>
+  </div>
+</div>
+
+<!-- 图片放大弹窗 -->
+<div id="image-modal" class="image-modal">
+  <span class="close-image-modal-btn">&times;</span>
+  <img class="modal-content-image" id="img01" alt="Expanded Image">
+</div>
+  </body>
+  <script src="scripts.js"></script>
+</html>
