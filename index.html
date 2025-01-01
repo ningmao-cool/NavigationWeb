@@ -39,9 +39,9 @@
       }
 
       .background-carousel img.active {
-        opacity: 0.8;
+        opacity: 0.9;
         z-index: 1;
-        filter: brightness(0.8);
+        filter: brightness(0.9);
       }
 
       /* 按钮样式 */
@@ -318,13 +318,11 @@
       body.day-mode {
         background: #ffffff;
         color: #000000;
-        
       }
 
       body.night-mode {
         background: #000000;
         color: #534747;
-        
       }
 
       .night-mode .site-card {
@@ -438,7 +436,7 @@
         font-family: "Arial", sans-serif; /* 设置字体样式 */
       }
 
-      .close-btn {
+      .close-btnAvatar {
         position: absolute;
         top: 10px;
         right: 20px;
@@ -448,7 +446,7 @@
         cursor: pointer;
         transition: color 0.3s ease;
       }
-      .close-btn:hover {
+      .close-btnAvatar:hover {
         color: #ffc6c6; /* 鼠标悬停时变为红色 */
       }
 
@@ -624,6 +622,211 @@
       #toggle-particles:hover::after {
         opacity: 1;
       }
+/* 学习模式背景容器 */
+.study-mode-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px); /* 添加背景模糊效果 */
+}
+
+/* 背景图片容器 */
+.background-image-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* 保证图片在内容后面 */
+  overflow: hidden;
+}
+
+.background-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 确保图片按比例填满区域 */
+  opacity: 0.8; /* 设置图片透明度，突出内容 */
+}
+/* 学习模式内容区域 */
+.study-mode-content {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 25px 35px;
+  width: 450px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 1; /* 确保内容在图片上方 */
+}
+
+/* 标题优化 */
+h2 {
+  font-size: 1.8rem;
+  color: #0077b6; /* 深蓝色 */
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: #0077b6; /* 深蓝色 */
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+/* 输入框样式优化 */
+.study-inputs {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+#subject-input {
+  padding: 12px;
+  border: 2px solid #d2e8ff;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+#subject-input:focus {
+  outline: none;
+  border: 2px solid #42a5f5; /* 暖色调 */
+}
+
+/* 定时器样式优化 */
+.timer-display {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 20px 0;
+  color: #0077b6; /* 深蓝色 */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* 按钮样式优化 */
+.timeFunctionBtn {
+  padding: 12px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)); /* 玻璃质感背景 */
+  color: rgba(255, 255, 255, 0.9); /* 半透明白色字体 */
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  backdrop-filter: blur(8px); /* 玻璃模糊效果 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), inset 0 2px 2px rgba(255, 255, 255, 0.2); /* 内外阴影增强立体感 */
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.timeFunctionBtn:hover {
+  transform: translateY(-3px);
+ 
+  box-shadow: 0 5px 15px rgba(79, 172, 254, 0.692); /* 增强悬停时的阴影 */
+}
+
+.timeFunctionBtn:active {
+  transform: translateY(0);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* 点击时内凹效果 */
+}
+
+
+/* 历史记录容器 */
+.history-container {
+  margin-top: 20px;
+  position: relative;
+  height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 卡片样式优化 */
+.history-card {
+  position: relative;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin: 10px 0;
+  width: 90%;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.history-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.history-card h4 {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #5395ff; /* 暖色调 */
+  font-weight: bold;
+}
+
+.history-card p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* 关闭按钮样式优化 */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 22px;
+  color: #0277bd; /* 深蓝色 */
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #ffaeac; /* 暖色调 */
+}
+/* 删除按钮样式 */
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ffa1a1 ; /* 红色按钮 */
+  border: none;
+  border-radius: 50%; /* 确保按钮为圆形 */
+  width: 24px; /* 按钮宽度 */
+  height: 24px; /* 按钮高度 */
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  padding: 0; /* 去除内边距 */
+}
+
+  .delete-btn:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
+  }
+
+  .delete-btn:active {
+    transform: scale(0.9);
+  }
     </style>
   </head>
   <body>
@@ -683,7 +886,7 @@
     <!-- 模拟框（模态框） -->
     <div id="modal" class="modal">
       <div class="modal-content">
-        <span class="close-btn">&times;</span>
+        <span class="close-btnAvatar">&times;</span>
         <h2>你好！</h2>
         <p>
           这是一个导航式的网站，里面有我的作品和我常用的网站，欢迎来了解我！
@@ -741,9 +944,36 @@
         <li><a href="#">Services</a></li>
         <li><a href="#">Portfolio</a></li>
         <li><a href="#">Contact</a></li>
+        <li><a href="#" id="study-mode-btn">Learning Pattern</a></li>
       </ul>
     </div>
-
+    <!-- 学习模式弹窗 -->
+    <div id="study-mode" class="study-mode-container">
+      <div class="study-mode-content">
+         <!-- 添加背景图片 -->
+    <div class="background-image-wrapper">
+      <img src="assert/img/明媚-阳光.png" alt="学习模式背景" />
+    </div>
+        <span class="close-btn">&times;</span>
+        <h2>Learning Pattern</h2>
+        <div class="study-inputs">
+          <label for="subject-input">Study subject:</label>
+          <input type="text" id="subject-input" placeholder="Please enter the subject you are studying. "/>
+          <button id="start-timer" class="timeFunctionBtn">start</button>
+        </div>
+        <div class="timer-display" id="timer-display">00:00:00</div>
+        <div class="timer-controls">
+          <button id="pause-timer" class="timeFunctionBtn">Pause</button>
+          <button id="save-record" class="timeFunctionBtn">store</button>
+          <button id="reset-timer" class="timeFunctionBtn">reset</button>
+        </div>
+        <h3>history</h3>
+        <div class="history-container" id="history-container">
+          <!-- 卡片堆叠效果 -->
+        </div>
+      </div>
+    </div>
+  </div>
     <!-- ----------------------- -->
 
     <script>
@@ -936,7 +1166,7 @@
       // 获取头像和模态框元素
       const avatar = document.getElementById("avatar");
       const modal = document.getElementById("modal");
-      const closeBtn = document.querySelector(".close-btn");
+      const closeBtnAvatar = document.querySelector(".close-btnAvatar");
 
       // 显示模态框
       avatar.addEventListener("click", () => {
@@ -944,7 +1174,7 @@
       });
 
       // 关闭模态框
-      closeBtn.addEventListener("click", () => {
+      closeBtnAvatar.addEventListener("click", () => {
         modal.style.display = "none";
       });
 
@@ -976,11 +1206,140 @@
         avatarContainer.style.transform = "translateY(0)";
       });
       document.onkeydown = function (e) {
-    if (e.keyCode == 123) {  // F12键
-        e.preventDefault();
-    }
-};
+        if (e.keyCode == 123) {
+          // F12键
+          e.preventDefault();
+        }
+      };
+// 元素选择
+const studyModeBtn = document.getElementById("study-mode-btn");
+const studyModeContainer = document.getElementById("study-mode");
+const closeBtn = document.querySelector(".close-btn");
+const startTimerBtn = document.getElementById("start-timer");
+const pauseTimerBtn = document.getElementById("pause-timer");
+const resetTimerBtn = document.getElementById("reset-timer");
+const saveRecordBtn = document.getElementById("save-record");
+const timerDisplay = document.getElementById("timer-display");
+const historyContainer = document.getElementById("history-container");
+const subjectInput = document.getElementById("subject-input");
 
+let timerInterval;
+let isTimerRunning = false;
+let startTime = 0;
+let elapsedTime = 0;
+let history = [];
+
+// 打开学习模式
+studyModeBtn?.addEventListener("click", () => {
+  studyModeContainer.style.display = "flex";
+  renderHistory();
+});
+
+// 关闭学习模式
+closeBtn.addEventListener("click", () => {
+  studyModeContainer.style.display = "none";
+});
+
+// 格式化时间
+function formatTime(ms) {
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+}
+
+function pad(num) {
+  return num.toString().padStart(2, "0");
+}
+
+// 获取当前日期
+function getCurrentDate() {
+  const now = new Date();
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
+// 开始计时
+startTimerBtn.addEventListener("click", () => {
+  if (!subjectInput.value.trim()) {
+    alert("请输入学习科目！");
+    return;
+  }
+  if (isTimerRunning) return;
+
+  startTime = Date.now() - elapsedTime;
+  timerInterval = setInterval(() => {
+    elapsedTime = Date.now() - startTime;
+    timerDisplay.textContent = formatTime(elapsedTime);
+  }, 1000);
+  isTimerRunning = true;
+});
+
+// 暂停计时
+pauseTimerBtn.addEventListener("click", () => {
+  if (isTimerRunning) {
+    clearInterval(timerInterval);
+    isTimerRunning = false;
+  }
+});
+
+// 保存记录
+saveRecordBtn.addEventListener("click", () => {
+  if (!subjectInput.value.trim()) {
+    alert("请输入学习科目！");
+    return;
+  }
+
+  const record = {
+    subject: subjectInput.value,
+    duration: formatTime(elapsedTime),
+    date: getCurrentDate(),
+  };
+  history.unshift(record);
+
+  renderHistory();
+
+  subjectInput.value = "";
+  elapsedTime = 0;
+  timerDisplay.textContent = "00:00:00";
+});
+
+// 重置计时器
+resetTimerBtn.addEventListener("click", () => {
+  clearInterval(timerInterval);
+  isTimerRunning = false;
+  elapsedTime = 0;
+  timerDisplay.textContent = "00:00:00";
+});
+
+// 渲染历史记录
+function renderHistory() {
+  historyContainer.innerHTML = ""; // 清空历史记录容器
+  history.forEach((record, index) => {
+    const card = document.createElement("div");
+    card.className = "history-card";
+    card.style.position = "relative"; // 保证删除按钮正确定位
+
+    // 卡片内容
+    card.innerHTML = `
+      <button class="delete-btn" data-index="${index}"></button>
+      <h4>科目：${record.subject}</h4>
+      <p>时长：${record.duration}</p>
+      <p>日期：${record.date}</p>
+    `;
+
+    // 删除按钮功能
+    const deleteBtn = card.querySelector(".delete-btn");
+    deleteBtn.addEventListener("click", () => {
+      // 根据索引删除记录
+      history.splice(index, 1);
+      renderHistory(); // 重新渲染历史记录
+    });
+
+    // 将卡片添加到容器中
+    historyContainer.appendChild(card);
+  });
+}
     </script>
   </body>
 </html>
