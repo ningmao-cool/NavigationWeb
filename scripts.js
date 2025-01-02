@@ -371,9 +371,9 @@ card.style.position = "relative"; // 保证删除按钮正确定位
 // 卡片内容
 card.innerHTML = `
 <button class="delete-btn" data-index="${index}"></button>
-<h4>科目：${record.subject}</h4>
-<p>时长：${record.duration}</p>
-<p>日期：${record.date}</p>
+<h4>date：${record.date}</h4>
+<p>subject：${record.subject}</p>
+<p>duartion：${record.duration}</p>
 `;
 
 // 删除按钮功能

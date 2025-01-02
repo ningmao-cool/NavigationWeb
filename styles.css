@@ -233,7 +233,7 @@ body {
       auto-fit,
       minmax(150px, 1fr)
     ); /* 自适应网格布局 */
-    gap: 20px;
+    gap: 40px 80px;
     margin: 40px auto;
     padding: 0 20px;
     max-width: 1000px;
@@ -245,19 +245,24 @@ body {
     color: inherit;
   }
 
-  /* 单个网站卡片 */
-  .site-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.1); /* 半透明背景 */
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
-    padding: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 8px 15px rgba(0, 255, 255, 0.2); /* 光晕效果 */
-  }
+/* 单个网站卡片 */
+.site-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1); /* 半透明背景 */
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 15px rgba(0, 255, 255, 0.2); /* 光晕效果 */
+  height: 80px; /* 设置统一高度 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 保证图片和文本之间有间隔 */
+}
+
 
   .site-card:hover {
     transform: translateY(-5px) rotateZ(2deg);
@@ -280,19 +285,22 @@ body {
     border-radius: 10px; /* 圆角 */
     box-shadow: 0 4px 10px rgba(0, 255, 255, 0.3); /* 添加阴影 */
     transition: transform 0.3s ease;
+    object-fit: cover; /* 确保图片不变形 */
   }
 
   .site-card img:hover {
     transform: scale(1.1); /* 鼠标悬停放大 */
   }
 
-  /* 网站名称文本 */
-  .site-card span {
-    font-size: 16px;
-    color: #ffffff;
-    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.6); /* 发光文本 */
-    margin-top: 5px;
-  }
+/* 网站名称文本 */
+.site-card span {
+  font-size: 16px;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.6); /* 发光文本 */
+  margin-top: 10px; /* 增加文字与图片之间的间距 */
+  text-align: center; /* 确保文字居中对齐 */
+}
+
   @media screen and (max-width: 768px) {
     .profile-avatar {
       width: 100px;
