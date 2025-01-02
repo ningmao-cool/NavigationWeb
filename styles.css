@@ -754,6 +754,7 @@ box-shadow: 0 5px 15px rgba(79, 172, 254, 0.692); /* 增强悬停时的阴影 */
 transform: translateY(0);
 box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* 点击时内凹效果 */
 }
+
 /* 时间输入字段样式 */
 #duration-input {
   padding: 12px;
