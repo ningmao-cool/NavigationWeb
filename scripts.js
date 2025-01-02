@@ -18,21 +18,7 @@ function nextSlide() {
 function startSlideshow() {
   interval = setInterval(nextSlide, 4000);
 }
-// 获取侧边栏和按钮元素
-const sidebar = document.getElementById("sidebar");
-const toggleBtn = document.getElementById("toggle-btn");
 
-// 切换侧边栏显示状态
-toggleBtn.addEventListener("click", () => {
-  sidebar.classList.toggle("open");
-});
-
-// 点击侧边栏之外的地方关闭侧边栏
-document.addEventListener('click', (event) => {
-  if (sidebar.classList.contains('open') && !sidebar.contains(event.target) && event.target !== toggleBtn) {
-    sidebar.classList.remove('open');
-  }
-});
 // 停止轮播
 function stopSlideshow() {
   clearInterval(interval);
@@ -250,6 +236,21 @@ let isTimerRunning = false;
 let startTime = 0;
 let elapsedTime = 0;
 let history = [];
+// 获取侧边栏和按钮元素
+const sidebar = document.getElementById("sidebar");
+const toggleBtn = document.getElementById("toggle-btn");
+
+// 切换侧边栏显示状态
+toggleBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+});
+
+// 点击侧边栏之外的地方关闭侧边栏
+document.addEventListener('click', (event) => {
+  if (sidebar.classList.contains('open') && !sidebar.contains(event.target) && event.target !== toggleBtn) {
+    sidebar.classList.remove('open');
+  }
+});
 // 打开学习模式
 studyModeBtn?.addEventListener("click", () => {
 studyModeContainer.style.display = "flex"; // 确保容器可见
@@ -392,11 +393,45 @@ renderHistory(); // 重新渲染历史记录
 historyContainer.appendChild(card);
 });
 }
+// 获取新增卡片按钮和时间输入字段
+const addCardBtn = document.getElementById("add-card-btn");
+const durationInput = document.getElementById("duration-input");
 
-// 页面加载时渲染历史记录
-window.addEventListener("load", () => {
-renderHistory();
+// 新增卡片按钮点击事件
+addCardBtn.addEventListener("click", () => {
+  const newRecord = {
+    subject: subjectInput.value.trim() || "New Subject",
+    duration: durationInput.value.trim() || "00:00:00",
+    date: getCurrentDate(),
+  };
+
+  // 验证时间格式
+  if (!validateTimeFormat(newRecord.duration)) {
+    alert("请输入正确的时间格式（HH:MM:SS）！");
+    return;
+  }
+
+  // 从 localStorage 中获取现有历史记录
+  let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
+
+  // 将新记录添加到历史记录中
+  history.unshift(newRecord);
+
+  // 将更新后的历史记录保存到 localStorage
+  localStorage.setItem("studyHistory", JSON.stringify(history));
+
+  renderHistory();
+
+  // 清空输入字段
+  subjectInput.value = "";
+  durationInput.value = "";
 });
+
+// 验证时间格式的函数
+function validateTimeFormat(time) {
+  const timePattern = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
+  return timePattern.test(time);
+}
 
 // 元素选择
 const contactModeBtn = document.getElementById("contact-mode-btn");
