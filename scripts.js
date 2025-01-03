@@ -278,18 +278,7 @@ studyModeContainer.style.display = "none";
 }
 });
 
-// 格式化时间
-function formatTime(ms) {
-const totalSeconds = Math.floor(ms / 1000);
-const hours = Math.floor(totalSeconds / 3600);
-const minutes = Math.floor((totalSeconds % 3600) / 60);
-const seconds = totalSeconds % 60;
-return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-}
 
-function pad(num) {
-return num.toString().padStart(2, "0");
-}
 
 // 获取当前日期
 function getCurrentDate() {
@@ -357,42 +346,62 @@ isTimerRunning = false;
 elapsedTime = 0;
 timerDisplay.textContent = "00:00:00";
 });
-
-// 渲染历史记录
+// 渲染历史记录并计算今日学习时长
 function renderHistory() {
-// 从 localStorage 中获取历史记录
-let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
+  let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
+  const todayDate = getCurrentDate(); // 获取今天的日期
+  let todayTotalTime = 0; // 今日总时长（以毫秒为单位）
 
-historyContainer.innerHTML = ""; // 清空历史记录容器
-history.forEach((record, index) => {
-const card = document.createElement("div");
-card.className = "history-card";
-card.style.position = "relative"; // 保证删除按钮正确定位
+  historyContainer.innerHTML = ""; // 清空历史记录容器
 
-// 卡片内容
-card.innerHTML = `
-<button class="delete-btn" data-index="${index}"></button>
-<h4>date：${record.date}</h4>
-<p>subject：${record.subject}</p>
-<p>duartion：${record.duration}</p>
-`;
+  history.forEach((record, index) => {
+    const card = document.createElement("div");
+    card.className = "history-card";
+    card.style.position = "relative"; // 保证删除按钮正确定位
 
-// 删除按钮功能
-const deleteBtn = card.querySelector(".delete-btn");
-deleteBtn.addEventListener("click", () => {
-// 根据索引删除记录
-history.splice(index, 1);
+    // 如果是今天的记录，则累加学习时长
+    if (record.date === todayDate) {
+      const [hours, minutes, seconds] = record.duration.split(':').map(Number);
+      todayTotalTime += hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+    }
 
-// 更新 localStorage 中的历史记录
-localStorage.setItem("studyHistory", JSON.stringify(history));
+    // 卡片内容
+    card.innerHTML = `
+      <button class="delete-btn" data-index="${index}"></button>
+      <h4>date: ${record.date}</h4>
+      <p>subject: ${record.subject}</p>
+      <p>duration: ${record.duration}</p>
+    `;
 
-renderHistory(); // 重新渲染历史记录
-});
+    // 删除按钮功能
+    const deleteBtn = card.querySelector(".delete-btn");
+    deleteBtn.addEventListener("click", () => {
+      history.splice(index, 1); // 删除记录
+      localStorage.setItem("studyHistory", JSON.stringify(history));
+      renderHistory(); // 重新渲染历史记录
+    });
 
-// 将卡片添加到容器中
-historyContainer.appendChild(card);
-});
+    historyContainer.appendChild(card); // 将卡片添加到容器中
+  });
+
+  // 更新“Today's total”显示
+  document.getElementById("today-total-time").textContent = formatTime(todayTotalTime);
 }
+
+// 格式化时间
+function formatTime(ms) {
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+}
+
+function pad(num) {
+  return num.toString().padStart(2, "0");
+}
+
+
 // 获取新增卡片按钮和时间输入字段
 const addCardBtn = document.getElementById("add-card-btn");
 const durationInput = document.getElementById("duration-input");
