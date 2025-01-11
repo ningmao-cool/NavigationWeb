@@ -1021,6 +1021,10 @@ transform: scale(0.9);
   z-index: 1; /* 确保内容在图片上方 */
 }
 
+.contact-close-btn h2{
+  color: #83deb9;
+}
+
 /* 联系方式卡片容器 */
 .contact-cards {
   display: flex;
@@ -1111,11 +1115,12 @@ transform: scale(0.9);
 }
 
 /* About 标题 */
-.about-mode-content h2 {
+.contact-mode-content h2 {
   font-size: 2rem;
   color: #0077b6; /* 深蓝色 */
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   font-weight: bold;
+  text-shadow: 2px 2px 4px rgb(112, 154, 252);
 }
 
 /* About 卡片容器 */
@@ -1231,6 +1236,8 @@ transform: scale(0.9);
   background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
 }
 
+
+
 .Listmodal-content {
   background-color: #fff;
   margin: 10% auto; /* 定位在页面中央 */
@@ -1248,7 +1255,7 @@ transform: scale(0.9);
 }
 
 .modalListCloseBtn {
-  color: #aaa;
+  color: #75e8ca; /* 深蓝色 */
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -1258,7 +1265,7 @@ transform: scale(0.9);
 
 .modalListCloseBtn:hover,
 .modalListCloseBtn:focus {
-  color: #000;
+  color: #ffbaba;
   text-decoration: none;
 }
 
