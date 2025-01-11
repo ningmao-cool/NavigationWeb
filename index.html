@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="assert/img/icons8-navigation-48.png" type="image/png" />
-    <title>Ning-Navigation</title>
+    <title>NingMao-Nav</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -12,18 +12,20 @@
       <div class="spinner"></div>
     </div>
 
+    <!-- 卡片区域 -->
     <div class="site-links">
       <!-- 单个网站卡片 -->
       <div class="site-card">
         <a href="https://compressimage.io/" target="_blank">
           <img src="assert/img/compresiing.png" alt="compressimage" />
+          <!-- 卡片名不要超过10个字，否则会在下方显示 -->
           <span>compressi</span>
         </a>
       </div>
       <div class="site-card">
         <a href="http://8.134.70.113/" target="_blank">
           <img src="assert/img/拿枕头的小新.jpg" alt="NingMao-blog" />
-          <span>blog</span>
+          <span>ningblog</span>
         </a>
       </div>
       <div class="site-card">
@@ -61,6 +63,12 @@
           <img src="assert/img/github.png" alt="gpt" />
           <span>github</span>
         </a>
+      </div>      
+      <div class="site-card">
+        <a href="https://thuvien.org/navnav" target="_blank">
+          <img src="assert/img/【哲风壁纸】动漫女孩-粉色星球.png" alt="navnav" />
+          <span>navnav</span>
+        </a>
       </div>
       <!-- 添加更多链接 -->
     </div>
@@ -69,16 +77,16 @@
     <div class="background-carousel">
       <img src="assert/img/初音未来 (1).png" class="active" alt="Background 1" />
       <img src="assert/img/明日香泳装.png" alt="Background 2" />
-      <img src="assert/img/【哲风壁纸】02.png" alt="Background 3" />
-      <img src="assert/img/【哲风壁纸】桐崎千棘-泳装.png" alt="Background 4" />
+      <img src="assert/img/【哲风壁纸】桐崎千棘-泳装.png" alt="Background 3" />
+      <img src="assert/img/【哲风壁纸】插画-音_出水芙蓉.png" alt="Background 4" />
       <img src="assert/img/【哲风壁纸】一个人-海 .png" alt="Background 5" />
     </div>
 
-    <!-- 模拟框（模态框） -->
+    <!-- 主页模拟框（模态框） -->
     <div id="modal" class="modal">
       <div class="modal-content">
         <span class="close-btnAvatar">&times;</span>
-        <h2>你好！</h2>
+        <h2>你好啊！</h2>
         <p>
           这是一个导航式的网站，里面有我的作品和我常用的网站，欢迎来了解我！
         </p>
@@ -93,7 +101,7 @@
           <img src="assert/img/逢坂大河22.png" alt="Author Avatar" />
         </div>
         <div class="profile-name">
-          <span style="font-size: 50px; font-weight: bold; color: white">Ning Mao</span>
+          <span style="font-size: 50px; font-weight: bold; color: rgb(252, 252, 252)">Ning Mao</span>
         </div>
       </div>
       <div class="site-intro">
@@ -104,12 +112,13 @@
         >
       </div>
     </div>
-    <!-- 时间和访问次数 -->
-    <div id="info-box">
-      <p id="current-time"></p>
-      <p id="visit-count"></p>
-    </div>
+<div class="toggle-profile-button-container">
+  <a href="#" class="toggle-profile-button">Hide Profile</a>
+</div>
 
+<div class="profile-container">
+  <!-- Profile content goes here -->
+</div>
     <!-- 控制按钮 -->
     <div class="controls">
       <button id="toggle-particles">Disable Particles</button>
@@ -117,8 +126,18 @@
       <button class="toggle-btn" id="toggle-btn">☰</button>
       <button id="toggle-mode">Switch to Night Mode</button>
       <button id="toggle-music">Play Music</button>
-
     </div>
+    
+ 
+    
+
+    <!-- 时间和访问次数 -->
+    <div id="info-box">
+      <p id="current-time"></p>
+      <p id="visit-count"></p>
+    </div>
+
+
     <!-- 音频播放器 -->
     <audio id="background-music" loop>
       <source src="assert/music/69918301815120004.mp3" type="audio/mpeg" />
@@ -161,10 +180,10 @@
           <button id="save-record" class="timeFunctionBtn">store</button>
           <button id="reset-timer" class="timeFunctionBtn">reset</button>
         </div>
+          <span id="total-time">Total: 00:00:00</span>
         <div id="today-total">
-          <h3>Today's total: <span id="today-total-time">00:00:00</span></h3>
+          <h3>today: <span id="today-total-time">00:00:00</span></h3>
         </div>
-        <h3>history</h3>
         <div class="history-container" id="history-container">
           <!-- 卡片堆叠效果 -->
         </div>

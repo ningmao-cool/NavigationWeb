@@ -22,67 +22,179 @@ body {
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    z-index: 0;
-    transition: opacity 2s ease-in-out, filter 2s ease-in-out;
+    transition: opacity 3s ease-in-out, filter 3s ease-in-out;
   }
 
   .background-carousel img.active {
     opacity: 0.9;
-    z-index: 1;
     filter: brightness(0.9);
   }
 
-  /* 按钮样式 */
-  .controls {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 15px;
-    z-index: 10;
-  }
+  /* 按钮容器样式 */
+.controls {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 10;
+}
 
-  .controls button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 160px;
-    height: 50px;
-    border: 2px solid rgba(200, 245, 255, 0.5);
-    border-radius: 25px;
-    background: linear-gradient(135deg, #78aaff, #9dffce);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0, 255, 255, 0.3),
-      inset 0 0 10px rgba(255, 255, 255, 0.4);
-    transition: all 0.6s ease;
-  }
+/* 按钮样式 */
+.controls button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 50px;
+  border: 2px solid rgba(135, 206, 250, 0.6); /* 淡蓝色边框 */
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.2); /* 半透明背景 */
+  color: #d8f3ff; /* 柔和浅蓝色文字 */
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(216, 243, 255, 0.8);
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(135, 206, 250, 0.3), 
+              inset 0 0 15px rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px); /* 模糊玻璃效果 */
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
 
-  .controls button:hover {
-    background: linear-gradient(135deg, #a3daff, #aafff3);
-    transform: scale(1.08);
-    box-shadow: 0 10px 25px rgba(0, 255, 255, 0.4),
-      inset 0 0 15px rgba(255, 255, 255, 0.5);
-  }
+/* 按钮动态光晕 */
+.controls button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(173, 216, 230, 0.6), transparent 70%);
+  opacity: 0.6;
+  animation: soft-pulse 3s infinite;
+  z-index: -1;
+}
 
-  .controls button:active {
-    transform: scale(0.96);
-    box-shadow: 0 6px 15px rgba(0, 255, 255, 0.2),
-      inset 0 0 8px rgba(255, 255, 255, 0.3);
-  }
+/* 鼠标悬停效果 */
+.controls button:hover {
+  background: rgba(255, 255, 255, 0.3); /* 增加亮度 */
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 0 12px 30px rgba(135, 206, 250, 0.4), 
+              inset 0 0 25px rgba(255, 255, 255, 0.6);
+}
 
-  /* 水墨粒子样式 */
-  .particle {
-    position: absolute;
-    border-radius: 50%;
-    background: rgb(163, 243, 255);
-    opacity: 1;
-    pointer-events: none;
-    animation: fadeAndExpand 3s ease-out;
+/* 鼠标按下效果 */
+.controls button:active {
+  transform: scale(0.95);
+  box-shadow: 0 6px 15px rgba(135, 206, 250, 0.2),
+              inset 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* 动态光晕动画 */
+@keyframes soft-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
   }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+/* 按钮容器样式 */
+.toggle-profile-button-container {
+  position: fixed;
+  bottom: 200px;
+  right: 20px;
+  z-index: 20;
+}
+
+/* 新按钮样式 */
+a.toggle-profile-button:link, a.toggle-profile-button:visited {
+  position: relative;
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 14px;
+  border: 2px solid #fff;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  overflow: hidden;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);
+  transition: all .3s ease;
+}
+
+a.toggle-profile-button:after {
+  content: "";
+  position: absolute;
+  background: #fff;
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: -1;
+  transition: all .3s ease 0s;
+  transform: scaleY(0);
+  transform-origin: center;
+}
+
+a.toggle-profile-button:hover:after {
+  transform: scaleY(1);
+}
+
+a.toggle-profile-button:hover {
+  color: #333;
+  text-shadow: none;
+}
+
+/* 隐藏动画 */
+.profile-container {
+  opacity: 1;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.profile-container.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+/* 粒子的默认样式 */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 1;
+  pointer-events: none;
+  animation: fadeAndExpand 3s ease-out;
+}
+
+/* 夜晚模式下的粒子更柔和，增加模糊 */
+body.night-mode .particle {
+  filter: blur(6px); /* 夜晚增加模糊效果 */
+  opacity: 0.6; /* 减弱透明度，营造柔和氛围 */
+}
+
+/* 夜晚模式下的粒子动画 */
+@keyframes fadeAndExpandNight {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.5); /* 扩散更大 */
+    opacity: 0; /* 逐渐消失 */
+  }
+}
 
   /* 水墨粒子动画 */
   @keyframes fadeAndExpand {
@@ -96,9 +208,10 @@ body {
     }
   }
   .profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 将头像及介绍居中 */
     text-align: center;
     z-index: 10;
   }
@@ -111,20 +224,7 @@ body {
     margin-bottom: 20px; /* 与网站介绍文字的间距 */
   }
 
-  .profile-avatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 5px solid rgba(255, 255, 255, 0.6); /* 外边框 */
-    box-shadow: 0 8px 20px rgba(0, 251, 255, 0.5); /* 光晕效果 */
-    overflow: hidden;
-    position: relative; /* 用于定位光环动画 */
-    background: linear-gradient(
-      135deg,
-      #6ab1f7,
-      #fdc5f5
-    ); /* 圆形背景渐变 */
-  }
+
   .profile-name {
     font-size: 20px;
     font-weight: bold;
@@ -140,8 +240,6 @@ body {
     border-radius: 50%;
     border: 5px solid rgba(255, 255, 255, 0.6); /* 外边框 */
     box-shadow: 0 8px 20px rgba(0, 251, 255, 0.5); /* 光晕效果 */
-    overflow: hidden;
-    position: relative; /* 用于定位光环动画 */
     background: linear-gradient(
       135deg,
       #6ab1f7,
@@ -175,58 +273,19 @@ body {
   .profile-avatar.jump {
     animation: jump-container 1.5s ease-out;
   }
-  /* 动态光环效果 */
-  .profile-avatar::before {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: 170px;
-    height: 170px;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.6),
-      transparent
-    );
-    animation: pulse-glow 2.5s infinite ease-in-out;
-    z-index: -1; /* 保证光环在头像后面 */
-  }
 
-  /* 光环动画 */
-  @keyframes pulse-glow {
-    0% {
-      transform: scale(1);
-      opacity: 0.8;
-    }
-    50% {
-      transform: scale(1.3);
-      opacity: 0.4;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 0.8;
-    }
-  }
-  .profile-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* 将头像及介绍居中 */
-    text-align: center;
-    z-index: 10;
-  }
+
 
   /* 网站介绍 */
   .site-intro {
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 22px;
     font-weight: bold;
     color: #ffffff;
     text-shadow: 0 2px 6px rgba(0, 255, 255, 0.6); /* 科技感光晕 */
   }
 
-  /* 网站链接容器 */
+  /* 网站链接容器，网络布局 */
   .site-links {
     display: grid;
     grid-template-columns: repeat(
@@ -240,26 +299,20 @@ body {
     justify-content: center;
     align-items: center;
   }
-  .site-card a {
-    text-decoration: none; /* 默认不显示下划线 */
-    color: inherit;
-  }
-
+  
 /* 单个网站卡片 */
 .site-card {
   display: flex;
-  flex-direction: column;
   align-items: center;
   text-align: center;
   background: rgba(255, 255, 255, 0.1); /* 半透明背景 */
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 15px;
   padding: 15px;
+  padding-left: 30px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 8px 15px rgba(0, 255, 255, 0.2); /* 光晕效果 */
   height: 80px; /* 设置统一高度 */
-  display: flex;
-  flex-direction: column;
   justify-content: space-between; /* 保证图片和文本之间有间隔 */
 }
 
@@ -275,6 +328,31 @@ body {
   .site-card:active {
     transform: scale(0.95);
     box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.5);
+  }
+  .site-card a {
+    text-decoration: none; /* 默认不显示下划线 */
+    outline: none;
+    color: inherit;
+    position:  relative;
+  }
+
+  .site-card a::after {
+    width: 0%;
+    content: "";
+    position:absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.6)
+    ); /* 渐变效果 */
+    transition: width 0.3s ease-in-out; /* 控制宽度的渐变过渡 */
+  }
+  
+  .site-card a:hover::after {
+  width:100%;
   }
 
   /* 网站链接中的图片 */
@@ -298,7 +376,6 @@ body {
   color: #ffffff;
   text-shadow: 0 2px 4px rgba(255, 255, 255, 0.6); /* 发光文本 */
   margin-top: 10px; /* 增加文字与图片之间的间距 */
-  text-align: center; /* 确保文字居中对齐 */
 }
 
   @media screen and (max-width: 768px) {
@@ -310,52 +387,56 @@ body {
       padding: 10px;
     }
   }
-  /* 白天和夜晚模式的全局样式 */
-  body.day-mode {
-    background: #ffffff;
-    color: #000000;
-  }
 
-  body.night-mode {
-    background: #000000;
-    color: #534747;
-  }
+  
+/* 夜晚模式 */
+body.night-mode {
+  background: #1a1a1a;  /* 深色背景 */
+  color: #e0e0e0;  /* 淡灰色文本，减轻白色文本对眼睛的刺激 */
+}
 
-  .night-mode .site-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 15px rgba(255, 255, 255, 0.2);
-  }
+body.night-mode .site-card {
+  background: rgba(255, 255, 255, 0.08);  /* 半透明的浅色背景 */
+  border: 1px solid rgba(255, 255, 255, 0.2);  /* 更加柔和的边框 */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);  /* 深色的阴影，增强层次感 */
+}
 
-  .night-mode .site-card:hover {
-    background: linear-gradient(
-      135deg,
-      rgba(100, 100, 100, 0.3),
-      rgba(255, 255, 255, 0.4)
-    );
-  }
+body.night-mode .site-card:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(60, 60, 60, 0.3),
+    rgba(200, 200, 200, 0.2)
+  );  /* 细腻的悬停渐变背景 */
+}
 
-  .night-mode .profile-avatar {
-    border-color: rgba(255, 255, 255, 0.6);
-    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.5);
-  }
-  .night-mode .profile-name {
-    text-shadow: 0 2px 6px rgba(255, 255, 255, 0.6);
-  }
+body.night-mode .profile-avatar {
+  border-color: rgba(255, 255, 255, 0.4);  /* 更柔和的白色边框 */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);  /* 强烈的阴影效果 */
+}
+body.night-mode .site-card a::after{
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.826),
+    rgb(205, 205, 201)
+  ); /* 渐变效果 */
+}
+body.night-mode .profile-name {
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8);  /* 强化的文本阴影 */
+}
 
-  .night-mode .site-intro {
-    text-shadow: 0 2px 6px rgba(255, 255, 255, 0.6);
-  }
+body.night-mode .site-intro {
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8);  /* 强化的文本阴影 */
+}
+
   /* 时间和访问次数 */
   #info-box {
     position: fixed;
-
+    max-width: auto;
     right: 20px;
     background: rgba(255, 255, 255, 0.8); /* 半透明背景 */
     padding: 10px 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 阴影效果 */
-    font-family: "Arial", sans-serif; /* 美观字体 */
     font-size: 14px;
     text-align: right;
     line-height: 1.5;
@@ -410,14 +491,13 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-
     background: rgba(0, 0, 0, 0.6); /* 半透明黑色背景 */
     z-index: 1000; /* 确保在最上层 */
     justify-content: center;
     align-items: center;
   }
 
-  /* 模态框内容字体颜色 */
+  /* 模态框样式 */
   .modal-content {
     background: #fff; /* 白色背景 */
     padding: 20px;
@@ -428,8 +508,6 @@ body {
     max-width: 400px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     animation: fadeIn 0.5s ease; /* 动画效果 */
-    color: #333; /* 修改字体颜色 */
-    font-family: "Arial", sans-serif; /* 设置字体样式 */
   }
 
   .close-btnAvatar {
@@ -660,16 +738,23 @@ object-fit: cover; /* 确保图片按比例填满区域 */
 opacity: 0.8; /* 设置图片透明度，突出内容 */
 }
 /* 学习模式内容区域 */
+/* 内容区域背景优化 */
 .study-mode-content {
-background: rgba(255, 255, 255, 0.9);
-border-radius: 15px;
-padding: 25px 35px;
-width: 450px;
-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-text-align: center;
-position: relative;
-overflow: hidden;
-z-index: 1; /* 确保内容在图片上方 */
+  background: rgba(255, 255, 255, 0.85); /* 更柔和的透明度 */
+  border-radius: 15px;
+  padding: 25px 35px;
+  width: 450px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* 阴影轻微减弱，突出内容 */
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  backdrop-filter: blur(10px); /* 增加模糊效果，突出玻璃质感 */
+  transition: box-shadow 0.3s ease; /* 添加阴影渐变过渡 */
+}
+
+.study-mode-content:hover {
+  box-shadow: 0 12px 24px rgba(198, 255, 253, 0.3); /* 鼠标悬停时阴影增强 */
 }
 
 /* 标题优化 */
@@ -678,6 +763,16 @@ font-size: 1.8rem;
 color: #0077b6; /* 深蓝色 */
 margin-bottom: 20px;
 font-weight: bold;
+}
+
+#total-time {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 1.3rem; /* 字体更大 */
+  color: #0077b6; /* 深蓝色 */
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgb(168, 249, 255); /* 增加文字阴影，突出显示 */
 }
 
 h3 {
@@ -791,13 +886,21 @@ padding: 15px;
 margin: 10px 0;
 width: 90%;
 transition: transform 0.3s, box-shadow 0.3s;
+border-top: 5px solid #92e7ff; /* 顶部分隔线 */
 }
 
 .history-card:hover {
 transform: translateY(-5px);
 box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-
+.percentage-text {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 12px;
+  color: rgb(255, 167, 167); 
+  font-weight: bold; /* 加粗字体 */
+}
 .history-card h4 {
 margin: 5px 0;
 font-size: 1rem;
@@ -810,6 +913,37 @@ margin: 5px 0;
 font-size: 0.9rem;
 color: #555;
 }
+/* 滚动条整体宽度 */
+::-webkit-scrollbar {
+  width: 12px; /* 更宽的滚动条 */
+  height: 12px; /* 如果是横向滚动条 */
+}
+
+/* 滚动条轨道（背景部分） */
+::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #f0f8ff, #e6e6fa); /* 渐变背景：浅蓝到淡紫色 */
+  border-radius: 10px; /* 圆角轨道 */
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); /* 内部阴影，增加立体感 */
+}
+
+/* 滚动条滑块（可拖动部分） */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #add3ff, #c6fff4); /* 渐变橙色滑块 */
+  border-radius: 10px; /* 圆润滑块 */
+  border: 3px solid #f0f8ff; /* 滑块边缘浅色边框，与轨道协调 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加外部阴影，立体感 */
+}
+
+/* 鼠标悬停时的滑块样式 */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #7a99e0, #00ddff); /* 更亮的渐变红色 */
+  border: 3px solid #ffffff; /* 白色边框，突出滑块 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 阴影增强 */
+  cursor: pointer; /* 鼠标悬停时更具交互性 */
+}
+
+
+
 
 /* 关闭按钮样式优化 */
 .close-btn {

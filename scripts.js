@@ -65,11 +65,24 @@ function createParticle(x, y) {
   particle.style.top = `${y + offsetY}px`;
   particle.style.position = "absolute";
 
+  // 判断当前模式，动态调整粒子的颜色
+  if (isNightMode) {
+    // 夜晚模式：黑白色
+    const grayValue = Math.floor(Math.random() * 30 + 50); // 随机生成灰度值（100~200之间）
+    particle.style.backgroundColor = `rgb(${grayValue}, ${grayValue}, ${grayValue})`; // 黑白色
+  } else {
+    // 白天模式：蓝色
+    particle.style.backgroundColor = "rgb(163, 243, 255)";
+  }
+  particle.style.animation = isNightMode
+  ? `fadeAndExpandNight ${Math.random() * 2 + 3}s ease-out forwards`
+  : `particleAnimation ${Math.random() * 2 + 3}s ease-out forwards`;
+
   // 采用模糊和透明渐变色来模拟水墨效果
-  particle.style.borderRadius = "50%"; // 默认圆形，可以通过 clip-path 添加变化
-  particle.style.opacity = Math.random() * 0.5 + 0.3; // 增加透明度变化，模拟水墨效果
-  particle.style.filter = `blur(${Math.random() * 5 + 2}px)`; // 添加模糊效果，模拟水墨流动
-  particle.style.pointerEvents = "none"; // 防止影响其他元素点击
+  particle.style.borderRadius = "50%";
+  particle.style.opacity = Math.random() * 0.5 + 0.3;
+  particle.style.filter = `blur(${Math.random() * 5 + 2}px)`;
+  particle.style.pointerEvents = "none";
 
   // 设置粒子的扩散动画
   particle.style.animation = `particleAnimation ${
@@ -80,8 +93,9 @@ function createParticle(x, y) {
 
   setTimeout(() => {
     particle.remove();
-  }, 5000); // 延长粒子的生命周期，适应水墨效果
+  }, 5000); // 延长粒子的生命周期
 }
+
 
 // 添加水墨粒子扩散的动画
 const style = document.createElement("style");
@@ -351,26 +365,49 @@ function renderHistory() {
   let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
   const todayDate = getCurrentDate(); // 获取今天的日期
   let todayTotalTime = 0; // 今日总时长（以毫秒为单位）
+  let totalTime = 0; // 所有卡片的总时长（以毫秒为单位）
+  const subjectTimeMap = {}; // 存储每个科目今日的学习总时长
 
   historyContainer.innerHTML = ""; // 清空历史记录容器
 
+  // 遍历历史记录，计算今日学习总时长以及各科目学习时长
+  history.forEach((record) => {
+    
+      const [hours, minutes, seconds] = record.duration.split(':').map(Number);
+      const durationMs = hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+      totalTime += durationMs;
+      if (record.date === todayDate) {
+      todayTotalTime += durationMs;
+      
+
+      // 累加到对应科目
+      subjectTimeMap[record.subject] = (subjectTimeMap[record.subject] || 0) + durationMs;
+    }
+  });
+
+  // 渲染卡片
   history.forEach((record, index) => {
     const card = document.createElement("div");
     card.className = "history-card";
     card.style.position = "relative"; // 保证删除按钮正确定位
 
-    // 如果是今天的记录，则累加学习时长
+    // 这里不考虑科目的分类
+    let subjectPercentage = ""; // 卡片的时间占比
     if (record.date === todayDate) {
       const [hours, minutes, seconds] = record.duration.split(':').map(Number);
-      todayTotalTime += hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+      const cardTime = hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+      const percentage = ((cardTime / todayTotalTime) * 100).toFixed(2);
+      subjectPercentage = percentage; // 只保留数字
     }
 
     // 卡片内容
     card.innerHTML = `
+    <span class="percentage-text">${subjectPercentage}</span>
       <button class="delete-btn" data-index="${index}"></button>
-      <h4>date: ${record.date}</h4>
-      <p>subject: ${record.subject}</p>
-      <p>duration: ${record.duration}</p>
+      <h4>Date: ${record.date}</h4>
+      <p>Subject: ${record.subject}</p>
+      <p>Duration: ${record.duration}</p>
+      
     `;
 
     // 删除按钮功能
@@ -386,6 +423,10 @@ function renderHistory() {
 
   // 更新“Today's total”显示
   document.getElementById("today-total-time").textContent = formatTime(todayTotalTime);
+
+// 更新“Total time”显示
+document.getElementById("total-time").textContent = `Total: ${formatTime(totalTime)}`;
+
 }
 
 // 格式化时间
@@ -400,6 +441,7 @@ function formatTime(ms) {
 function pad(num) {
   return num.toString().padStart(2, "0");
 }
+
 
 
 // 获取新增卡片按钮和时间输入字段
@@ -550,3 +592,28 @@ imageModal.addEventListener('click', (event) => {
     }, { once: true });
   }
 });
+// 获取按钮元素
+const toggleProfileButton = document.querySelector(".toggle-profile-button");
+const profileContainer = document.querySelector(".profile-container");
+
+// 定义初始状态
+let isProfileVisible = true;
+
+// 给按钮绑定点击事件
+toggleProfileButton.addEventListener("click", (event) => {
+  event.preventDefault(); // 阻止默认的链接行为
+
+  // 在这里可以用按钮控制页面上任何想要显示/隐藏的内容
+  // 比如通过修改按钮文字表示 Profile 显示状态
+  if (isProfileVisible) {
+    toggleProfileButton.textContent = "Show Profile"; // 改变按钮文字
+    profileContainer.classList.add('hidden'); // 隐藏Profile
+  } else {
+    toggleProfileButton.textContent = "Hide Profile"; // 改变按钮文字
+    profileContainer.classList.remove('hidden'); // 显示Profile
+  }
+  isProfileVisible = !isProfileVisible; // 切换状态
+});
+
+
+
