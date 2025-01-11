@@ -617,3 +617,25 @@ toggleProfileButton.addEventListener("click", (event) => {
 
 
 
+// 获取元素
+const listLink = document.getElementById('list-link');
+const todoListModal = document.getElementById('todoListModal');
+const modalListCloseBtn = document.querySelector('.modalListCloseBtn');
+
+// 点击List显示弹窗
+listLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    todoListModal.style.display = 'block';
+});
+
+// 点击关闭按钮隐藏弹窗
+modalListCloseBtn.addEventListener('click', () => {
+    todoListModal.style.display = 'none';
+});
+
+// 点击弹窗外区域隐藏弹窗
+window.addEventListener('click', (event) => {
+    if (event.target === todoListModal) {
+        todoListModal.style.display = 'none';
+    }
+});

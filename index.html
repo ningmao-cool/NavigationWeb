@@ -144,18 +144,47 @@
       Your browser does not support the audio element.
     </audio>
 
-    <!-- 侧边栏 -->
-    <div class="sidebar" id="sidebar">
-        <h2>Sidebar Menu</h2>
-        <ul>
-          <li><a href="#" id="home-link">Home</a></li>
-          <li><a href="#" id="about-link">About</a></li>
-          <li><a href="#">Services</a></li>
-          <li><a href="#">Portfolio</a></li>
-          <li><a href="#" id="contact-mode-btn">Contact</a></li>
-          <li><a href="#" id="study-mode-btn">Learning</a></li>
-        </ul>
-      </div>
+<!-- 侧边栏 -->
+<div class="sidebar" id="sidebar">
+  <h2>Sidebar Menu</h2>
+  <ul>
+      <li><a href="#" id="home-link">Home</a></li>
+      <li><a href="#" id="about-link">About</a></li>
+      <li><a href="#" id="list-link">List</a></li>
+      <li><a href="#">Portfolio</a></li>
+      <li><a href="#" id="contact-mode-btn">Contact</a></li>
+      <li><a href="#" id="study-mode-btn">Learning</a></li>
+  </ul>
+</div>
+
+<!-- List弹窗 -->
+<div id="todoListModal" class="Listmodal">
+  <div class="Listmodal-content">
+      <span class="modalListCloseBtn">&times;</span>
+      <h2>My To-Do List</h2>
+      <ul id="todo-list">
+          <li><span class="custom-checkbox-checked">&#x2713;</span> 学习模式添加比例和总计时</li>
+          <li><span class="custom-checkbox-checked">&#x2713;</span> 头像消失功能,防止阻挡卡片</li>
+          <li><span class="custom-checkbox"></span> 整体UI大改造</li>
+          <li><span class="custom-checkbox-checked">&#x2713;</span> 拖尾在昼夜模式切换下的不同形态</li>
+          <li><span class="custom-checkbox"></span> 按钮抽屉</li>
+          <li><span class="custom-checkbox"></span> 侧边栏的改造</li>
+          <li><span class="custom-checkbox-checked">&#x2713;</span> 卡片在昼夜模式切换下的不同形态</li>
+          <li><span class="custom-checkbox"></span> 弹窗影响侧边栏</li>
+          <li><span class="custom-checkbox"></span> 添加更多功能</li>
+
+          <li><span class="custom-checkbox"></span> 改为vue3来封装,打造前后端（但这样就有点违背初衷了）</li>
+          <!-- 添加更多任务 -->
+      </ul>
+  </div>
+</div>
+
+
+
+
+
+
+
     <!-- 学习模式弹窗 -->
     <div id="study-mode" class="study-mode-container">
       <div class="study-mode-content">
@@ -164,7 +193,7 @@
           <img src="assert/img/明媚-阳光.png" alt="学习模式背景" />
         </div>
         <span class="close-btn">&times;</span>
-        <h2>Learning Pattern</h2>
+        <h2 class="study-mode-title">Learning Pattern</h2>
         <div class="study-inputs">
           <label for="subject-input">Study subject:</label>
           <input type="text" id="subject-input" placeholder="Please enter the subject you are studying." />

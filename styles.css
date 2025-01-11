@@ -758,7 +758,7 @@ opacity: 0.8; /* 设置图片透明度，突出内容 */
 }
 
 /* 标题优化 */
-h2 {
+.study-mode-title {
 font-size: 1.8rem;
 color: #0077b6; /* 深蓝色 */
 margin-bottom: 20px;
@@ -1215,6 +1215,97 @@ transform: scale(0.9);
   to {
     transform: scale(1);
   }
+}
+
+
+/* 样式化弹窗 */
+.Listmodal {
+  display: none; /* 默认隐藏 */
+  position: fixed;
+  z-index: 100; /* 显示在顶部 */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* 启用滚动 */
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+}
+
+.Listmodal-content {
+  background-color: #fff;
+  margin: 10% auto; /* 定位在页面中央 */
+  padding: 20px;
+  border-radius: 10px; /* 圆角 */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* 阴影效果 */
+  width: 80%;
+  max-width: 600px;
+  animation: modalFadeIn 0.5s; /* 淡入动画 */
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modalListCloseBtn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.modalListCloseBtn:hover,
+.modalListCloseBtn:focus {
+  color: #000;
+  text-decoration: none;
+}
+
+.Listmodal-content h2  {
+  margin-top: 0;
+  font-size: 24px;
+  color: #83deb9;
+  text-align: center;
+  border-bottom: 2px solid #b0e0e6 ;/* 淡蓝色 */
+  padding-bottom: 10px;
+}
+
+#todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0 0;
+}
+
+#todo-list li {
+  padding: 10px;
+  border-bottom: 1px solid #b0e0e6; /* 淡蓝色 */
+  display: flex;
+  align-items: center;
+}
+
+#todo-list li:last-child {
+  border-bottom: none;
+}
+
+/* 自定义复选框 */
+.custom-checkbox,
+.custom-checkbox-checked {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 3px;
+  display: inline-block;
+  text-align: center;
+  line-height: 18px;
+  margin-right: 10px;
+}
+
+.custom-checkbox-checked {
+
+  color: #fff;
+  background-color: #87dbe0;
+border-color: #02bd8e;
 }
 
 
