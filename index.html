@@ -5,11 +5,20 @@
     <link rel="icon" href="assert/img/icons8-navigation-48.png" type="image/png" />
     <title>NingMao-Nav</title>
     <link rel="stylesheet" href="styles.css" />
+    
   </head>
   <body>
     <!-- 加载动画 -->
     <div id="loading-animation">
-      <div class="spinner"></div>
+    </div>
+
+    <!-- 背景轮播容器 -->
+    <div class="background-carousel">
+      <img src="assert/img/初音未来 (1).png" class="active" alt="Background 1" />
+      <img src="assert/img/明日香泳装.png" alt="Background 2" />
+      <img src="assert/img/【哲风壁纸】桐崎千棘-泳装.png" alt="Background 3" />
+      <img src="assert/img/【哲风壁纸】插画-音_出水芙蓉.png" alt="Background 4" />
+      <img src="assert/img/【哲风壁纸】一个人-海 .png" alt="Background 5" />
     </div>
 
     <!-- 卡片区域 -->
@@ -73,14 +82,7 @@
       <!-- 添加更多链接 -->
     </div>
 
-    <!-- 背景轮播容器 -->
-    <div class="background-carousel">
-      <img src="assert/img/初音未来 (1).png" class="active" alt="Background 1" />
-      <img src="assert/img/明日香泳装.png" alt="Background 2" />
-      <img src="assert/img/【哲风壁纸】桐崎千棘-泳装.png" alt="Background 3" />
-      <img src="assert/img/【哲风壁纸】插画-音_出水芙蓉.png" alt="Background 4" />
-      <img src="assert/img/【哲风壁纸】一个人-海 .png" alt="Background 5" />
-    </div>
+
 
     <!-- 主页模拟框（模态框） -->
     <div id="modal" class="modal">
@@ -172,6 +174,7 @@
           <li><span class="custom-checkbox-checked">&#x2713;</span> 卡片在昼夜模式切换下的不同形态</li>
           <li><span class="custom-checkbox"></span> 弹窗影响侧边栏</li>
           <li><span class="custom-checkbox"></span> 添加更多功能</li>
+          <li><span class="custom-checkbox-checked">&#x2713;</span> 改loading的动画</li>
           <li><span class="custom-checkbox"></span> 重构代码,有史山雏形了感觉</li>
           <li><span class="custom-checkbox"></span> 改为vue3来封装,打造前后端（但这样就有点违背初衷了）</li>
           <!-- 添加更多任务 -->
@@ -250,7 +253,7 @@
 <div id="about-mode" class="about-mode-container">
   <div class="about-mode-content">
     <span class="close-btn">&times;</span>
-    <h2>About Me</h2>
+    <h2 class="About-title">About Me</h2>
     <div class="about-cards">
       <!-- 卡片1 -->
       <div class="about-card">
@@ -286,6 +289,11 @@
   <span class="close-image-modal-btn">&times;</span>
   <img class="modal-content-image" id="img01" alt="Expanded Image">
 </div>
+
+ <!-- 引入Lottie库 -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js" ></script>
+<!-- 自定义js -->
+ <script src="scripts.js"></script>
   </body>
-  <script src="scripts.js"></script>
+
 </html>

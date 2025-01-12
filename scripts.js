@@ -1,3 +1,28 @@
+// 初始化加载动画
+let animLoader = lottie.loadAnimation({
+  container: document.getElementById("loading-animation"),
+  renderer: "svg", // 渲染器，用SVG渲染
+  loop: true, // 循环播放
+  autoplay: true, // 自动播放
+  path: "assert/loader/Animation - 1736650972957.json", // 动画文件路径
+});
+// 等待页面加载完成后隐藏加载动画
+window.addEventListener("load", function () {
+  setTimeout(function(){
+    // 保持连贯
+
+    // 1. 隐藏加载动画
+    document.getElementById("loading-animation").classList.add("hidden");
+
+    // 2. 设置display
+    setTimeout(function () {
+      document.getElementById("loading-animation").style.display = "none";
+    }, 400);
+    
+  },200);          
+});
+
+// 获取轮播的图片
 const images = document.querySelectorAll(".background-carousel img");
 const toggleSlideshowButton = document.getElementById("toggle-slideshow");
 const toggleParticlesButton = document.getElementById("toggle-particles");
@@ -7,14 +32,14 @@ let isParticlesEnabled = false;
 let currentIndex = 0;
 let interval;
 
-// 切换到下一张图片
+// 切换图片
 function nextSlide() {
   images[currentIndex].classList.remove("active");
   currentIndex = (currentIndex + 1) % images.length;
   images[currentIndex].classList.add("active");
 }
 
-// 启动轮播
+// 设置轮播定时执行
 function startSlideshow() {
   interval = setInterval(nextSlide, 4000);
 }
@@ -75,8 +100,8 @@ function createParticle(x, y) {
     particle.style.backgroundColor = "rgb(163, 243, 255)";
   }
   particle.style.animation = isNightMode
-  ? `fadeAndExpandNight ${Math.random() * 2 + 3}s ease-out forwards`
-  : `particleAnimation ${Math.random() * 2 + 3}s ease-out forwards`;
+    ? `fadeAndExpandNight ${Math.random() * 2 + 3}s ease-out forwards`
+    : `particleAnimation ${Math.random() * 2 + 3}s ease-out forwards`;
 
   // 采用模糊和透明渐变色来模拟水墨效果
   particle.style.borderRadius = "50%";
@@ -95,7 +120,6 @@ function createParticle(x, y) {
     particle.remove();
   }, 5000); // 延长粒子的生命周期
 }
-
 
 // 添加水墨粒子扩散的动画
 const style = document.createElement("style");
@@ -183,13 +207,7 @@ document.getElementById(
   "visit-count"
 ).textContent = `You have visited this page ${visits} times.`;
 
-window.addEventListener("load", () => {
-  const loadingAnimation = document.getElementById("loading-animation");
-  loadingAnimation.style.opacity = "0"; // 逐渐透明
-  setTimeout(() => {
-    loadingAnimation.style.display = "none"; // 完全隐藏
-  }, 500); // 等待动画完成再隐藏
-});
+
 
 // 获取头像和模态框元素
 const avatar = document.getElementById("avatar");
@@ -260,105 +278,117 @@ toggleBtn.addEventListener("click", () => {
 });
 
 // 点击侧边栏之外的地方关闭侧边栏
-document.addEventListener('click', (event) => {
-  if (sidebar.classList.contains('open') && !sidebar.contains(event.target) && event.target !== toggleBtn) {
-    sidebar.classList.remove('open');
+document.addEventListener("click", (event) => {
+  if (
+    sidebar.classList.contains("open") &&
+    !sidebar.contains(event.target) &&
+    event.target !== toggleBtn
+  ) {
+    sidebar.classList.remove("open");
   }
 });
 // 打开学习模式
 studyModeBtn?.addEventListener("click", () => {
-studyModeContainer.style.display = "flex"; // 确保容器可见
-setTimeout(() => {
-studyModeContainer.classList.add("open");
-}, 10); // 延迟添加 open 类以触发过渡效果
-renderHistory();
+  studyModeContainer.style.display = "flex"; // 确保容器可见
+  setTimeout(() => {
+    studyModeContainer.classList.add("open");
+  }, 10); // 延迟添加 open 类以触发过渡效果
+  renderHistory();
 });
 
 // 关闭学习模式
 closeBtn.addEventListener("click", () => {
-studyModeContainer.classList.remove("open");
-studyModeContainer.addEventListener("transitionend", () => {
-studyModeContainer.style.display = "none";
-}, { once: true }); // 监听过渡结束事件
+  studyModeContainer.classList.remove("open");
+  studyModeContainer.addEventListener(
+    "transitionend",
+    () => {
+      studyModeContainer.style.display = "none";
+    },
+    { once: true }
+  ); // 监听过渡结束事件
 });
 
 // 点击学习模式背景关闭模态框
 studyModeContainer.addEventListener("click", (event) => {
-if (event.target === studyModeContainer) {
-studyModeContainer.classList.remove("open");
-studyModeContainer.addEventListener("transitionend", () => {
-studyModeContainer.style.display = "none";
-}, { once: true }); // 监听过渡结束事件
-}
+  if (event.target === studyModeContainer) {
+    studyModeContainer.classList.remove("open");
+    studyModeContainer.addEventListener(
+      "transitionend",
+      () => {
+        studyModeContainer.style.display = "none";
+      },
+      { once: true }
+    ); // 监听过渡结束事件
+  }
 });
-
-
 
 // 获取当前日期
 function getCurrentDate() {
-const now = new Date();
-return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const now = new Date();
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(
+    now.getDate()
+  )}`;
 }
 
 // 开始计时
 startTimerBtn.addEventListener("click", () => {
-if (!subjectInput.value.trim()) {
-alert("请输入学习科目！");
-return;
-}
-if (isTimerRunning) return;
+  if (!subjectInput.value.trim()) {
+    alert("请输入学习科目！");
+    return;
+  }
+  if (isTimerRunning) return;
 
-startTime = Date.now() - elapsedTime;
-timerInterval = setInterval(() => {
-elapsedTime = Date.now() - startTime;
-timerDisplay.textContent = formatTime(elapsedTime);
-}, 1000);
-isTimerRunning = true;
+  startTime = Date.now() - elapsedTime;
+  timerInterval = setInterval(() => {
+    elapsedTime = Date.now() - startTime;
+    timerDisplay.textContent = formatTime(elapsedTime);
+  }, 1000);
+  isTimerRunning = true;
 });
 
 // 暂停计时
 pauseTimerBtn.addEventListener("click", () => {
-if (isTimerRunning) {
-clearInterval(timerInterval);
-isTimerRunning = false;
-}
+  if (isTimerRunning) {
+    clearInterval(timerInterval);
+    isTimerRunning = false;
+  }
 });
 
 // 保存记录
 saveRecordBtn.addEventListener("click", () => {
-if (!subjectInput.value.trim()) {
-alert("请输入学习科目！");
-return;
-}
+  if (!subjectInput.value.trim()) {
+    alert("请输入学习科目！");
+    return;
+  }
 
-const record = {
-subject: subjectInput.value,
-duration: formatTime(elapsedTime),
-date: getCurrentDate(),
-};
+  const record = {
+    subject: subjectInput.value,
+    duration: formatTime(elapsedTime),
+    date: getCurrentDate(),
+  };
 
-// 从 localStorage 中获取现有历史记录
-let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
+  // 从 localStorage 中获取现有历史记录
+  let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
 
-// 将新记录添加到历史记录中
-history.unshift(record);
+  // 将新记录添加到历史记录中
+  history.unshift(record);
 
-// 将更新后的历史记录保存到 localStorage
-localStorage.setItem("studyHistory", JSON.stringify(history));
+  // 将更新后的历史记录保存到 localStorage
+  localStorage.setItem("studyHistory", JSON.stringify(history));
 
-renderHistory();
+  renderHistory();
 
-subjectInput.value = "";
-elapsedTime = 0;
-timerDisplay.textContent = "00:00:00";
+  subjectInput.value = "";
+  elapsedTime = 0;
+  timerDisplay.textContent = "00:00:00";
 });
 
 // 重置计时器
 resetTimerBtn.addEventListener("click", () => {
-clearInterval(timerInterval);
-isTimerRunning = false;
-elapsedTime = 0;
-timerDisplay.textContent = "00:00:00";
+  clearInterval(timerInterval);
+  isTimerRunning = false;
+  elapsedTime = 0;
+  timerDisplay.textContent = "00:00:00";
 });
 // 渲染历史记录并计算今日学习时长
 function renderHistory() {
@@ -372,16 +402,16 @@ function renderHistory() {
 
   // 遍历历史记录，计算今日学习总时长以及各科目学习时长
   history.forEach((record) => {
-    
-      const [hours, minutes, seconds] = record.duration.split(':').map(Number);
-      const durationMs = hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
-      totalTime += durationMs;
-      if (record.date === todayDate) {
+    const [hours, minutes, seconds] = record.duration.split(":").map(Number);
+    const durationMs =
+      hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+    totalTime += durationMs;
+    if (record.date === todayDate) {
       todayTotalTime += durationMs;
-      
 
       // 累加到对应科目
-      subjectTimeMap[record.subject] = (subjectTimeMap[record.subject] || 0) + durationMs;
+      subjectTimeMap[record.subject] =
+        (subjectTimeMap[record.subject] || 0) + durationMs;
     }
   });
 
@@ -394,8 +424,9 @@ function renderHistory() {
     // 这里不考虑科目的分类
     let subjectPercentage = ""; // 卡片的时间占比
     if (record.date === todayDate) {
-      const [hours, minutes, seconds] = record.duration.split(':').map(Number);
-      const cardTime = hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+      const [hours, minutes, seconds] = record.duration.split(":").map(Number);
+      const cardTime =
+        hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
       const percentage = ((cardTime / todayTotalTime) * 100).toFixed(2);
       subjectPercentage = percentage; // 只保留数字
     }
@@ -422,11 +453,13 @@ function renderHistory() {
   });
 
   // 更新“Today's total”显示
-  document.getElementById("today-total-time").textContent = formatTime(todayTotalTime);
+  document.getElementById("today-total-time").textContent =
+    formatTime(todayTotalTime);
 
-// 更新“Total time”显示
-document.getElementById("total-time").textContent = `Total: ${formatTime(totalTime)}`;
-
+  // 更新“Total time”显示
+  document.getElementById("total-time").textContent = `Total: ${formatTime(
+    totalTime
+  )}`;
 }
 
 // 格式化时间
@@ -441,8 +474,6 @@ function formatTime(ms) {
 function pad(num) {
   return num.toString().padStart(2, "0");
 }
-
-
 
 // 获取新增卡片按钮和时间输入字段
 const addCardBtn = document.getElementById("add-card-btn");
@@ -500,51 +531,69 @@ contactModeBtn?.addEventListener("click", () => {
 // 关闭联系方式模式
 closeContactBtn.addEventListener("click", () => {
   contactModeContainer.classList.remove("open");
-  contactModeContainer.addEventListener("transitionend", () => {
-    contactModeContainer.style.display = "none";
-  }, { once: true }); // 监听过渡结束事件
+  contactModeContainer.addEventListener(
+    "transitionend",
+    () => {
+      contactModeContainer.style.display = "none";
+    },
+    { once: true }
+  ); // 监听过渡结束事件
 });
 
 // 点击联系方式模式背景关闭模态框
 contactModeContainer.addEventListener("click", (event) => {
   if (event.target === contactModeContainer) {
     contactModeContainer.classList.remove("open");
-    contactModeContainer.addEventListener("transitionend", () => {
-      contactModeContainer.style.display = "none";
-    }, { once: true }); // 监听过渡结束事件
+    contactModeContainer.addEventListener(
+      "transitionend",
+      () => {
+        contactModeContainer.style.display = "none";
+      },
+      { once: true }
+    ); // 监听过渡结束事件
   }
 });
-  // 获取“About”按钮和容器元素
-  const aboutModeBtn = document.getElementById("about-link");
-  const aboutModeContainer = document.getElementById("about-mode");
-  const closeAboutBtn = document.querySelector(".about-mode-container .close-btn");
+// 获取“About”按钮和容器元素
+const aboutModeBtn = document.getElementById("about-link");
+const aboutModeContainer = document.getElementById("about-mode");
+const closeAboutBtn = document.querySelector(
+  ".about-mode-container .close-btn"
+);
 
-  // 打开“About”页面
-  aboutModeBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    aboutModeContainer.style.display = "flex"; // 确保容器可见
-    setTimeout(() => {
-      aboutModeContainer.classList.add("open");
-    }, 10); // 延迟添加 open 类以触发过渡效果
-  });
+// 打开“About”页面
+aboutModeBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  aboutModeContainer.style.display = "flex"; // 确保容器可见
+  setTimeout(() => {
+    aboutModeContainer.classList.add("open");
+  }, 10); // 延迟添加 open 类以触发过渡效果
+});
 
-  // 关闭“About”页面
-  closeAboutBtn.addEventListener("click", () => {
-    aboutModeContainer.classList.remove("open");
-    aboutModeContainer.addEventListener("transitionend", () => {
+// 关闭“About”页面
+closeAboutBtn.addEventListener("click", () => {
+  aboutModeContainer.classList.remove("open");
+  aboutModeContainer.addEventListener(
+    "transitionend",
+    () => {
       aboutModeContainer.style.display = "none";
-    }, { once: true }); // 监听过渡结束事件
-  });
+    },
+    { once: true }
+  ); // 监听过渡结束事件
+});
 
-  // 点击“About”页面背景关闭模态框
-  aboutModeContainer.addEventListener("click", (event) => {
-    if (event.target === aboutModeContainer) {
-      aboutModeContainer.classList.remove("open");
-      aboutModeContainer.addEventListener("transitionend", () => {
+// 点击“About”页面背景关闭模态框
+aboutModeContainer.addEventListener("click", (event) => {
+  if (event.target === aboutModeContainer) {
+    aboutModeContainer.classList.remove("open");
+    aboutModeContainer.addEventListener(
+      "transitionend",
+      () => {
         aboutModeContainer.style.display = "none";
-      }, { once: true }); // 监听过渡结束事件
-    }
-  });
+      },
+      { once: true }
+    ); // 监听过渡结束事件
+  }
+});
 
 // 获取图片放大弹窗元素
 const imageModal = document.getElementById("image-modal");
@@ -552,8 +601,8 @@ const modalImg = document.getElementById("img01");
 const closeImageModalBtn = document.querySelector(".close-image-modal-btn");
 
 // 打开图片放大弹窗
-document.querySelectorAll('.about-card img').forEach(img => {
-  img.addEventListener('click', () => {
+document.querySelectorAll(".about-card img").forEach((img) => {
+  img.addEventListener("click", () => {
     imageModal.style.display = "block";
     // 首先隐藏图片和背景
     modalImg.style.opacity = 0;
@@ -568,28 +617,36 @@ document.querySelectorAll('.about-card img').forEach(img => {
 });
 
 // 关闭图片放大弹窗
-closeImageModalBtn.addEventListener('click', () => {
+closeImageModalBtn.addEventListener("click", () => {
   // 让图片缩小并逐渐透明，同时让背景渐变
   modalImg.style.opacity = 0;
   modalImg.style.transform = "scale(0)";
   imageModal.style.opacity = 0; // 背景渐变
 
-  imageModal.addEventListener('transitionend', () => {
-    imageModal.style.display = "none";
-  }, { once: true });
+  imageModal.addEventListener(
+    "transitionend",
+    () => {
+      imageModal.style.display = "none";
+    },
+    { once: true }
+  );
 });
 
 // 点击图片放大弹窗背景关闭模态框
-imageModal.addEventListener('click', (event) => {
+imageModal.addEventListener("click", (event) => {
   if (event.target === imageModal) {
     // 让图片缩小并逐渐透明，同时让背景渐变
     modalImg.style.opacity = 0;
     modalImg.style.transform = "scale(0)";
     imageModal.style.opacity = 0; // 背景渐变
 
-    imageModal.addEventListener('transitionend', () => {
-      imageModal.style.display = "none";
-    }, { once: true });
+    imageModal.addEventListener(
+      "transitionend",
+      () => {
+        imageModal.style.display = "none";
+      },
+      { once: true }
+    );
   }
 });
 // 获取按钮元素
@@ -607,35 +664,33 @@ toggleProfileButton.addEventListener("click", (event) => {
   // 比如通过修改按钮文字表示 Profile 显示状态
   if (isProfileVisible) {
     toggleProfileButton.textContent = "Show Profile"; // 改变按钮文字
-    profileContainer.classList.add('hidden'); // 隐藏Profile
+    profileContainer.classList.add("hidden"); // 隐藏Profile
   } else {
     toggleProfileButton.textContent = "Hide Profile"; // 改变按钮文字
-    profileContainer.classList.remove('hidden'); // 显示Profile
+    profileContainer.classList.remove("hidden"); // 显示Profile
   }
   isProfileVisible = !isProfileVisible; // 切换状态
 });
 
-
-
 // 获取元素
-const listLink = document.getElementById('list-link');
-const todoListModal = document.getElementById('todoListModal');
-const modalListCloseBtn = document.querySelector('.modalListCloseBtn');
+const listLink = document.getElementById("list-link");
+const todoListModal = document.getElementById("todoListModal");
+const modalListCloseBtn = document.querySelector(".modalListCloseBtn");
 
 // 点击List显示弹窗
-listLink.addEventListener('click', (event) => {
-    event.preventDefault();
-    todoListModal.style.display = 'block';
+listLink.addEventListener("click", (event) => {
+  event.preventDefault();
+  todoListModal.style.display = "block";
 });
 
 // 点击关闭按钮隐藏弹窗
-modalListCloseBtn.addEventListener('click', () => {
-    todoListModal.style.display = 'none';
+modalListCloseBtn.addEventListener("click", () => {
+  todoListModal.style.display = "none";
 });
 
 // 点击弹窗外区域隐藏弹窗
-window.addEventListener('click', (event) => {
-    if (event.target === todoListModal) {
-        todoListModal.style.display = 'none';
-    }
+window.addEventListener("click", (event) => {
+  if (event.target === todoListModal) {
+    todoListModal.style.display = "none";
+  }
 });
