@@ -1,299 +1,382 @@
+<!-- 
+    html部分
+    @author 宁猫
+    音乐部分全ai
+-->
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="assert/img/icons8-navigation-48.png" type="image/png" />
-    <title>NingMao-Nav</title>
-    <link rel="stylesheet" href="styles.css" />
-    
-  </head>
-  <body>
-    <!-- 加载动画 -->
-    <div id="loading-animation">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="assert/img/icons8-navigation-48.png" type="image/png" />
+  <title>NingMao-Nav</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- 引入Lottie库 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js"></script>
+</head>
+
+<body>
+  <!-- 加载动画 -->
+  <div id="loading-animation">
+  </div>
+
+  <!-- 背景轮播容器 -->
+  <div class="background-carousel">
+    <img src="assert/满意壁纸/【哲风壁纸】二次元美女-初音未来.png" class="active" alt="Background 1" />
+    <img src="assert/img/明日香泳装.png" alt="Background 2" />
+    <img src="assert/img/【哲风壁纸】桐崎千棘-泳装.png" alt="Background 3" />
+    <img src="assert/img/【哲风壁纸】初音未来-虚拟歌姬.png" alt="Background 4" />
+    <img src="assert/img/【哲风壁纸】一个人-海 .png" alt="Background 5" />
+  </div>
+
+  <!-- 导航卡片区域 -->
+  <div class="nav-cards">
+    <!-- 单个网站卡片 -->
+    <div class="nav-card">
+      <a href="https://compressimage.io/" target="_blank">
+        <img src="assert/img/compresiing.png" alt="compressimage" />
+        <!-- 卡片名不要超过10个字，否则会在下方显示 -->
+        <span>compressi</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="保密保密" target="_blank">
+        <img src="assert/img/拿枕头的小新.jpg" alt="NingMao-blog" />
+        <span>ningblog</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="https://www.bilibili.com" target="_blank">
+        <img src="assert/img/Bilibili.png" alt="Bilibili" />
+        <span>Bilibili</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="https://www.xiaozhongjishu.com/" target="_blank">
+        <img src="assert/img/熊.png" alt="xiaozhongjishu" />
+        <span>minority</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="https://haowallpaper.com/" target="_blank">
+        <img src="assert/满意壁纸/【哲风壁纸】少女-猫娘-猫羽雫.png" alt="zhefengbizhi" />
+        <span>wallpaper</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="https://chatgpt.com/" target="_blank">
+        <img src="assert/img/chatgpt.png" alt="gpt" />
+        <span>chatgpt</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="https://api.ephone.chat/" target="_blank">
+        <img src="assert/img/chatgptfree.png" alt="gpt" />
+        <span>yi feng</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="https://github.com/" target="_blank">
+        <img src="assert/img/github.png" alt="gpt" />
+        <span>github</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="https://thuvien.org/navnav" target="_blank">
+        <img src="assert/img/【哲风壁纸】动漫女孩-粉色星球.png" alt="navnav" />
+        <span>navnav</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="https://gitee.com/ningmaoKing" target="_blank">
+        <img src="assert/img/gitee.png" alt="navnav" />
+        <span>gitee</span>
+      </a>
+    </div>
+    <div class="nav-card">
+      <a href="https://tools.liumingye.cn/music/?page=searchPage#/" target="_blank">
+        <img src="assert/img/乐队波奇.jpg" alt="navnav" />
+        <span>MP3</span>
+      </a>
     </div>
 
-    <!-- 背景轮播容器 -->
-    <div class="background-carousel">
-      <img src="assert/img/初音未来 (1).png" class="active" alt="Background 1" />
-      <img src="assert/img/明日香泳装.png" alt="Background 2" />
-      <img src="assert/img/【哲风壁纸】桐崎千棘-泳装.png" alt="Background 3" />
-      <img src="assert/img/【哲风壁纸】插画-音_出水芙蓉.png" alt="Background 4" />
-      <img src="assert/img/【哲风壁纸】一个人-海 .png" alt="Background 5" />
-    </div>
-
-    <!-- 卡片区域 -->
-    <div class="site-links">
-      <!-- 单个网站卡片 -->
-      <div class="site-card">
-        <a href="https://compressimage.io/" target="_blank">
-          <img src="assert/img/compresiing.png" alt="compressimage" />
-          <!-- 卡片名不要超过10个字，否则会在下方显示 -->
-          <span>compressi</span>
-        </a>
-      </div>
-      <div class="site-card">
-        <a href="http://8.134.70.113/" target="_blank">
-          <img src="assert/img/拿枕头的小新.jpg" alt="NingMao-blog" />
-          <span>ningblog</span>
-        </a>
-      </div>
-      <div class="site-card">
-        <a href="https://www.bilibili.com" target="_blank">
-          <img src="assert/img/Bilibili.png" alt="Bilibili" />
-          <span>Bilibili</span>
-        </a>
-      </div>
-      <div class="site-card">
-        <a href="https://www.xiaozhongjishu.com/" target="_blank">
-          <img src="assert/img/熊.png" alt="xiaozhongjishu" />
-          <span>minority</span>
-        </a>
-      </div>
-      <div class="site-card">
-        <a href="https://haowallpaper.com/" target="_blank">
-          <img src="assert/img/【哲风壁纸】剑客-水墨.png" alt="zhefengbizhi" />
-          <span>wallpaper</span>
-        </a>
-      </div>
-      <div class="site-card">
-        <a href="https://chatgpt.com/" target="_blank">
-          <img src="assert/img/chatgpt.png" alt="gpt" />
-          <span>chatgpt</span>
-        </a>
-      </div>
-      <div class="site-card">
-        <a href="https://api.ephone.chat/" target="_blank">
-          <img src="assert/img/chatgptfree.png" alt="gpt" />
-          <span>yi feng</span>
-        </a>
-      </div>
-      <div class="site-card">
-        <a href="https://github.com/" target="_blank">
-          <img src="assert/img/github.png" alt="gpt" />
-          <span>github</span>
-        </a>
-      </div>      
-      <div class="site-card">
-        <a href="https://thuvien.org/navnav" target="_blank">
-          <img src="assert/img/【哲风壁纸】动漫女孩-粉色星球.png" alt="navnav" />
-          <span>navnav</span>
-        </a>
-      </div>
-      <!-- 添加更多链接 -->
-    </div>
+    <!-- 添加更多链接 -->
+  </div>
 
 
 
-    <!-- 主页模拟框（模态框） -->
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <span class="close-btnAvatar">&times;</span>
-        <h2>你好啊！</h2>
-        <p>
-          这是一个导航式的网站，里面有我的作品和我常用的网站，欢迎来了解我！
-        </p>
-        <p>什么？你问我为什么外面是英文？</p>
-        <p>zhuangbi!</p>
+
+  <!-- 作者头像和网站介绍 -->
+  <div class="profile-container">
+    <div class="profile-content">
+      <div class="profile-avatar" id="avatar">
+        <img src="assert/img/ce8d03d66dfb42f23979eaf4ee78d1d.jpg" alt="Author Avatar" />
+      </div>
+      <div class="profile-name">
+        <span>Ning Mao</span>
       </div>
     </div>
-    <!-- 作者头像和网站介绍 -->
-    <div class="profile-container">
-      <div class="profile-content">
-        <div class="profile-avatar" id="avatar">
-          <img src="assert/img/逢坂大河22.png" alt="Author Avatar" />
-        </div>
-        <div class="profile-name">
-          <span style="font-size: 50px; font-weight: bold; color: rgb(252, 252, 252)">Ning Mao</span>
-        </div>
-      </div>
-      <div class="site-intro">
-        Welcome to this website<br />
-        <span style="font-size: 18px; font-weight: normal"
-          >A site that makes it easier to navigate to my work and my frequently
-          used sites</span
-        >
-      </div>
+    <div class="site-intro">
+      Welcome to this website<br />
+      <span style="font-size: 18px; font-weight: normal">A site that makes it easier to navigate to my work and my
+        frequently
+        used sites</span>
     </div>
-<div class="toggle-profile-button-container">
-  <a href="#" class="toggle-profile-button">Hide Profile</a>
-</div>
+  </div>
+  <!-- 头像模拟框 -->
+  <div id="avatar-modal" class="avatar-modal">
+    <div class="avatar-modal-content">
+      <span class="avatar-close-btn" id="avatar-close-btn">&times;</span>
+      <h2>(˘︶˘)</h2>
+      <p>
+        在图书馆为了逃避期末考写的导航式网站🚀
+      </p>
+      <p>什么？你问我为什么外面是英文？</p>
+      <p>zhuangbi!</p>
+    </div>
+  </div>
 
-<div class="profile-container">
-  <!-- Profile content goes here -->
-</div>
-    <!-- 控制按钮 -->
-    <div class="controls">
-      <button id="toggle-particles">Disable Particles</button>
+
+
+
+
+  <div class="toggle-profile-button-container">
+    <a href="#" class="toggle-profile-button">Hide Profile</a>
+  </div>
+
+  <!-- 控制按钮 -->
+  <div class="controls-panel-container">
+    <div class="controls-panel">
+      <button id="toggle-particles">Enable Particles</button>
       <button id="toggle-slideshow">Pause Slideshow</button>
-      <button class="toggle-btn" id="toggle-btn">☰</button>
       <button id="toggle-mode">Switch to Night Mode</button>
-      <button id="toggle-music">Play Music</button>
     </div>
-    
- 
-    
+    <button class="toggle-btn" id="toggle-btn">⚙️</button>
+  </div>
 
-    <!-- 时间和访问次数 -->
-    <div id="info-box">
+
+
+
+
+
+
+
+
+  <!-- 导航栏 -->
+  <div class="sidebar">
+    <div class="time-visited">
       <p id="current-time"></p>
       <p id="visit-count"></p>
     </div>
-
-
-    <!-- 音频播放器 -->
-    <audio id="background-music" loop>
-      <source src="assert/music/69918301815120004.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
-
-<!-- 侧边栏 -->
-<div class="sidebar" id="sidebar">
-  <h2>Sidebar Menu</h2>
-  <ul>
-      <li><a href="#" id="home-link">Home</a></li>
+    <ul>
+      <li class="active"><a href="#" id="home-link">Home</a></li>
       <li><a href="#" id="about-link">About</a></li>
       <li><a href="#" id="list-link">List</a></li>
-      <li><a href="#">Portfolio</a></li>
       <li><a href="#" id="contact-mode-btn">Contact</a></li>
       <li><a href="#" id="study-mode-btn">Learning</a></li>
-  </ul>
-</div>
+    </ul>
+  </div>
 
-<!-- List弹窗 -->
-<div id="todoListModal" class="Listmodal">
-  <div class="Listmodal-content">
+  <!-- List弹窗 -->
+  <div id="todoListModal" class="Listmodal">
+    <div class="Listmodal-content">
       <span class="modalListCloseBtn">&times;</span>
-      <h2>My To-Do List</h2>
+      <h2> To-Do List</h2>
       <ul id="todo-list">
-          <li><span class="custom-checkbox-checked">&#x2713;</span> 学习模式添加比例和总计时</li>
-          <li><span class="custom-checkbox-checked">&#x2713;</span> 头像消失功能,防止阻挡卡片</li>
-          <li><span class="custom-checkbox"></span> 整体UI大改造</li>
-          <li><span class="custom-checkbox-checked">&#x2713;</span> 拖尾在昼夜模式切换下的不同形态</li>
-          <li><span class="custom-checkbox"></span> 按钮抽屉</li>
-          <li><span class="custom-checkbox"></span> 侧边栏的改造</li>
-          <li><span class="custom-checkbox-checked">&#x2713;</span> 卡片在昼夜模式切换下的不同形态</li>
-          <li><span class="custom-checkbox"></span> 弹窗影响侧边栏</li>
-          <li><span class="custom-checkbox"></span> 添加更多功能</li>
-          <li><span class="custom-checkbox-checked">&#x2713;</span> 改loading的动画</li>
-          <li><span class="custom-checkbox"></span> 重构代码,有史山雏形了感觉</li>
-          <li><span class="custom-checkbox"></span> 改为vue3来封装,打造前后端（但这样就有点违背初衷了）</li>
-          <!-- 添加更多任务 -->
+        <li><span class="custom-checkbox-checked">&#x2713;</span> 学习模式添加比例和总计时</li>
+        <li><span class="custom-checkbox-checked">&#x2713;</span> 头像消失功能,防止阻挡卡片</li>
+        <li><span class="custom-checkbox-checked">&#x2713;</span> 拖尾在昼夜模式切换下的不同形态</li>
+        <li><span class="custom-checkbox-checked">&#x2713;</span> 按钮抽屉</li>
+        <li><span class="custom-checkbox-checked">&#x2713;</span> 侧边栏改造为导航栏</li>
+        <li><span class="custom-checkbox"></span> 修改切换模式按钮样式</li>
+        <li><span class="custom-checkbox-checked">&#x2713;</span> 卡片在昼夜模式切换下的不同形态</li>
+        <li><span class="custom-checkbox-checked">&#x2713;</span> 弹窗影响侧边栏</li>
+        <li><span class="custom-checkbox"></span> 添加更多功能</li>
+        <li><span class="custom-checkbox-checked">&#x2713;</span> 改loading的动画</li>
+        <li><span class="custom-checkbox-checked">&#x2713;</span> 重构代码,有史山雏形了感觉</li>
+        <li><span class="custom-checkbox-checked">&#x2713;</span> 音乐播放器</li>
+        <li><span class="custom-checkbox"></span> 改为vue3来封装,打造前后端（但这样就有点违背初衷了）</li>
+        <!-- 添加更多任务 -->
       </ul>
-  </div>
-</div>
-
-
-
-
-
-
-
-    <!-- 学习模式弹窗 -->
-    <div id="study-mode" class="study-mode-container">
-      <div class="study-mode-content">
-        <!-- 添加背景图片 -->
-        <div class="background-image-wrapper">
-          <img src="assert/img/明媚-阳光.png" alt="学习模式背景" />
-        </div>
-        <span class="close-btn">&times;</span>
-        <h2 class="study-mode-title">Learning Pattern</h2>
-        <div class="study-inputs">
-          <label for="subject-input">Study subject:</label>
-          <input type="text" id="subject-input" placeholder="Please enter the subject you are studying." />
-          <button id="start-timer" class="timeFunctionBtn">start</button>
-          <label for="duration-input" class="duration-label">Duration:</label>
-          <input type="text" id="duration-input" placeholder="Please enter the duration (HH:MM:SS)." />
-
-          <button id="add-card-btn" class="timeFunctionBtn">+</button>
-        </div>
-        <div class="timer-display" id="timer-display">00:00:00</div>
-        <div class="timer-controls">
-          <button id="pause-timer" class="timeFunctionBtn">Pause</button>
-          <button id="save-record" class="timeFunctionBtn">store</button>
-          <button id="reset-timer" class="timeFunctionBtn">reset</button>
-        </div>
-          <span id="total-time">Total: 00:00:00</span>
-        <div id="today-total">
-          <h3>today: <span id="today-total-time">00:00:00</span></h3>
-        </div>
-        <div class="history-container" id="history-container">
-          <!-- 卡片堆叠效果 -->
-        </div>
-      </div>
     </div>
-</div>
+  </div>
 
 
-  
-<!-- 联系方式弹窗 -->
-<div id="contact-mode" class="contact-mode-container">
-  <div class="contact-mode-content">
-    <span class="contact-close-btn">&times;</span>
-    <h2>Contact Me</h2>
-    <div class="contact-cards">
-      <!-- QQ卡片 -->
-      <div class="contact-card">
-        <h4>QQ</h4>
-        <p>3113143862</p>
+
+
+
+
+
+  <!-- 学习模式弹窗 -->
+  <div id="study-mode" class="study-mode-container">
+    <div class="study-mode-content">
+      <!-- 添加背景图片 -->
+      <div class="background-image-wrapper">
+        <img src="assert/img/明媚-阳光.png" alt="学习模式背景" />
       </div>
-      <!-- 微信卡片 -->
-      <div class="contact-card">
-        <h4>WeChat</h4>
-        <p>ningmaohlyz</p>
+      <span class="close-btn">&times;</span>
+      <h2 class="study-mode-title">Learning Pattern</h2>
+      <div class="study-inputs">
+        <label for="subject-input">Study subject:</label>
+        <input type="text" id="subject-input" placeholder="Please enter the subject you are studying." />
+        <button id="start-timer" class="timeFunctionBtn">start</button>
+        <label for="duration-input" class="duration-label">Duration:</label>
+        <input type="text" id="duration-input" placeholder="Please enter the duration (HH:MM:SS)." />
+
+        <button id="add-card-btn" class="timeFunctionBtn">+</button>
       </div>
-      <!-- 哔哩哔哩卡片 -->
-      <div class="contact-card">
-        <h4>Bilibili</h4>
-        <p>宁猫k</p>
+      <div class="timer-display" id="timer-display">00:00:00</div>
+      <div class="timer-controls">
+        <button id="pause-timer" class="timeFunctionBtn">Pause</button>
+        <button id="save-record" class="timeFunctionBtn">store</button>
+        <button id="reset-timer" class="timeFunctionBtn">reset</button>
+      </div>
+      <span id="total-time">Total: 00:00:00</span>
+      <div id="today-total">
+        <h3>today: <span id="today-total-time">00:00:00</span></h3>
+      </div>
+      <div class="history-container" id="history-container">
       </div>
     </div>
   </div>
-</div>
-<!-- About 页面内容 -->
-<div id="about-mode" class="about-mode-container">
-  <div class="about-mode-content">
-    <span class="close-btn">&times;</span>
-    <h2 class="About-title">About Me</h2>
-    <div class="about-cards">
-      <!-- 卡片1 -->
-      <div class="about-card">
-        <img src="assert/img/df3af0b919d84f47f1e9c148d3ff4ea.jpg" alt="About Image 1" />
+  </div>
+
+
+
+  <!-- 联系方式弹窗 -->
+  <div id="contact-mode" class="contact-mode-container">
+    <div class="contact-mode-content">
+      <span class="contact-close-btn">&times;</span>
+      <h2>Contact Me</h2>
+      <div class="contact-cards">
+        <!-- QQ卡片 -->
+        <div class="contact-card">
+          <h4>QQ</h4>
+          <p>3113143862</p>
+        </div>
+        <!-- 微信卡片 -->
+        <div class="contact-card">
+          <h4>WeChat</h4>
+          <p>ningmaohlyz</p>
+        </div>
+        <!-- 哔哩哔哩卡片 -->
+        <div class="contact-card">
+          <h4>Bilibili</h4>
+          <p>宁猫k</p>
+        </div>
       </div>
-      <!-- 卡片2 -->
-      <div class="about-card">
-        <img src="assert/img/aaade1c0780267b2e74a4becf173cea.jpg" alt="About Image 2" />
-      </div>
-      <!-- 卡片3 -->
-      <div class="about-card">
-        <img src="assert/img/67659dc66a45d9ba8c984ad1c3e721e.jpg" alt="About Image 3" />
-      </div>
-            <!-- 卡片4 -->
-            <div class="about-card">
-              <img src="assert/img/7542d81a5bcc84d96118fd9d00e48a5.jpg" alt="About Image 3" />
-            </div>
-                  <!-- 卡片5 -->
-      <div class="about-card">
-        <img src="assert/img/665025fc71ba98e49b968eb504ad1b3.jpg" alt="About Image 3" />
-      </div>
-            <!-- 卡片6 -->
-            <div class="about-card">
-              <img src="assert/img/7f2c8e18b16bff59364d78b1095dbdc.jpg" alt="About Image 3" />
-            </div>
-      <!-- 添加更多卡片 -->
     </div>
   </div>
-</div>
+  <!-- About 页面内容 -->
+  <div id="about-mode" class="about-mode-container">
+    <div class="about-mode-content">
+      <span class="about-close-btn">&times;</span>
+      <h2>About Me</h2>
+      <div class="about-cards">
+        <!-- 卡片1 -->
+        <div class="about-card">
+          <img src="assert/img/aaade1c0780267b2e74a4becf173cea.jpg" alt="About Image 1" />
+        </div>
+        <!-- 卡片2 -->
+        <div class="about-card">
+          <img src="assert/img/df3af0b919d84f47f1e9c148d3ff4ea.jpg" alt="About Image 2" />
+        </div>
+        <!-- 卡片3 -->
+        <div class="about-card">
+          <img src="assert/img/67659dc66a45d9ba8c984ad1c3e721e.jpg" alt="About Image 3" />
+        </div>
+        <!-- 卡片4 -->
+        <div class="about-card">
+          <img src="assert/img/7542d81a5bcc84d96118fd9d00e48a5.jpg" alt="About Image 3" />
+        </div>
+        <!-- 卡片5 -->
+        <div class="about-card">
+          <img src="assert/img/665025fc71ba98e49b968eb504ad1b3.jpg" alt="About Image 3" />
+        </div>
+        <!-- 卡片6 -->
+        <div class="about-card">
+          <img src="assert/img/7f2c8e18b16bff59364d78b1095dbdc.jpg" alt="About Image 3" />
+        </div>
+        <!-- 添加更多卡片 -->
+      </div>
+    </div>
+  </div>
 
-<!-- 图片放大弹窗 -->
-<div id="image-modal" class="image-modal">
-  <span class="close-image-modal-btn">&times;</span>
-  <img class="modal-content-image" id="img01" alt="Expanded Image">
-</div>
+  <!-- 图片放大弹窗 -->
+  <div id="image-modal" class="image-modal">
+    <span class="close-image-modal-btn">&times;</span>
+    <img class="modal-content-image" id="img01" alt="Expanded Image">
+  </div>
 
- <!-- 引入Lottie库 -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js" ></script>
-<!-- 自定义js -->
- <script src="scripts.js"></script>
-  </body>
+  <!-- 音乐播放器 -->
+  <div class="music-player">
+    <div class="music-cover">
+      <img src="assert/img/music-cover.jpg" alt="Music Cover" />
+      <div class="music-title">初音未来 - 千本樱</div>
+    </div>
+
+    <!-- 进度条 -->
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-current"></div>
+      </div>
+      <div class="time-info">
+        <span class="current-time">00:00</span>
+        <span class="total-time">00:00</span>
+      </div>
+    </div>
+
+    <div class="music-controls">
+      <!-- 播放模式按钮 -->
+      <button class="mode-btn" title="播放模式">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M17 17h-1.5v-1.5h1.5V17zm0-3h-1.5v1.5h1.5V14zm-3 3h-1.5v-1.5h1.5V17zm0-3h-1.5v1.5h1.5V14zm-3 3h-1.5v-1.5h1.5V17zm0-3h-1.5v1.5h1.5V14zm9-3H3v6h18v-6zm0-2c1.1 0 2 .9 2 2v6c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V9c0-1.1.9-2 2-2h18z" />
+        </svg>
+      </button>
+
+      <button class="prev-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
+        </svg>
+      </button>
+
+      <button class="play-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </button>
+
+      <button class="next-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 6l8.5 6-8.5 6V6zm9 0h2v12h-2z" />
+        </svg>
+      </button>
+
+      <div class="volume-control">
+        <svg class="volume-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+        </svg>
+        <div class="volume-slider-container">
+          <input type="range" class="volume-slider" min="0" max="100" value="50">
+        </div>
+      </div>
+    </div>
+
+    <!-- 播放列表 -->
+    <div class="playlist-container">
+      <div class="playlist">
+        <!-- 播放列表项会通过 JavaScript 动态生成 -->
+      </div>
+    </div>
+
+    <audio id="audio-player"></audio>
+  </div>
+
+
+  <!-- 自定义js -->
+  <script src="scripts.js"></script>
+</body>
 
 </html>

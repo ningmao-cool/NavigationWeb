@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day-Night Mode Toggle</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="menu-items">
+        <!-- Other navigation items can go here -->
+      </div>
+      <div class="switch">
+        <input type="checkbox" id="mode-toggle">
+        <label for="mode-toggle" class="slider"></label>
+      </div>
+    </nav>
+  </header>
+
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --width-of-switch: 8em;
+  --height-of-switch: 4em;
+  --size-of-icon: 2.8em;
+  --slider-offset: 0.6em;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f5;
+  transition: background-color 0.3s ease;
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+}
+
+.switch input {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.switch {
+  position: relative;
+  display: block;
+  width: var(--width-of-switch);
+  height: var(--height-of-switch);
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f4f4f5;
+  transition: 0.4s;
+  border-radius: 60px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.slider::before {
+  position: absolute;
+  content: "";
+  width: var(--size-of-icon);
+  height: var(--size-of-icon);
+  border-radius: 50%;
+  left: var(--slider-offset);
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(45deg, #ff0080, #ff8c00 70%);
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background: #303136;
+}
+
+input:checked + .slider::before {
+  left: calc(100% - (var(--size-of-icon) + var(--slider-offset)));
+  background: #303136;
+  box-shadow: inset -3px -2px 5px -2px #8983f7, inset -10px -4px 0 #a3dafb;
+}
+
+.dark-mode {
+  background-color: #303136;
+}
+
+  </style>
+
+  <script>
+    const toggle = document.getElementById('mode-toggle');
+    toggle.addEventListener('change', function() {
+      document.body.classList.toggle('dark-mode', toggle.checked);
+    });
+  </script>
+</body>
+</html>

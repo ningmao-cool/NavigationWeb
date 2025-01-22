@@ -1,3 +1,10 @@
+/**
+ * js部分
+ * @author 宁猫
+ * 音乐部分全ai
+ */
+
+
 // 初始化加载动画
 let animLoader = lottie.loadAnimation({
   container: document.getElementById("loading-animation"),
@@ -8,7 +15,7 @@ let animLoader = lottie.loadAnimation({
 });
 // 等待页面加载完成后隐藏加载动画
 window.addEventListener("load", function () {
-  setTimeout(function(){
+  setTimeout(function () {
     // 保持连贯
 
     // 1. 隐藏加载动画
@@ -18,8 +25,7 @@ window.addEventListener("load", function () {
     setTimeout(function () {
       document.getElementById("loading-animation").style.display = "none";
     }, 400);
-    
-  },200);          
+  }, 200);
 });
 
 // 获取轮播的图片
@@ -27,8 +33,6 @@ const images = document.querySelectorAll(".background-carousel img");
 const toggleSlideshowButton = document.getElementById("toggle-slideshow");
 const toggleParticlesButton = document.getElementById("toggle-particles");
 
-let isSlideshowPlaying = true;
-let isParticlesEnabled = false;
 let currentIndex = 0;
 let interval;
 
@@ -49,24 +53,15 @@ function stopSlideshow() {
   clearInterval(interval);
 }
 
+
 // 初始启动轮播
 startSlideshow();
 
-// 切换轮播开关
-toggleSlideshowButton.addEventListener("click", () => {
-  if (isSlideshowPlaying) {
-    stopSlideshow();
-    toggleSlideshowButton.textContent = "Start Slideshow";
-  } else {
-    startSlideshow();
-    toggleSlideshowButton.textContent = "Pause Slideshow";
-  }
-  isSlideshowPlaying = !isSlideshowPlaying;
-});
+
 // 禁止用户右键操作
-document.addEventListener("contextmenu", (e) => {
-  e.preventDefault();
-});
+// document.addEventListener("contextmenu", (e) => {
+//   e.preventDefault();
+// });
 
 // 禁止用户拖拽图片
 document.querySelectorAll("img").forEach((img) => {
@@ -74,7 +69,123 @@ document.querySelectorAll("img").forEach((img) => {
     e.preventDefault();
   });
 });
-// 生成粒子
+
+// 获取头像元素和模拟框元素
+const avatar = document.getElementById("avatar");
+const avatarModal = document.getElementById("avatar-modal");
+const avatarCloseBtn = document.getElementById("avatar-close-btn");
+
+
+// 鼠标移入头像触发动画
+avatar.addEventListener("mouseenter", () => {
+    avatar.classList.add("jump");
+  
+    //  动画结束后移除类
+    avatar.addEventListener(
+      "animationend",
+      () => {
+        avatar.classList.remove("jump");
+      },
+      { once: true }
+    );
+  });
+
+// 点击头像打开模态框
+avatar.addEventListener("click", () => {
+  avatarModal.style.display = "flex";
+  // 添加一个小延时确保display:flex生效后再添加show类
+  setTimeout(() => {
+      avatarModal.classList.add('show');
+  }, 10);
+});
+
+// 点击关闭按钮关闭模态框
+avatarCloseBtn.addEventListener("click", () => {
+  avatarModal.classList.remove('show');
+  // 等待过渡效果完成后再隐藏
+  setTimeout(() => {
+      avatarModal.style.display = "none";
+  }, 300);
+});
+
+// 点击模态框外部关闭模态框
+avatarModal.addEventListener("click", (event) => {
+  if (event.target === avatarModal) {
+      avatarModal.classList.remove('show');
+      // 等待过渡效果完成后再隐藏
+      setTimeout(() => {
+          avatarModal.style.display = "none";
+      }, 300);
+  }
+});
+
+// 获取隐藏和显示头像的按钮
+const toggleProfileButton = document.querySelector(".toggle-profile-button");
+const profileContainer = document.querySelector(".profile-container");
+
+// 定义初始状态
+let isProfileVisible = true;
+
+// 隐藏和显示头像
+toggleProfileButton.addEventListener("click", (event) => {
+  event.preventDefault(); // 阻止默认的链接行为
+
+  if (isProfileVisible) {
+    toggleProfileButton.textContent = "Show Profile"; // 改变按钮文字
+    profileContainer.classList.add("hidden"); // 隐藏Profile
+  } else {
+    toggleProfileButton.textContent = "Hide Profile"; // 改变按钮文字
+    profileContainer.classList.remove("hidden"); // 显示Profile
+  }
+  isProfileVisible = !isProfileVisible;
+});
+
+// 获取控制面板和按钮元素
+const controlsPanel = document.querySelector('.controls-panel');
+const toggleButton = document.querySelector('.toggle-btn');
+
+toggleButton.addEventListener('click', () => {
+  controlsPanel.classList.toggle('open');
+  toggleButton.classList.toggle('open');
+});
+
+// 点击其他地方关闭控制面板
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('.controls-panel-container')) {
+    controlsPanel.classList.remove('open');
+    toggleButton.classList.remove('open');
+  }
+});
+
+// 模式切换按钮
+const toggleModeButton = document.getElementById("toggle-mode");
+let isNightMode = false;
+
+// 切换白天和夜晚模式
+toggleModeButton.addEventListener("click", () => {
+  isNightMode = !isNightMode;
+  document.body.className = isNightMode ? "night-mode" : "day-mode";
+  toggleModeButton.textContent = isNightMode
+    ? "Switch to Day Mode"
+    : "Switch to Night Mode";
+});
+
+// 初始化为白天模式
+document.body.className = "day-mode";
+
+
+
+// 切换粒子开关
+let isParticlesEnabled = false;
+
+
+toggleParticlesButton.addEventListener("click", () => {
+  isParticlesEnabled = !isParticlesEnabled;
+  toggleParticlesButton.textContent = isParticlesEnabled
+    ? "Disable Particles"
+    : "Enable Particles";
+});
+// 粒子拖尾效果
 function createParticle(x, y) {
   if (!isParticlesEnabled) return;
 
@@ -142,46 +253,23 @@ document.addEventListener("mousemove", (e) => {
   createParticle(e.clientX, e.clientY);
 });
 
-// 切换粒子开关
-toggleParticlesButton.addEventListener("click", () => {
-  isParticlesEnabled = !isParticlesEnabled;
-  toggleParticlesButton.textContent = isParticlesEnabled
-    ? "Disable Particles"
-    : "Enable Particles";
-});
 
-// 模式切换按钮
-const toggleModeButton = document.getElementById("toggle-mode");
-let isNightMode = false;
 
-// 切换白天和夜晚模式
-toggleModeButton.addEventListener("click", () => {
-  isNightMode = !isNightMode;
-  document.body.className = isNightMode ? "night-mode" : "day-mode";
-  toggleModeButton.textContent = isNightMode
-    ? "Switch to Day Mode"
-    : "Switch to Night Mode";
-});
+// 切换轮播开关
+let isSlideshowPlaying = true;
 
-// 初始化为白天模式
-document.body.className = "day-mode";
-
-const backgroundMusic = document.getElementById("background-music");
-const toggleMusicButton = document.getElementById("toggle-music");
-
-let isMusicPlaying = false;
-
-// 控制音乐播放和暂停
-toggleMusicButton.addEventListener("click", () => {
-  if (isMusicPlaying) {
-    backgroundMusic.pause();
-    toggleMusicButton.textContent = "Play Music";
+toggleSlideshowButton.addEventListener("click", () => {
+  if (isSlideshowPlaying) {
+    stopSlideshow();
+    toggleSlideshowButton.textContent = "Start Slideshow";
   } else {
-    backgroundMusic.play();
-    toggleMusicButton.textContent = "Pause Music";
+    startSlideshow();
+    toggleSlideshowButton.textContent = "Pause Slideshow";
   }
-  isMusicPlaying = !isMusicPlaying;
+  isSlideshowPlaying = !isSlideshowPlaying;
 });
+
+
 
 // 动态更新时间
 function updateTime() {
@@ -193,10 +281,10 @@ function updateTime() {
   });
   document.getElementById(
     "current-time"
-  ).textContent = `Current Time: ${timeString}`;
+  ).textContent = `${timeString}`;
 }
 setInterval(updateTime, 1000);
-updateTime(); // 页面加载时调用
+updateTime(); 
 
 // 统计访问次数
 let visits = localStorage.getItem("visits") || 0;
@@ -204,53 +292,43 @@ visits++;
 localStorage.setItem("visits", visits);
 
 document.getElementById(
-  "visit-count"
-).textContent = `You have visited this page ${visits} times.`;
+"visit-count"
+).textContent = `visited: ${visits} times.`;
 
 
+// 获取元素
+const listLink = document.getElementById("list-link");
+const todoListModal = document.getElementById("todoListModal");
+const modalListCloseBtn = document.querySelector(".modalListCloseBtn");
 
-// 获取头像和模态框元素
-const avatar = document.getElementById("avatar");
-const modal = document.getElementById("modal");
-const closeBtnAvatar = document.querySelector(".close-btnAvatar");
-
-// 显示模态框
-avatar.addEventListener("click", () => {
-  modal.style.display = "flex";
+// 点击List显示弹窗
+listLink.addEventListener("click", (event) => {
+  event.preventDefault();
+  todoListModal.style.display = "block";
+  todoListModal.style.animation = "modalFadeIn 0.3s forwards"; // 应用淡入动画
 });
 
-// 关闭模态框
-closeBtnAvatar.addEventListener("click", () => {
-  modal.style.display = "none";
-});
+// 点击关闭按钮隐藏弹窗
+modalListCloseBtn.addEventListener("click", closeModal);
 
-// 点击模态框背景关闭模态框
-modal.addEventListener("click", (event) => {
-  if (event.target === modal) {
-    modal.style.display = "none";
+// 点击弹窗外区域隐藏弹窗
+window.addEventListener("click", (event) => {
+  if (event.target === todoListModal) {
+    closeModal();
   }
 });
 
-const avatarContainer = document.getElementById("avatar");
+// 关闭模态框的函数
+function closeModal() {
+  todoListModal.style.animation = "modalFadeOut 0.3s forwards"; // 应用淡出动画
+  todoListModal.addEventListener("animationend", () => {
+    todoListModal.style.display = "none"; // 在动画结束后隐藏模态框
+  }, { once: true });
+}
 
-// 鼠标移入时触发跳跃动画
-avatarContainer.addEventListener("mouseenter", () => {
-  avatarContainer.classList.add("jump");
 
-  // 动画结束后移除类，以便可以再次触发动画
-  avatarContainer.addEventListener(
-    "animationend",
-    () => {
-      avatarContainer.classList.remove("jump");
-    },
-    { once: true }
-  );
-});
 
-// 鼠标移开时，利用 CSS 的 transition 实现平滑回落
-avatarContainer.addEventListener("mouseleave", () => {
-  avatarContainer.style.transform = "translateY(0)";
-});
+
 // 元素选择
 const studyModeBtn = document.getElementById("study-mode-btn");
 const studyModeContainer = document.getElementById("study-mode");
@@ -270,29 +348,13 @@ let elapsedTime = 0;
 let history = [];
 // 获取侧边栏和按钮元素
 const sidebar = document.getElementById("sidebar");
-const toggleBtn = document.getElementById("toggle-btn");
 
-// 切换侧边栏显示状态
-toggleBtn.addEventListener("click", () => {
-  sidebar.classList.toggle("open");
-});
-
-// 点击侧边栏之外的地方关闭侧边栏
-document.addEventListener("click", (event) => {
-  if (
-    sidebar.classList.contains("open") &&
-    !sidebar.contains(event.target) &&
-    event.target !== toggleBtn
-  ) {
-    sidebar.classList.remove("open");
-  }
-});
 // 打开学习模式
 studyModeBtn?.addEventListener("click", () => {
-  studyModeContainer.style.display = "flex"; // 确保容器可见
+  studyModeContainer.style.display = "flex"; 
   setTimeout(() => {
     studyModeContainer.classList.add("open");
-  }, 10); // 延迟添加 open 类以触发过渡效果
+  }, 10); 
   renderHistory();
 });
 
@@ -305,7 +367,7 @@ closeBtn.addEventListener("click", () => {
       studyModeContainer.style.display = "none";
     },
     { once: true }
-  ); // 监听过渡结束事件
+  ); 
 });
 
 // 点击学习模式背景关闭模态框
@@ -318,7 +380,7 @@ studyModeContainer.addEventListener("click", (event) => {
         studyModeContainer.style.display = "none";
       },
       { once: true }
-    ); // 监听过渡结束事件
+    ); 
   }
 });
 
@@ -370,6 +432,11 @@ saveRecordBtn.addEventListener("click", () => {
   // 从 localStorage 中获取现有历史记录
   let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
 
+  // 计算当前记录的时间
+  const [hours, minutes, seconds] = record.duration.split(":").map(Number);
+  const currentDurationMs =
+    hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+
   // 将新记录添加到历史记录中
   history.unshift(record);
 
@@ -393,14 +460,13 @@ resetTimerBtn.addEventListener("click", () => {
 // 渲染历史记录并计算今日学习时长
 function renderHistory() {
   let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
-  const todayDate = getCurrentDate(); // 获取今天的日期
-  let todayTotalTime = 0; // 今日总时长（以毫秒为单位）
-  let totalTime = 0; // 所有卡片的总时长（以毫秒为单位）
-  const subjectTimeMap = {}; // 存储每个科目今日的学习总时长
+  const todayDate = getCurrentDate();
+  let todayTotalTime = 0;
+  let totalTime = 0;
 
-  historyContainer.innerHTML = ""; // 清空历史记录容器
+  historyContainer.innerHTML = "";
 
-  // 遍历历史记录，计算今日学习总时长以及各科目学习时长
+  // 遍历历史记录，计算今日学习总时长
   history.forEach((record) => {
     const [hours, minutes, seconds] = record.duration.split(":").map(Number);
     const durationMs =
@@ -408,10 +474,6 @@ function renderHistory() {
     totalTime += durationMs;
     if (record.date === todayDate) {
       todayTotalTime += durationMs;
-
-      // 累加到对应科目
-      subjectTimeMap[record.subject] =
-        (subjectTimeMap[record.subject] || 0) + durationMs;
     }
   });
 
@@ -419,44 +481,45 @@ function renderHistory() {
   history.forEach((record, index) => {
     const card = document.createElement("div");
     card.className = "history-card";
-    card.style.position = "relative"; // 保证删除按钮正确定位
+    card.style.position = "relative";
 
-    // 这里不考虑科目的分类
-    let subjectPercentage = ""; // 卡片的时间占比
-    if (record.date === todayDate) {
+    let subjectPercentage = "0.00";
+    if (record.date === todayDate && todayTotalTime > 0) {
+      // 重新计算今日记录的比例
       const [hours, minutes, seconds] = record.duration.split(":").map(Number);
       const cardTime =
         hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
-      const percentage = ((cardTime / todayTotalTime) * 100).toFixed(2);
-      subjectPercentage = percentage; // 只保留数字
+      subjectPercentage = ((cardTime / todayTotalTime) * 100).toFixed(2);
+    } else if (record.percentage) {
+      // 使用存储的比例信息
+      subjectPercentage = record.percentage;
     }
 
     // 卡片内容
     card.innerHTML = `
-    <span class="percentage-text">${subjectPercentage}</span>
+      <span class="percentage-text">${subjectPercentage}%</span>
       <button class="delete-btn" data-index="${index}"></button>
       <h4>Date: ${record.date}</h4>
       <p>Subject: ${record.subject}</p>
       <p>Duration: ${record.duration}</p>
-      
     `;
 
     // 删除按钮功能
     const deleteBtn = card.querySelector(".delete-btn");
     deleteBtn.addEventListener("click", () => {
-      history.splice(index, 1); // 删除记录
+      history.splice(index, 1);
       localStorage.setItem("studyHistory", JSON.stringify(history));
-      renderHistory(); // 重新渲染历史记录
+      renderHistory();
     });
 
-    historyContainer.appendChild(card); // 将卡片添加到容器中
+    historyContainer.appendChild(card);
   });
 
-  // 更新“Today's total”显示
+  // 更新"Today's total"显示
   document.getElementById("today-total-time").textContent =
     formatTime(todayTotalTime);
 
-  // 更新“Total time”显示
+  // 更新"Total time"显示
   document.getElementById("total-time").textContent = `Total: ${formatTime(
     totalTime
   )}`;
@@ -553,23 +616,25 @@ contactModeContainer.addEventListener("click", (event) => {
     ); // 监听过渡结束事件
   }
 });
-// 获取“About”按钮和容器元素
+
+
+// 获取"About"按钮和容器元素
 const aboutModeBtn = document.getElementById("about-link");
 const aboutModeContainer = document.getElementById("about-mode");
 const closeAboutBtn = document.querySelector(
-  ".about-mode-container .close-btn"
+  ".about-mode-container .about-close-btn"
 );
 
-// 打开“About”页面
+// 打开"About"页面
 aboutModeBtn.addEventListener("click", (e) => {
   e.preventDefault();
   aboutModeContainer.style.display = "flex"; // 确保容器可见
   setTimeout(() => {
     aboutModeContainer.classList.add("open");
-  }, 10); // 延迟添加 open 类以触发过渡效果
+  }, 10); 
 });
 
-// 关闭“About”页面
+// 关闭"About"页面
 closeAboutBtn.addEventListener("click", () => {
   aboutModeContainer.classList.remove("open");
   aboutModeContainer.addEventListener(
@@ -578,10 +643,10 @@ closeAboutBtn.addEventListener("click", () => {
       aboutModeContainer.style.display = "none";
     },
     { once: true }
-  ); // 监听过渡结束事件
+  ); 
 });
 
-// 点击“About”页面背景关闭模态框
+// 点击"About"页面背景关闭模态框
 aboutModeContainer.addEventListener("click", (event) => {
   if (event.target === aboutModeContainer) {
     aboutModeContainer.classList.remove("open");
@@ -591,7 +656,7 @@ aboutModeContainer.addEventListener("click", (event) => {
         aboutModeContainer.style.display = "none";
       },
       { once: true }
-    ); // 监听过渡结束事件
+    ); 
   }
 });
 
@@ -611,7 +676,7 @@ document.querySelectorAll(".about-card img").forEach((img) => {
     setTimeout(() => {
       modalImg.style.opacity = 1;
       modalImg.style.transform = "scale(1)";
-      imageModal.style.opacity = 1; // 渐变背景
+      imageModal.style.opacity = 1; 
     }, 10);
   });
 });
@@ -621,7 +686,7 @@ closeImageModalBtn.addEventListener("click", () => {
   // 让图片缩小并逐渐透明，同时让背景渐变
   modalImg.style.opacity = 0;
   modalImg.style.transform = "scale(0)";
-  imageModal.style.opacity = 0; // 背景渐变
+  imageModal.style.opacity = 0; 
 
   imageModal.addEventListener(
     "transitionend",
@@ -638,7 +703,7 @@ imageModal.addEventListener("click", (event) => {
     // 让图片缩小并逐渐透明，同时让背景渐变
     modalImg.style.opacity = 0;
     modalImg.style.transform = "scale(0)";
-    imageModal.style.opacity = 0; // 背景渐变
+    imageModal.style.opacity = 0; 
 
     imageModal.addEventListener(
       "transitionend",
@@ -649,48 +714,291 @@ imageModal.addEventListener("click", (event) => {
     );
   }
 });
-// 获取按钮元素
-const toggleProfileButton = document.querySelector(".toggle-profile-button");
-const profileContainer = document.querySelector(".profile-container");
 
-// 定义初始状态
-let isProfileVisible = true;
 
-// 给按钮绑定点击事件
-toggleProfileButton.addEventListener("click", (event) => {
-  event.preventDefault(); // 阻止默认的链接行为
 
-  // 在这里可以用按钮控制页面上任何想要显示/隐藏的内容
-  // 比如通过修改按钮文字表示 Profile 显示状态
-  if (isProfileVisible) {
-    toggleProfileButton.textContent = "Show Profile"; // 改变按钮文字
-    profileContainer.classList.add("hidden"); // 隐藏Profile
-  } else {
-    toggleProfileButton.textContent = "Hide Profile"; // 改变按钮文字
-    profileContainer.classList.remove("hidden"); // 显示Profile
+
+
+
+
+
+class MusicPlayer {
+  constructor() {
+    this.musicList = [
+      {
+        title: "好きだから。",
+        cover: "assert/满意壁纸/【哲风壁纸】二次元-初音-动漫.png",
+        src: "assert/music/好きだから。.mp3"
+      },
+      {
+        title: "不得不爱",
+        cover: "assert/img/初音未来 (1).png",
+        src: "assert/music/不得不爱-Lambert.320.mp3"
+      },
+      {
+        title: "Darling",
+        cover: "assert/满意壁纸/【哲风壁纸】02-动漫 (1).png",
+        src: "assert/music/Darling.mp3"
+      },
+      {
+        title: "罗生门",
+        cover: "assert/满意壁纸/【哲风壁纸】eva-明日香.png",
+        src: "assert/music/罗生门.mp3"
+      },
+      {
+        title: "Where Is Your Love",
+        cover: "assert/img/【哲风壁纸】好看-粉色-迷惑 (1).png",
+        src: "assert/music/Where Is Your Love.mp3"
+      },
+      {
+        title: "小孩",
+        cover: "assert/img/【哲风壁纸】插画-秋-出水芙蓉 (1).png",
+        src: "assert/music/小孩.mp3"
+      },
+
+      {
+        title: "trust me",
+        cover: "assert/满意壁纸/圣杯战争.png",
+        src: "assert/music/trust me.mp3"
+      },
+      {
+        title: "rain",
+        cover: "assert/img/【哲风壁纸】剑客-水墨.png",
+        src: "assert/music/rain.mp3"
+      }
+
+
+    ];
+    this.currentIndex = 0;
+    this.playMode = 'list'; // 默认为列表模式
+    this.lastVolume = 0.5;
+    this.initElements();
+    this.initAudioControls();
+    this.loadMusic(this.currentIndex, false); // 添加 false 参数表示不自动播放
+    this.renderPlaylist();
   }
-  isProfileVisible = !isProfileVisible; // 切换状态
-});
 
-// 获取元素
-const listLink = document.getElementById("list-link");
-const todoListModal = document.getElementById("todoListModal");
-const modalListCloseBtn = document.querySelector(".modalListCloseBtn");
+  initElements() {
+    this.player = document.querySelector('.music-player');
+    this.audio = document.getElementById('audio-player');
+    this.playBtn = document.querySelector('.play-btn');
+    this.prevBtn = document.querySelector('.prev-btn');
+    this.nextBtn = document.querySelector('.next-btn');
+    this.volumeSlider = document.querySelector('.volume-slider');
+    this.volumeIcon = document.querySelector('.volume-icon');
+    this.title = document.querySelector('.music-title');
+    this.cover = document.querySelector('.music-cover img');
+    this.progressBar = document.querySelector('.progress-bar');
+    this.progress = document.querySelector('.progress-current');
+    this.currentTime = document.querySelector('.current-time');
+    this.totalTime = document.querySelector('.total-time');
+    this.modeBtn = document.querySelector('.mode-btn');
+    this.playlist = document.querySelector('.playlist');
 
-// 点击List显示弹窗
-listLink.addEventListener("click", (event) => {
-  event.preventDefault();
-  todoListModal.style.display = "block";
-});
+    // 更新音量滑块的背景颜色
+    this.volumeSlider.addEventListener('input', (e) => {
+      const value = e.target.value;
+      this.audio.volume = value / 100;
+      this.updateVolumeIcon();
+      
+      // 添加渐变背景效果
+      this.volumeSlider.style.background = `linear-gradient(to right, 
+        #6ab1f7 0%, 
+        #6ab1f7 ${value}%, 
+        rgba(106, 177, 247, 0.2) ${value}%, 
+        rgba(106, 177, 247, 0.2) 100%)`;
+    });
 
-// 点击关闭按钮隐藏弹窗
-modalListCloseBtn.addEventListener("click", () => {
-  todoListModal.style.display = "none";
-});
+    // 初始化音量滑块背景
+    this.volumeSlider.style.background = `linear-gradient(to right, 
+      #6ab1f7 0%, 
+      #6ab1f7 50%, 
+      rgba(106, 177, 247, 0.2) 50%, 
+      rgba(106, 177, 247, 0.2) 100%)`;
 
-// 点击弹窗外区域隐藏弹窗
-window.addEventListener("click", (event) => {
-  if (event.target === todoListModal) {
-    todoListModal.style.display = "none";
+    // 创建滑块容器
+    const volumeControl = document.querySelector('.volume-control');
+    const volumeSliderContainer = document.createElement('div');
+    volumeSliderContainer.className = 'volume-slider-container';
+    
+    // 将滑块移动到新容器中
+    const volumeSlider = this.volumeSlider;
+    volumeSliderContainer.appendChild(volumeSlider);
+    volumeControl.appendChild(volumeSliderContainer);
   }
+
+  initAudioControls() {
+    this.playBtn.addEventListener('click', () => this.togglePlay());
+    this.prevBtn.addEventListener('click', () => this.playPrev());
+    this.nextBtn.addEventListener('click', () => this.playNext());
+    this.volumeSlider.addEventListener('input', (e) => {
+      const value = e.target.value;
+      this.audio.volume = value / 100;
+      if (value > 0) {
+        this.lastVolume = this.audio.volume;
+      }
+      this.updateVolumeIcon();
+      this.updateVolumeSlider();
+    });
+    this.volumeIcon.addEventListener('click', () => {
+      if (this.audio.volume > 0) {
+        // 如果当前有声音，存储当前音量并静音
+        this.lastVolume = this.audio.volume;
+        this.audio.volume = 0;
+        this.volumeSlider.value = 0;
+      } else {
+        // 如果当前是静音，恢复到上一次的音量
+        this.audio.volume = this.lastVolume;
+        this.volumeSlider.value = this.lastVolume * 100;
+      }
+      
+      // 更新音量图标和滑块背景
+      this.updateVolumeIcon();
+      this.updateVolumeSlider();
+    });
+    this.audio.addEventListener('ended', () => this.playNext());
+    
+    // 进度条控制
+    this.progressBar.addEventListener('click', (e) => {
+      const percent = e.offsetX / this.progressBar.offsetWidth;
+      this.audio.currentTime = percent * this.audio.duration;
+    });
+
+    // 播放模式切换
+    this.modeBtn.addEventListener('click', () => this.togglePlayMode());
+
+    // 更新进度
+    this.audio.addEventListener('timeupdate', () => this.updateProgress());
+    
+    // 音频加载完成
+    this.audio.addEventListener('loadedmetadata', () => {
+      this.totalTime.textContent = this.formatTime(this.audio.duration);
+    });
+  }
+
+  loadMusic(index, autoplay = false) {
+    const music = this.musicList[index];
+    this.audio.src = music.src;
+    this.title.textContent = music.title;
+    this.cover.src = music.cover;
+    
+    // 只有在 autoplay 为 true 时才自动播放
+    if (autoplay) {
+      this.audio.play().then(() => {
+        this.updatePlayButton();
+      }).catch(console.error);
+    } else {
+      this.updatePlayButton();
+    }
+  }
+
+  togglePlay() {
+    if (this.audio.paused) {
+      this.audio.play();
+    } else {
+      this.audio.pause();
+    }
+    this.updatePlayButton();
+  }
+
+  updatePlayButton() {
+    const playIcon = '<path d="M8 5v14l11-7z"/>';
+    const pauseIcon = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+    this.playBtn.querySelector('svg').innerHTML = this.audio.paused ? playIcon : pauseIcon;
+  }
+
+  playPrev() {
+    this.currentIndex = (this.currentIndex - 1 + this.musicList.length) % this.musicList.length;
+    this.loadMusic(this.currentIndex, true); // 切换歌曲时自动播放
+  }
+
+  playNext() {
+    if (this.playMode === 'single') {
+      this.audio.currentTime = 0;
+      this.audio.play();
+      return;
+    }
+
+    if (this.playMode === 'random') {
+      let nextIndex;
+      do {
+        nextIndex = Math.floor(Math.random() * this.musicList.length);
+      } while (nextIndex === this.currentIndex && this.musicList.length > 1);
+      this.currentIndex = nextIndex;
+    } else {
+      this.currentIndex = (this.currentIndex + 1) % this.musicList.length;
+    }
+    
+    this.loadMusic(this.currentIndex, true); // 切换歌曲时自动播放
+  }
+
+  updateVolumeIcon() {
+    const volumeOffIcon = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+    const volumeOnIcon = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>';
+    this.volumeIcon.innerHTML = this.audio.volume === 0 ? volumeOffIcon : volumeOnIcon;
+  }
+
+  updateProgress() {
+    const { currentTime, duration } = this.audio;
+    const percent = (currentTime / duration) * 100;
+    this.progress.style.width = `${percent}%`;
+    this.currentTime.textContent = this.formatTime(currentTime);
+  }
+
+  formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  togglePlayMode() {
+    const modes = ['list', 'single', 'random'];
+    const currentIndex = modes.indexOf(this.playMode);
+    this.playMode = modes[(currentIndex + 1) % modes.length];
+    this.updateModeButton();
+  }
+
+  updateModeButton() {
+    const modeIcons = {
+      list: '<path d="M3 15h18v-2H3v2zm0 4h18v-2H3v2zm0-8h18V9H3v2zm0-6v2h18V5H3z"/>',
+      single: '<path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/>',
+      random: '<path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/>'
+    };
+    this.modeBtn.querySelector('svg').innerHTML = modeIcons[this.playMode];
+    this.modeBtn.title = `${this.playMode}模式`;
+  }
+
+  renderPlaylist() {
+    this.playlist.innerHTML = this.musicList.map((music, index) => `
+      <div class="playlist-item ${index === this.currentIndex ? 'active' : ''}" data-index="${index}">
+        ${music.title}
+      </div>
+    `).join('');
+
+    // 添加点击事件
+    this.playlist.querySelectorAll('.playlist-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const index = parseInt(item.dataset.index);
+        if (index !== this.currentIndex) {
+          this.currentIndex = index;
+          this.loadMusic(index);
+        }
+      });
+    });
+  }
+
+  // 添加更新音量滑块背景的方法
+  updateVolumeSlider() {
+    const value = this.audio.volume * 100;
+    this.volumeSlider.style.background = `linear-gradient(to right, 
+      #6ab1f7 0%, 
+      #6ab1f7 ${value}%, 
+      rgba(106, 177, 247, 0.2) ${value}%, 
+      rgba(106, 177, 247, 0.2) 100%)`;
+  }
+}
+
+// 初始化音乐播放器
+document.addEventListener('DOMContentLoaded', () => {
+  new MusicPlayer();
 });
