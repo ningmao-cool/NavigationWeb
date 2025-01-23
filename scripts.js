@@ -437,6 +437,29 @@ saveRecordBtn.addEventListener("click", () => {
   const currentDurationMs =
     hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
 
+  
+  // 计算今日总学习时间
+  const todayDate = getCurrentDate();
+  let todayTotalTime = history.reduce((total, rec) => {
+    if (rec.date === todayDate) {
+      const [h, m, s] = rec.duration.split(":").map(Number);
+      return total + h * 3600 * 1000 + m * 60 * 1000 + s * 1000;
+    }
+    return total;
+  }, 0);
+
+  // 更新今日总学习时间
+  todayTotalTime += currentDurationMs;
+
+  // 计算当前记录的比例
+  const percentage = todayTotalTime
+    ? ((currentDurationMs / todayTotalTime) * 100).toFixed(2)
+    : "0.00";
+
+  // 将比例信息添加到记录中
+  record.percentage = percentage;
+
+
   // 将新记录添加到历史记录中
   history.unshift(record);
 
