@@ -387,9 +387,26 @@ studyModeContainer.addEventListener("click", (event) => {
 // 获取当前日期
 function getCurrentDate() {
   const now = new Date();
-  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(
-    now.getDate()
-  )}`;
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
+// 计算时间的毫秒数
+function calculateDurationMs(duration) {
+  const [hours, minutes, seconds] = duration.split(":").map(Number);
+  return hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+}
+
+// 格式化毫秒数为时:分:秒
+function formatTimeFromMs(ms) {
+  const hours = Math.floor(ms / (3600 * 1000));
+  const minutes = Math.floor((ms % (3600 * 1000)) / (60 * 1000));
+  const seconds = Math.floor((ms % (60 * 1000)) / 1000);
+  return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+}
+
+// 补零函数
+function pad(num) {
+  return num < 10 ? "0" + num : num;
 }
 
 // 开始计时
@@ -403,7 +420,7 @@ startTimerBtn.addEventListener("click", () => {
   startTime = Date.now() - elapsedTime;
   timerInterval = setInterval(() => {
     elapsedTime = Date.now() - startTime;
-    timerDisplay.textContent = formatTime(elapsedTime);
+    timerDisplay.textContent = formatTimeFromMs(elapsedTime);
   }, 1000);
   isTimerRunning = true;
 });
@@ -415,7 +432,6 @@ pauseTimerBtn.addEventListener("click", () => {
     isTimerRunning = false;
   }
 });
-
 // 保存记录
 saveRecordBtn.addEventListener("click", () => {
   if (!subjectInput.value.trim()) {
@@ -423,55 +439,61 @@ saveRecordBtn.addEventListener("click", () => {
     return;
   }
 
-  const record = {
-    subject: subjectInput.value,
-    duration: formatTime(elapsedTime),
-    date: getCurrentDate(),
-  };
-
   // 从 localStorage 中获取现有历史记录
   let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
 
   // 计算当前记录的时间
-  const [hours, minutes, seconds] = record.duration.split(":").map(Number);
-  const currentDurationMs =
-    hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+  const [hours, minutes, seconds] = formatTime(elapsedTime).split(":").map(Number);
+  const currentDurationMs = hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
 
-  
-  // 计算今日总学习时间
-  const todayDate = getCurrentDate();
-  let todayTotalTime = history.reduce((total, rec) => {
-    if (rec.date === todayDate) {
+  // 获取日期并计算该日期的总学习时间
+  const currentDate = getCurrentDate();
+  let dateTotalTime = history.reduce((total, rec) => {
+    if (rec.date === currentDate) {
       const [h, m, s] = rec.duration.split(":").map(Number);
       return total + h * 3600 * 1000 + m * 60 * 1000 + s * 1000;
     }
     return total;
   }, 0);
 
-  // 更新今日总学习时间
-  todayTotalTime += currentDurationMs;
+  // 加上当前记录的时间
+  dateTotalTime += currentDurationMs;
 
   // 计算当前记录的比例
-  const percentage = todayTotalTime
-    ? ((currentDurationMs / todayTotalTime) * 100).toFixed(2)
-    : "0.00";
+  const percentage = ((currentDurationMs / dateTotalTime) * 100).toFixed(2);
 
-  // 将比例信息添加到记录中
-  record.percentage = percentage;
+  // 创建记录对象
+  const record = {
+    subject: subjectInput.value,
+    duration: formatTime(elapsedTime),
+    date: currentDate,
+    percentage: percentage
+  };
 
+  // 更新同一天其他记录的百分比
+  history = history.map(rec => {
+    if (rec.date === currentDate) {
+      const [h, m, s] = rec.duration.split(":").map(Number);
+      const recDurationMs = h * 3600 * 1000 + m * 60 * 1000 + s * 1000;
+      rec.percentage = ((recDurationMs / dateTotalTime) * 100).toFixed(2);
+    }
+    return rec;
+  });
 
   // 将新记录添加到历史记录中
   history.unshift(record);
 
-  // 将更新后的历史记录保存到 localStorage
+  // 保存到localStorage
   localStorage.setItem("studyHistory", JSON.stringify(history));
 
   renderHistory();
-
+  
+  // 重置输入和计时器
   subjectInput.value = "";
   elapsedTime = 0;
   timerDisplay.textContent = "00:00:00";
 });
+
 
 // 重置计时器
 resetTimerBtn.addEventListener("click", () => {
@@ -480,47 +502,45 @@ resetTimerBtn.addEventListener("click", () => {
   elapsedTime = 0;
   timerDisplay.textContent = "00:00:00";
 });
+
 // 渲染历史记录并计算今日学习时长
 function renderHistory() {
   let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
-  const todayDate = getCurrentDate();
-  let todayTotalTime = 0;
-  let totalTime = 0;
-
   historyContainer.innerHTML = "";
 
-  // 遍历历史记录，计算今日学习总时长
-  history.forEach((record) => {
-    const [hours, minutes, seconds] = record.duration.split(":").map(Number);
-    const durationMs =
-      hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
-    totalTime += durationMs;
-    if (record.date === todayDate) {
-      todayTotalTime += durationMs;
+  // 按日期分组记录
+  const groupedHistory = history.reduce((groups, record) => {
+    if (!groups[record.date]) {
+      groups[record.date] = [];
     }
+    groups[record.date].push(record);
+    return groups;
+  }, {});
+
+  // 为每个日期组重新计算百分比
+  Object.entries(groupedHistory).forEach(([date, records]) => {
+    // 计算该日期的总时间
+    const dateTotalTime = records.reduce((total, rec) => {
+      const [h, m, s] = rec.duration.split(":").map(Number);
+      return total + h * 3600 * 1000 + m * 60 * 1000 + s * 1000;
+    }, 0);
+
+    // 更新每条记录的百分比
+    records.forEach(record => {
+      const [h, m, s] = record.duration.split(":").map(Number);
+      const recordDurationMs = h * 3600 * 1000 + m * 60 * 1000 + s * 1000;
+      record.percentage = ((recordDurationMs / dateTotalTime) * 100).toFixed(2);
+    });
   });
 
-  // 渲染卡片
+  // 渲染记录
   history.forEach((record, index) => {
     const card = document.createElement("div");
     card.className = "history-card";
     card.style.position = "relative";
 
-    let subjectPercentage = "0.00";
-    if (record.date === todayDate && todayTotalTime > 0) {
-      // 重新计算今日记录的比例
-      const [hours, minutes, seconds] = record.duration.split(":").map(Number);
-      const cardTime =
-        hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
-      subjectPercentage = ((cardTime / todayTotalTime) * 100).toFixed(2);
-    } else if (record.percentage) {
-      // 使用存储的比例信息
-      subjectPercentage = record.percentage;
-    }
-
-    // 卡片内容
     card.innerHTML = `
-      <span class="percentage-text">${subjectPercentage}%</span>
+      <span class="percentage-text">${record.percentage}%</span>
       <button class="delete-btn" data-index="${index}"></button>
       <h4>Date: ${record.date}</h4>
       <p>Subject: ${record.subject}</p>
@@ -538,15 +558,11 @@ function renderHistory() {
     historyContainer.appendChild(card);
   });
 
-  // 更新"Today's total"显示
-  document.getElementById("today-total-time").textContent =
-    formatTime(todayTotalTime);
-
-  // 更新"Total time"显示
-  document.getElementById("total-time").textContent = `Total: ${formatTime(
-    totalTime
-  )}`;
+  // 更新总时间显示
+  updateTotalTimeDisplay(history);
 }
+
+
 
 // 格式化时间
 function formatTime(ms) {
@@ -582,10 +598,39 @@ addCardBtn.addEventListener("click", () => {
   // 从 localStorage 中获取现有历史记录
   let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
 
+  // 计算新记录的时间
+  const [hours, minutes, seconds] = newRecord.duration.split(":").map(Number);
+  const currentDurationMs = hours * 3600 * 1000 + minutes * 60 * 1000 + seconds * 1000;
+
+  // 计算同一天的总学习时间
+  let dateTotalTime = history.reduce((total, rec) => {
+    if (rec.date === newRecord.date) {
+      const [h, m, s] = rec.duration.split(":").map(Number);
+      return total + h * 3600 * 1000 + m * 60 * 1000 + s * 1000;
+    }
+    return total;
+  }, 0);
+
+  // 加上新记录的时间
+  dateTotalTime += currentDurationMs;
+
+  // 计算新记录的百分比
+  newRecord.percentage = ((currentDurationMs / dateTotalTime) * 100).toFixed(2);
+
+  // 更新同一天其他记录的百分比
+  history = history.map(rec => {
+    if (rec.date === newRecord.date) {
+      const [h, m, s] = rec.duration.split(":").map(Number);
+      const recDurationMs = h * 3600 * 1000 + m * 60 * 1000 + s * 1000;
+      rec.percentage = ((recDurationMs / dateTotalTime) * 100).toFixed(2);
+    }
+    return rec;
+  });
+
   // 将新记录添加到历史记录中
   history.unshift(newRecord);
 
-  // 将更新后的历史记录保存到 localStorage
+  // 保存到localStorage
   localStorage.setItem("studyHistory", JSON.stringify(history));
 
   renderHistory();
