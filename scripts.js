@@ -432,6 +432,7 @@ pauseTimerBtn.addEventListener("click", () => {
     isTimerRunning = false;
   }
 });
+<<<<<<< HEAD
 
 // 更新总时间显示
 function updateTotalTimeDisplay(history) {
@@ -446,6 +447,8 @@ function updateTotalTimeDisplay(history) {
 }
 
 
+=======
+>>>>>>> a1c80642c2af4d1fa80c02d45c7bcc14295b4a65
 // 保存记录
 saveRecordBtn.addEventListener("click", () => {
   if (!subjectInput.value.trim()) {
