@@ -50,7 +50,6 @@ body {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  filter: brightness(0.85);
   transition: opacity 3s ease-in-out, filter 3s ease-in-out;
 }
 
@@ -101,7 +100,7 @@ body {
 }
 
 .nav-card:hover{
-  transform: translateY(-5px) rotateZ(2deg);
+  transform: translateY(-5px) rotateZ(3deg);
   background: linear-gradient(
     135deg,
     rgba(0, 255, 255, 0.2),
