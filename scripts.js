@@ -433,6 +433,8 @@ pauseTimerBtn.addEventListener("click", () => {
   }
 });
 
+
+
 // 更新总时间显示
 function updateTotalTimeDisplay(history) {
   const totalTimeMs = history.reduce((total, record) => {
@@ -517,6 +519,20 @@ resetTimerBtn.addEventListener("click", () => {
   timerDisplay.textContent = "00:00:00";
 });
 
+// 更新今天的总学习时间
+function updateTodayTotalTime(history) {
+  const today = getCurrentDate();
+  const todayRecords = history.filter(record => record.date === today);
+  const totalTodayMs = todayRecords.reduce((total, record) => {
+    const [h, m, s] = record.duration.split(":").map(Number);
+    return total + h * 3600 * 1000 + m * 60 * 1000 + s * 1000;
+  }, 0);
+  
+  const totalTodayFormatted = formatTimeFromMs(totalTodayMs);
+  const todayTotalTimeDisplay = document.getElementById("today-total-time");
+  todayTotalTimeDisplay.textContent = totalTodayFormatted;
+}
+
 // 渲染历史记录并计算今日学习时长
 function renderHistory() {
   let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
@@ -574,6 +590,9 @@ function renderHistory() {
 
   // 更新总时间显示
   updateTotalTimeDisplay(history);
+  
+  // 更新今天的总学习时间
+  updateTodayTotalTime(history);
 }
 
 
