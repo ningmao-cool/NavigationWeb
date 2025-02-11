@@ -1529,7 +1529,7 @@ label {
   backdrop-filter: blur(20px);
   transform: translateX(-100%);
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-left: 20px;
+  margin-left: 30px;
   transform-origin: left center;
   will-change: transform;
 }
@@ -2030,67 +2030,4 @@ label {
     max-width: 90%;
     max-height: 70vh;
   }
-}
-
-/* 彩蛋动画相关样式 */
-@keyframes easterEggAnimation {
-  0% {
-    transform: scale(1);
-    filter: hue-rotate(0deg);
-  }
-  25% {
-    transform: scale(1.2) rotate(10deg);
-    filter: hue-rotate(90deg);
-  }
-  50% {
-    transform: scale(0.8) rotate(-10deg);
-    filter: hue-rotate(180deg);
-  }
-  75% {
-    transform: scale(1.2) rotate(10deg);
-    filter: hue-rotate(270deg);
-  }
-  100% {
-    transform: scale(1);
-    filter: hue-rotate(360deg);
-  }
-}
-
-.easter-egg-active {
-  animation: easterEggAnimation 1s ease-in-out;
-  position: relative;
-}
-
-.easter-egg-active::after {
-  content: '🎉';
-  position: absolute;
-  font-size: 24px;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: float 2s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) translateX(-50%);
-  }
-  50% {
-    transform: translateY(-20px) translateX(-50%);
-  }
-}
-
-/* 彩蛋文字效果 */
-.rainbow-text {
-  background: linear-gradient(to right, 
-    #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: rainbow 3s linear infinite;
-}
-
-@keyframes rainbow {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
 }
