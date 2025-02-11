@@ -900,31 +900,14 @@ class MusicPlayer {
       const value = e.target.value;
       this.audio.volume = value / 100;
       this.updateVolumeIcon();
-      
-      // 添加渐变背景效果
-      this.volumeSlider.style.background = `linear-gradient(to right, 
-        #6ab1f7 0%, 
-        #6ab1f7 ${value}%, 
-        rgba(106, 177, 247, 0.2) ${value}%, 
-        rgba(106, 177, 247, 0.2) 100%)`;
+      // 设置 CSS 变量来更新进度条颜色
+      this.volumeSlider.style.setProperty('--volume-percentage', `${value}%`);
     });
 
-    // 初始化音量滑块背景
-    this.volumeSlider.style.background = `linear-gradient(to right, 
-      #6ab1f7 0%, 
-      #6ab1f7 50%, 
-      rgba(106, 177, 247, 0.2) 50%, 
-      rgba(106, 177, 247, 0.2) 100%)`;
-
-    // 创建滑块容器
-    const volumeControl = document.querySelector('.volume-control');
-    const volumeSliderContainer = document.createElement('div');
-    volumeSliderContainer.className = 'volume-slider-container';
-    
-    // 将滑块移动到新容器中
-    const volumeSlider = this.volumeSlider;
-    volumeSliderContainer.appendChild(volumeSlider);
-    volumeControl.appendChild(volumeSliderContainer);
+    // 初始化音量滑块
+    this.volumeSlider.value = 50;
+    this.audio.volume = 0.5;
+    this.volumeSlider.style.setProperty('--volume-percentage', '50%');
   }
 
   initAudioControls() {
@@ -982,6 +965,9 @@ class MusicPlayer {
     this.title.textContent = music.title;
     this.cover.src = music.cover;
     
+    // 更新播放列表项的激活状态
+    this.updateActivePlaylistItem();
+    
     // 只有在 autoplay 为 true 时才自动播放
     if (autoplay) {
       this.audio.play().then(() => {
@@ -989,6 +975,19 @@ class MusicPlayer {
       }).catch(console.error);
     } else {
       this.updatePlayButton();
+    }
+  }
+
+  // 添加更新播放列表激活状态的方法
+  updateActivePlaylistItem() {
+    // 移除所有播放列表项的激活状态
+    const playlistItems = this.playlist.querySelectorAll('.playlist-item');
+    playlistItems.forEach(item => item.classList.remove('active'));
+    
+    // 为当前播放的歌曲添加激活状态
+    const currentItem = this.playlist.querySelector(`[data-index="${this.currentIndex}"]`);
+    if (currentItem) {
+      currentItem.classList.add('active');
     }
   }
 
@@ -1081,7 +1080,7 @@ class MusicPlayer {
         const index = parseInt(item.dataset.index);
         if (index !== this.currentIndex) {
           this.currentIndex = index;
-          this.loadMusic(index);
+          this.loadMusic(index, true); // 点击时自动播放
         }
       });
     });
@@ -1090,15 +1089,201 @@ class MusicPlayer {
   // 添加更新音量滑块背景的方法
   updateVolumeSlider() {
     const value = this.audio.volume * 100;
-    this.volumeSlider.style.background = `linear-gradient(to right, 
-      #6ab1f7 0%, 
-      #6ab1f7 ${value}%, 
-      rgba(106, 177, 247, 0.2) ${value}%, 
-      rgba(106, 177, 247, 0.2) 100%)`;
+    this.volumeSlider.value = value;
+    this.volumeSlider.style.setProperty('--volume-percentage', `${value}%`);
   }
 }
 
 // 初始化音乐播放器
 document.addEventListener('DOMContentLoaded', () => {
   new MusicPlayer();
+
+  // Home链接彩蛋功能
+  const homeLink = document.getElementById('home-link');
+  let clickCount = 0;
+  let lastClickTime = 0;
+
+  if (homeLink) {
+    homeLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      const currentTime = new Date().getTime();
+      
+      // 如果距离上次点击超过3秒，重置计数器
+      if (currentTime - lastClickTime > 3000) {
+        clickCount = 0;
+      }
+      
+      clickCount++;
+      lastClickTime = currentTime;
+      
+      console.log('Click count:', clickCount); // 添加调试信息
+      
+      // 检查是否在3秒内点击了3次
+      if (clickCount === 3) {
+        triggerEasterEgg(homeLink);
+        clickCount = 0;
+      }
+    });
+  }
 });
+
+// 添加一个常量保存原始文字
+const ORIGINAL_HOME_TEXT = 'Home';
+
+// 添加一个变量来存储计时器ID
+let easterEggTimer = null;
+
+function triggerEasterEgg(homeLink) {
+  console.log('Easter egg triggered!'); // 添加调试信息
+  
+  // 如果之前的计时器还在运行，先清除它
+  if (easterEggTimer) {
+    clearTimeout(easterEggTimer);
+    easterEggTimer = null;
+    // 确保先恢复原始状态
+    homeLink.classList.remove('easter-egg-active', 'rainbow-text');
+    homeLink.textContent = ORIGINAL_HOME_TEXT;
+  }
+  
+  // 添加彩蛋动画类
+  homeLink.classList.add('easter-egg-active', 'rainbow-text');
+  
+  // 创建烟花效果
+  createFireworks();
+  
+  // 获取音乐播放器实例并播放音乐
+  const audioPlayer = document.getElementById('audio-player');
+  const playBtn = document.querySelector('.play-btn');
+  if (audioPlayer && audioPlayer.paused && playBtn) {
+    playBtn.click(); // 模拟点击播放按钮
+  }
+  
+  // 修改文字内容
+  homeLink.textContent = '发现彩蛋啦！';
+  
+  // 3秒后恢复原状
+  easterEggTimer = setTimeout(() => {
+    homeLink.classList.remove('easter-egg-active', 'rainbow-text');
+    homeLink.textContent = ORIGINAL_HOME_TEXT;
+    easterEggTimer = null;
+  }, 3000);
+}
+
+function createFireworks() {
+  // 检查是否已经添加了烟花动画样式
+  if (!document.getElementById('firework-style')) {
+    const fireworkStyle = document.createElement('style');
+    fireworkStyle.id = 'firework-style';
+    fireworkStyle.textContent = `
+      @keyframes firework {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(20);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(fireworkStyle);
+  }
+
+  for (let i = 0; i < 10; i++) {
+    setTimeout(() => {
+      const firework = document.createElement('div');
+      firework.style.position = 'fixed';
+      firework.style.left = Math.random() * window.innerWidth + 'px';
+      firework.style.top = Math.random() * window.innerHeight + 'px';
+      firework.style.width = '5px';
+      firework.style.height = '5px';
+      firework.style.borderRadius = '50%';
+      firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+      firework.style.boxShadow = '0 0 10px 2px currentColor';
+      firework.style.animation = 'firework 1s ease-out forwards';
+      
+      document.body.appendChild(firework);
+      
+      setTimeout(() => firework.remove(), 1000);
+    }, i * 100);
+  }
+}
+
+// Notes 相关的元素
+const notesLink = document.getElementById("notes-link");
+const notesModal = document.getElementById("notes-modal");
+const notesCloseBtn = document.querySelector(".notes-close-btn");
+const saveNoteBtn = document.getElementById("save-note-btn");
+const noteTitle = document.getElementById("note-title");
+const noteContent = document.getElementById("note-content");
+const notesContainer = document.querySelector(".notes-container");
+
+// 打开笔记模态框
+notesLink.addEventListener("click", (e) => {
+  e.preventDefault();
+  notesModal.style.display = "block";
+  renderNotes();
+});
+
+// 关闭笔记模态框
+notesCloseBtn.addEventListener("click", () => {
+  notesModal.style.display = "none";
+});
+
+// 点击模态框外部关闭
+window.addEventListener("click", (e) => {
+  if (e.target === notesModal) {
+    notesModal.style.display = "none";
+  }
+});
+
+// 保存笔记
+saveNoteBtn.addEventListener("click", () => {
+  const title = noteTitle.value.trim();
+  const content = noteContent.value.trim();
+  
+  if (!title || !content) {
+    alert("标题和内容不能为空！");
+    return;
+  }
+  
+  const note = {
+    id: Date.now(),
+    title,
+    content,
+    date: new Date().toLocaleString()
+  };
+  
+  const notes = JSON.parse(localStorage.getItem("notes") || "[]");
+  notes.unshift(note);
+  localStorage.setItem("notes", JSON.stringify(notes));
+  
+  noteTitle.value = "";
+  noteContent.value = "";
+  
+  renderNotes();
+});
+
+// 渲染笔记列表
+function renderNotes() {
+  const notes = JSON.parse(localStorage.getItem("notes") || "[]");
+  notesContainer.innerHTML = notes.map(note => `
+    <div class="note-card">
+      <span class="delete-note" onclick="deleteNote(${note.id})">&times;</span>
+      <h3>${note.title}</h3>
+      <p>${note.content}</p>
+      <div class="note-date">${note.date}</div>
+    </div>
+  `).join("");
+}
+
+// 删除笔记
+window.deleteNote = function(id) {
+  if (!confirm("确定要删除这条笔记吗？")) return;
+  
+  let notes = JSON.parse(localStorage.getItem("notes") || "[]");
+  notes = notes.filter(note => note.id !== id);
+  localStorage.setItem("notes", JSON.stringify(notes));
+  
+  renderNotes();
+};

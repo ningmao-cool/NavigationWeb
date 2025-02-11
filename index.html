@@ -353,69 +353,72 @@
     <img class="modal-content-image" id="img01" alt="Expanded Image">
   </div>
 
-  <!-- 音乐播放器 -->
-  <div class="music-player">
-    <div class="music-cover">
-      <img src="assert/img/music-cover.jpg" alt="Music Cover" />
-      <div class="music-title">初音未来 - 千本樱</div>
-    </div>
-
-    <!-- 进度条 -->
-    <div class="progress-container">
-      <div class="progress-bar">
-        <div class="progress-current"></div>
+  <!-- 音乐播放器容器 -->
+  <div class="music-player-container">
+    <!-- 音乐播放器 -->
+    <div class="music-player">
+      <div class="music-cover">
+        <img src="assert/img/music-cover.jpg" alt="Music Cover" />
+        <div class="music-title">初音未来 - 千本樱</div>
       </div>
-      <div class="time-info">
-        <span class="current-time">00:00</span>
-        <span class="total-time">00:00</span>
-      </div>
-    </div>
 
-    <div class="music-controls">
-      <!-- 播放模式按钮 -->
-      <button class="mode-btn" title="播放模式">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M17 17h-1.5v-1.5h1.5V17zm0-3h-1.5v1.5h1.5V14zm-3 3h-1.5v-1.5h1.5V17zm0-3h-1.5v1.5h1.5V14zm-3 3h-1.5v-1.5h1.5V17zm0-3h-1.5v1.5h1.5V14zm9-3H3v6h18v-6zm0-2c1.1 0 2 .9 2 2v6c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V9c0-1.1.9-2 2-2h18z" />
-        </svg>
-      </button>
-
-      <button class="prev-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
-        </svg>
-      </button>
-
-      <button class="play-btn">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </button>
-
-      <button class="next-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M6 6l8.5 6-8.5 6V6zm9 0h2v12h-2z" />
-        </svg>
-      </button>
-
-      <div class="volume-control">
-        <svg class="volume-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
-        </svg>
-        <div class="volume-slider-container">
-          <input type="range" class="volume-slider" min="0" max="100" value="50">
+      <!-- 进度条 -->
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-current"></div>
+        </div>
+        <div class="time-info">
+          <span class="current-time">00:00</span>
+          <span class="total-time">00:00</span>
         </div>
       </div>
-    </div>
 
-    <!-- 播放列表 -->
-    <div class="playlist-container">
-      <div class="playlist">
-        <!-- 播放列表项会通过 JavaScript 动态生成 -->
+      <div class="music-controls">
+        <!-- 播放模式按钮 -->
+        <button class="mode-btn" title="播放模式">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M17 17h-1.5v-1.5h1.5V17zm0-3h-1.5v1.5h1.5V14zm-3 3h-1.5v-1.5h1.5V17zm0-3h-1.5v1.5h1.5V14zm-3 3h-1.5v-1.5h1.5V17zm0-3h-1.5v1.5h1.5V14zm9-3H3v6h18v-6zm0-2c1.1 0 2 .9 2 2v6c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V9c0-1.1.9-2 2-2h18z" />
+          </svg>
+        </button>
+
+        <button class="prev-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
+          </svg>
+        </button>
+
+        <button class="play-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </button>
+
+        <button class="next-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 6l8.5 6-8.5 6V6zm9 0h2v12h-2z" />
+          </svg>
+        </button>
+
+        <div class="volume-control">
+          <svg class="volume-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+          </svg>
+          <div class="volume-slider-container">
+            <input type="range" class="volume-slider" min="0" max="100" value="50">
+          </div>
+        </div>
       </div>
-    </div>
 
-    <audio id="audio-player"></audio>
+      <!-- 播放列表 -->
+      <div class="playlist-container">
+        <div class="playlist">
+          <!-- 播放列表项会通过 JavaScript 动态生成 -->
+        </div>
+      </div>
+
+      <audio id="audio-player"></audio>
+    </div>
   </div>
 
 
