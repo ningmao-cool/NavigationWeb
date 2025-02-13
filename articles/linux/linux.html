@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article - NingMao Blog</title>
+    <link rel="icon" href="../../assert/img/icons8-navigation-48.png" type="image/png" />
+    <link rel="stylesheet" href="../../blog.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../../config.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+    <style>
+        /* 基础容器样式 */
+        .article-container {
+            max-width: 1000px;
+            margin: 100px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* Markdown 内容样式 */
+        .markdown-content {
+            line-height: 1.8;
+        }
+
+        /* 标题样式 */
+        .markdown-content h1,
+        .markdown-content h2,
+        .markdown-content h3 {
+            color: #bcffe4;
+            margin: 1.5em 0 0.8em;
+        }
+
+        /* 表格样式优化 */
+        .markdown-content table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .markdown-content th,
+        .markdown-content td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .markdown-content th {
+            background: rgba(188, 255, 228, 0.1);
+            color: #bcffe4;
+            font-weight: 600;
+        }
+
+        .markdown-content tr:last-child td {
+            border-bottom: none;
+        }
+
+        .markdown-content tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* 代码块样式 */
+        .markdown-content pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 1.5em 0;
+        }
+
+        .markdown-content code {
+            font-family: 'Fira Code', Consolas, Monaco, monospace;
+            color: #bcffe4;
+        }
+
+        /* 其他元素样式 */
+        .markdown-content p {
+            margin: 1em 0;
+        }
+
+        .markdown-content ul {
+            padding-left: 20px;
+        }
+
+        .markdown-content li {
+            margin: 0.5em 0;
+        }
+
+        /* 强调文本样式 */
+        .markdown-content strong {
+            color: #bcffe4;
+            font-weight: 600;
+        }
+
+        /* 添加文章封面样式 */
+        .article-hero {
+            position: relative;
+            height: 300px;
+            margin: -30px -30px 30px;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+        }
+
+        .article-hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .article-hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 100px 40px 40px;
+            background: linear-gradient(
+                to bottom,
+                transparent,
+                rgba(0, 0, 0, 0.7)
+            );
+            color: #fff;
+        }
+
+        .article-hero-title {
+            font-size: 2.5em;
+            margin: 0;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .article-hero-meta {
+            margin-top: 15px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .article-hero:hover .article-hero-image {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-image"></div>
+    
+    <div class="sidebar">
+        <ul>
+            <li><a href="../../index.html">Home</a></li>
+            <li class="active"><a href="../../blog.html">Blog</a></li>
+        </ul>
+        <div class="author-info">
+            <img src="../../assert/img/花绘1.jpg" alt="NingMao" class="author-avatar">
+            <span class="author-name">宁猫</span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
+    <div class="article-container">
+        <!-- 添加文章封面区域 -->
+        <div class="article-hero">
+            <img class="article-hero-image" src="" alt="">
+            <div class="article-hero-overlay">
+                <h1 class="article-hero-title"></h1>
+                <div class="article-hero-meta">
+                    <span class="article-date"></span>
+                    <span class="article-category"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 移动目录容器到这里 -->
+        <div class="markdown-content" id="content">
+            <!-- Markdown 内容会被动态加载到这里 -->
+        </div>
+    </div>
+
+    <!-- 将目录容器移到 article-container 外面 -->
+    <div class="toc-container">
+        <h3>目录</h3>
+        <ul class="toc-list">
+            <!-- 目录项会被动态添加到这里 -->
+        </ul>
+    </div>
+
+    <div class="back-to-top float-button">
+        <img src="../../assert/img/猫爪.svg" alt="回到顶部">
+    </div>
+
+    <a href="../../blog.html" class="back-to-blog float-button">
+        <img src="../../assert/img/BACK.svg" alt="返回博客">
+    </a>
+
+    <script>
+        // 配置 marked 选项
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            highlight: function(code, lang) {
+                if (Prism.languages[lang]) {
+                    return Prism.highlight(code, Prism.languages[lang], lang);
+                }
+                return code;
+            }
+        });
+
+        // 获取文章信息并设置封面
+        function setArticleInfo() {
+            const path = window.location.pathname;
+            const filename = path.split('/').pop().replace('.html', '');
+
+            // 获取文章信息
+            const articleInfo = blogConfig.articles[filename];
+            
+            // 设置封面图片
+            const coverImage = document.querySelector('.article-hero-image');
+            coverImage.src = `../../assert/${articleInfo.cover}`;  // 使用文章自己的封面
+
+            // 设置标题和其他信息
+            document.querySelector('.article-hero-title').textContent = articleInfo.title;
+            document.querySelector('.article-date').textContent = articleInfo.date;
+            document.querySelector('.article-category').textContent = ` · ${blogConfig.categories[articleInfo.category]}`;
+
+            // 添加字数统计
+            const content = document.getElementById('content').textContent;
+            const wordCount = content.length;
+            
+            const articleMeta = document.querySelector('.article-hero-meta');
+            articleMeta.innerHTML += `
+                <span class="article-stats">
+                    · ${wordCount} 字
+                </span>
+            `;
+        }
+
+        // 加载 Markdown 内容
+        const mdPath = window.location.pathname.replace('.html', '.md');
+        
+        fetch(mdPath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(markdown => {
+                document.getElementById('content').innerHTML = marked.parse(markdown);
+                setArticleInfo();
+                generateTOC();
+                
+                // 重新应用 Prism 高亮
+                Prism.highlightAll();
+                
+                // 为代码块添加语言标识和复制功能
+                document.querySelectorAll('pre code').forEach(block => {
+                    // 检测语言类型
+                    const language = block.className.match(/language-(\w+)/)?.[1] || 'text';
+                    
+                    // 创建语言标识/复制按钮
+                    const languageButton = document.createElement('div');
+                    languageButton.className = 'code-language';
+                    languageButton.textContent = language;
+                    
+                    // 添加复制功能
+                    languageButton.addEventListener('click', async () => {
+                        try {
+                            await navigator.clipboard.writeText(block.textContent);
+                            languageButton.textContent = '已复制!';
+                            languageButton.classList.add('copied');
+                            
+                            setTimeout(() => {
+                                languageButton.textContent = language;
+                                languageButton.classList.remove('copied');
+                            }, 2000);
+                        } catch (err) {
+                            console.error('复制失败:', err);
+                            languageButton.textContent = '复制失败';
+                            setTimeout(() => {
+                                languageButton.textContent = language;
+                            }, 2000);
+                        }
+                    });
+                    
+                    block.parentNode.appendChild(languageButton);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading article:', error);
+                document.getElementById('content').innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <h2 style="color: #ff6b6b;">Failed to load article</h2>
+                        <p>Error: ${error.message}</p>
+                        <p>Path: ${mdPath}</p>
+                    </div>
+                `;
+            });
+
+        // 进度条功能
+        const progressBar = document.querySelector('.progress-bar');
+        
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (window.scrollY / windowHeight) * 100;
+            progressBar.style.width = `${progress}%`;
+        });
+
+        // 回到顶部功能
+        const backToTop = document.querySelector('.back-to-top');
+        
+        // 监听滚动事件
+        window.addEventListener('scroll', () => {
+            // 当页面滚动超过一屏高度时显示按钮
+            if (window.scrollY > window.innerHeight) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        // 点击回到顶部
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'  // 平滑滚动
+            });
+        });
+
+        // 生成目录
+        function generateTOC() {
+            const content = document.querySelector('.markdown-content');
+            const headings = content.querySelectorAll('h1, h2, h3');
+            const tocList = document.querySelector('.toc-list');
+            const tocContainer = document.querySelector('.toc-container');
+            
+            if (headings.length === 0) {
+                tocContainer.style.display = 'none';
+                return;
+            }
+
+            headings.forEach((heading, index) => {
+                // 为每个标题添加 id
+                heading.id = `heading-${index}`;
+                
+                const level = parseInt(heading.tagName.charAt(1));
+                const listItem = document.createElement('li');
+                listItem.className = `toc-item level-${level}`;
+                
+                const link = document.createElement('a');
+                link.href = `#heading-${index}`;
+                link.className = 'toc-link';
+                link.textContent = heading.textContent;
+                
+                // 点击目录项滚动到对应位置
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    heading.scrollIntoView({ behavior: 'smooth' });
+                });
+                
+                // 添加鼠标悬停事件
+                listItem.addEventListener('mouseenter', (e) => {
+                    // 获取预览内容
+                    let previewContent = '';
+                    
+                    // 获取当前标题到下一个标题之间的内容
+                    const nextHeading = headings[index + 1];
+                    let currentNode = heading.nextElementSibling;
+                    
+                    while (currentNode && currentNode !== nextHeading) {
+                        if (currentNode.textContent.trim()) {
+                            previewContent += currentNode.textContent + '\n';
+                        }
+                        currentNode = currentNode.nextElementSibling;
+                    }
+                    
+                    // 截取预览内容（前150个字符）
+                    previewContent = previewContent.trim().substring(0, 150) + '...';
+                    
+                    // 设置预览框内容和位置
+                    preview.textContent = previewContent;
+                    
+                    // 计算预览框位置
+                    const rect = listItem.getBoundingClientRect();
+                    preview.style.left = (rect.left - 350) + 'px';  // 向左偏移 320px（预览框宽度 + 间距）
+                    preview.style.top = rect.top + 'px';
+                    
+                    // 显示预览框
+                    preview.classList.add('visible');
+                });
+
+                // 添加鼠标离开事件
+                listItem.addEventListener('mouseleave', () => {
+                    preview.classList.remove('visible');
+                });
+                
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+
+            // 监听滚动事件，高亮当前标题
+            let tocItems = document.querySelectorAll('.toc-item');
+            let headingElements = Array.from(headings);
+            
+            window.addEventListener('scroll', () => {
+                let fromTop = window.scrollY + 100;
+                
+                // 高亮当前标题
+                let currentHeading = null;
+                
+                // 从后往前查找第一个在视口上方的标题
+                for (let i = headingElements.length - 1; i >= 0; i--) {
+                    if (headingElements[i].offsetTop <= fromTop) {
+                        currentHeading = headingElements[i];
+                        break;
+                    }
+                }
+                
+                tocItems.forEach(item => item.classList.remove('active'));
+                
+                if (currentHeading) {
+                    const index = headingElements.indexOf(currentHeading);
+                    tocItems[index].classList.add('active');
+                }
+            });
+
+            // 创建预览框
+            const preview = document.createElement('div');
+            preview.className = 'toc-preview';
+            document.body.appendChild(preview);
+        }
+    </script>
+</body>
+</html> 

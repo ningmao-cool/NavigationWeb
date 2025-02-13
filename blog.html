@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NingMao-Blog</title>
+    <link rel="icon" href="assert/img/icons8-navigation-48.png" type="image/png" />
+    <link rel="stylesheet" href="blog.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="sidebar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li class="active"><a href="blog.html">Blog</a></li>
+        </ul>
+        <!-- 添加作者信息 -->
+        <div class="author-info">
+            <img src="assert/img/花绘1.jpg" alt="NingMao" class="author-avatar">
+            <span class="author-name">宁猫</span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- 进度条 -->
+    <div class="progress-container">
+        <div class="progress-bar"></div>
+    </div>
+
+    <!-- Fixed Background -->
+    <div class="background-image"></div>
+
+    <!-- Blog Content -->
+    <div class="blog-container">
+        <!-- Category Navigation -->
+        <div class="category-nav">
+            <h2>Categories</h2>
+            <ul>
+                <li class="active" data-category="all">All</li>
+                <li data-category="java">Java</li>
+                <li data-category="life">Life</li>
+                <li data-category="study">Study</li>
+                <li data-category="vue3">Vue3</li>
+                <li data-category="linux">Linux</li>
+                <li data-category="novel">Novel</li>
+            </ul>
+        </div>
+
+        <!-- Article List -->
+        <div class="article-list">
+            <!-- Java Category -->
+            <div class="article-card" data-category="java">
+                <div class="article-cover">
+                    <img src="assert/img/白色大河.png" alt="Java Article Cover">
+                </div>
+                <div class="article-content">
+                    <span class="article-category">Java</span>
+                    <h3>Java SE 基础知识总结</h3>
+                    <p class="article-excerpt">
+                        全面介绍 Java SE 的核心概念，包括基础语法、面向对象、集合框架、IO等内容...
+                    </p>
+                    <div class="article-meta">
+                        <span class="article-date">2025-02-13</span>
+                        <a href="articles/java/javase.html" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Category -->
+            <div class="article-card" data-category="study">
+                <div class="article-cover">
+                    <img src="assert/满意壁纸/坐着的波奇.png" alt="Study Article Cover">
+                </div>
+                <div class="article-content">
+                    <span class="article-category">Study</span>
+                    <h3>蓝桥杯备赛计划</h3>
+                    <p class="article-excerpt">
+                        详细的蓝桥杯比赛备赛计划，包含四个阶段的学习安排和具体策略...
+                    </p>
+                    <div class="article-meta">
+                        <span class="article-date">2025-02-12</span>
+                        <a href="articles/study/lanqiao-plan.html" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Linux Category -->
+            <div class="article-card" data-category="linux">
+                <div class="article-cover">
+                    <img src="assert/img/【哲风壁纸】幻_出水芙蓉-插画.png" alt="Linux Article Cover">
+                </div>
+                <div class="article-content">
+                    <span class="article-category">Linux</span>
+                    <h3>Linux 基础知识总结</h3>
+                    <p class="article-excerpt">
+                        全面介绍 Linux 的基础知识，包括文件系统、命令行操作、系统管理等核心概念...
+                    </p>
+                    <div class="article-meta">
+                        <span class="article-date">2025-02-13</span>
+                        <a href="articles/linux/linux.html" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Novel Category -->
+            <div class="article-card" data-category="novel">
+                <div class="article-cover">
+                    <img src="assert/img/波稻1.png" alt="Novel Article Cover">
+                </div>
+                <div class="article-content">
+                    <span class="article-category">Novel</span>
+                    <h3>《鳞光与止步的七》</h3>
+                    <p class="article-excerpt">
+                        靠近一个人，就像追逐光影。你以为它遥不可及，其实它一直就在你身后——只要你有足够勇气，向后倒去…
+                    </p>
+                    <div class="article-meta">
+                        <span class="article-date">2025-02-14</span>
+                        <a href="articles/novel/TheScaleofLightandtheSevenStops.html" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis Category -->
+            <div class="article-card" data-category="java">
+                <div class="article-cover">
+                    <img src="assert/img/雪乃.png" alt="Redis Article Cover">
+                </div>
+                <div class="article-content">
+                    <span class="article-category">Java</span>
+                    <h3>Redis 缓存实战指南</h3>
+                    <p class="article-excerpt">
+                        深入探讨 Redis 缓存在 Java 项目中的应用，包括缓存策略、数据结构选择、性能优化等实战经验...
+                    </p>
+                    <div class="article-meta">
+                        <span class="article-date">2025-02-15</span>
+                        <a href="articles/java/redis-cache.html" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="blog.js"></script>
+</body>
+</html> 

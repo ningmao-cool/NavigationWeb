@@ -848,6 +848,10 @@ body.night-mode .site-intro {
 }
 
 /* 导航项下方的动态线条 */
+.sidebar ul li a {
+  position: relative;  /* 为after伪元素提供定位上下文 */
+}
+
 .sidebar ul li a::after {
   content: '';
   position: absolute;
@@ -865,6 +869,11 @@ body.night-mode .site-intro {
 
 /* 悬停时显示线条 */
 .sidebar ul li a:hover::after {
+  width: 100%;
+}
+
+/* 激活状态显示线条 */
+.sidebar ul li.active a::after {
   width: 100%;
 }
 
@@ -1646,49 +1655,21 @@ label {
   transform: scale(1.1);
 }
 
+.progress-container {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    position: fixed;
+    top: 60px;
+    left: 0;
+    z-index: 1000;
+}
+
 .progress-bar {
-  height: 6px;
-  background: rgba(106, 182, 255, 0.2);
-  border-radius: 3px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  margin: 10px 0;
-}
-
-.progress-bar:hover {
-  height: 8px;
-}
-
-.progress-current {
-  height: 100%;
-  background: linear-gradient(90deg, #6ab6ff, #a8d4ff);
-  border-radius: 3px;
-  position: relative;
-  width: 0;
-  transition: width 0.1s linear;
-  box-shadow: 0 0 10px rgba(106, 182, 255, 0.5);
-}
-
-.progress-current::after {
-  content: '';
-  position: absolute;
-  right: -2px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 12px;
-  height: 12px;
-  background: #ffffff;
-  border-radius: 50%;
-  box-shadow: 
-    0 0 10px rgba(106, 182, 255, 0.8),
-    0 0 20px rgba(106, 182, 255, 0.4);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.progress-bar:hover .progress-current::after {
-  opacity: 1;
+    height: 100%;
+    background: linear-gradient(90deg, #bcffe4, #6ab6ff);
+    width: 0;
+    transition: 0.4s;
 }
 
 .music-controls {

@@ -1,0 +1,103 @@
+---
+layout: default
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} - NingMao Blog</title>
+    <link rel="icon" href="../../assert/img/icons8-navigation-48.png" type="image/png" />
+    <link rel="stylesheet" href="../../blog.css">
+    <style>
+        .article-container {
+            max-width: 1000px;
+            margin: 100px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: #fff;
+        }
+
+        .article-content {
+            line-height: 1.8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        th {
+            background: rgba(188, 255, 228, 0.2);
+            color: #bcffe4;
+        }
+
+        pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: monospace;
+            color: #bcffe4;
+        }
+
+        .back-to-blog {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-blog:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-image"></div>
+    
+    <div class="sidebar">
+        <ul>
+            <li><a href="../../index.html">Home</a></li>
+            <li class="active"><a href="../../blog.html">Blog</a></li>
+        </ul>
+    </div>
+
+    <div class="article-container">
+        <h1>{{ page.title }}</h1>
+        <div class="article-meta">
+            <span>Posted on: {{ page.date | date: "%B %d, %Y" }}</span>
+            <span> | </span>
+            <span>Category: {{ page.category }}</span>
+        </div>
+        <div class="article-content">
+            {{ content }}
+        </div>
+    </div>
+
+    <a href="../../blog.html" class="back-to-blog">Back to Blog</a>
+</body>
+</html> 
