@@ -1332,8 +1332,34 @@ label {
   margin-top: 20px;
 }
 
-.contact-mode-content h2{
-  color: #42a4ff;
+.contact-mode-content h2 {
+  /* 渐变色文字 */
+  background: #5395ff;; 
+  -webkit-background-clip: text;
+  color: transparent;
+
+  /* 文字阴影 */
+  text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
+
+  /* 字体加粗和大小 */
+  font-weight: bold;
+  font-size: 2rem;
+
+  /* 添加过渡动画 */
+  transition: transform 0.3s ease-in-out;
+
+  /* 增加间距 */
+  margin: 20px 0;
+  padding: 10px;
+
+  /* 居中对齐（如果需要） */
+  text-align: center;
+}
+
+/* 鼠标悬停时的动画效果 */
+.contact-mode-content h2:hover {
+  transform: scale(1.1); /* 放大标题 */
+  text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.5); /* 增强阴影 */
 }
 
 /* 单个联系方式卡片 */
