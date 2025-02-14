@@ -908,6 +908,15 @@ class MusicPlayer {
     this.volumeSlider.value = 50;
     this.audio.volume = 0.5;
     this.volumeSlider.style.setProperty('--volume-percentage', '50%');
+
+    // 获取进度条元素
+    this.progressContainer = document.querySelector('.progress-container');
+    this.progressBar = document.querySelector('.progress-bar');
+    this.currentTime = document.querySelector('.current-time');
+    this.totalTime = document.querySelector('.total-time');
+    
+    // 初始化进度条事件
+    this.initProgressEvents();
   }
 
   initAudioControls() {
@@ -956,6 +965,15 @@ class MusicPlayer {
     // 音频加载完成
     this.audio.addEventListener('loadedmetadata', () => {
       this.totalTime.textContent = this.formatTime(this.audio.duration);
+    });
+  }
+
+  initProgressEvents() {
+    // 点击进度条跳转
+    this.progressContainer.addEventListener('click', (e) => {
+      const rect = this.progressContainer.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      this.audio.currentTime = percent * this.audio.duration;
     });
   }
 
@@ -1038,10 +1056,11 @@ class MusicPlayer {
   }
 
   updateProgress() {
-    const { currentTime, duration } = this.audio;
-    const percent = (currentTime / duration) * 100;
-    this.progress.style.width = `${percent}%`;
-    this.currentTime.textContent = this.formatTime(currentTime);
+    if (!this.audio.duration) return;
+    
+    const percent = (this.audio.currentTime / this.audio.duration) * 100;
+    this.progressBar.style.width = `${percent}%`;
+    this.currentTime.textContent = this.formatTime(this.audio.currentTime);
   }
 
   formatTime(seconds) {

@@ -1681,21 +1681,46 @@ label {
   transform: scale(1.1);
 }
 
+.progress-wrapper {
+    width: 100%;
+    padding: 5px 0;
+}
+
+/* 进度条容器 */
 .progress-container {
     width: 100%;
     height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    position: fixed;
-    top: 60px;
-    left: 0;
-    z-index: 1000;
+    position: relative;
+    cursor: pointer;
 }
 
-.progress-bar {
+/* 进度条背景 */
+.progress-bg {
+    width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, #bcffe4, #6ab6ff);
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+/* 进度条 */
+.progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
     width: 0;
-    transition: 0.4s;
+    background: linear-gradient(90deg, #bcffe4, #6ab6ff);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+/* 时间信息 */
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #bad9fc;
 }
 
 .music-controls {
