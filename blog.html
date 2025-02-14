@@ -6,8 +6,13 @@
     <title>NingMao-Blog</title>
     <link rel="icon" href="assert/img/icons8-navigation-48.png" type="image/png" />
     <link rel="stylesheet" href="blog.css">
+    <!-- 引入 Lottie 库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js"></script>
 </head>
 <body>
+    <!-- 加载动画容器 -->
+    <div id="loading-animation"></div>
+
     <!-- Navigation -->
     <div class="sidebar">
         <ul>
@@ -142,6 +147,25 @@
         </div>
     </div>
 
-    <script src="blog.js"></script>
+    <script>
+    // 初始化加载动画
+    let animLoader = lottie.loadAnimation({
+        container: document.getElementById("loading-animation"),
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "assert/loader/Animation - 1736650972957.json"
+    });
+
+    // 页面加载完成后隐藏动画
+    window.addEventListener("load", function() {
+        setTimeout(function() {
+            document.getElementById("loading-animation").classList.add("hidden");
+            setTimeout(function() {
+                document.getElementById("loading-animation").style.display = "none";
+            }, 400);
+        }, 200);
+    });
+    </script>
 </body>
 </html> 

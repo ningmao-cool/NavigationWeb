@@ -48,13 +48,21 @@ body {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 3s ease-in-out, filter 3s ease-in-out;
+  transition: opacity 2s ease-in-out, transform 2s ease-in-out, filter 2s ease-in-out;
+  transform: scale(1.05);  /* 初始状态稍微放大 */
 }
 
 /* 激活的图片 */
 .background-carousel img.active {
   opacity: 0.9;
+  transform: scale(1);  /* 过渡到正常大小 */
   filter: brightness(0.85);
+}
+
+/* 即将离开的图片 */
+.background-carousel img.leaving {
+  opacity: 0;
+  transform: scale(1.1);  /* 离开时稍微放大 */
 }
 
 
@@ -64,7 +72,58 @@ body {
   font-size: 22px;
   font-weight: bold;
   color: #ffffff;
-  text-shadow: 0 2px 6px rgba(0, 255, 255, 0.6); /* 科技感光晕 */
+  text-shadow: 0 2px 6px rgba(0, 255, 255, 0.6);
+  text-align: center;  /* 确保文字居中 */
+}
+
+.site-intro-line1,
+.site-intro-line2,
+.site-intro-line3 {
+  position: relative;
+  display: block;
+  min-height: 1.2em;
+  margin-bottom: 10px;
+  white-space: pre-wrap;  /* 保持空格和换行 */
+}
+
+.site-intro-line2,
+.site-intro-line3 {
+  font-size: 18px;
+  font-weight: normal;
+}
+
+/* 打字机光标效果 */
+.site-intro-line1::after,
+.site-intro-line2::after,
+.site-intro-line3::after {
+  content: '|';
+  position: relative;  /* 改为相对定位 */
+  display: inline-block;
+  margin-left: 1px;  /* 光标和文字的间距 */
+  animation: cursor-blink 1s infinite;
+  opacity: 0;
+}
+
+/* 当前打字行显示光标 */
+.site-intro-line1.typing::after,
+.site-intro-line2.typing::after,
+.site-intro-line3.typing::after {
+  opacity: 1;
+}
+
+/* 打字完成后隐藏光标 */
+.site-intro-line1.typing-done::after,
+.site-intro-line2.typing-done::after,
+.site-intro-line3.typing-done::after {
+  display: none;
+}
+
+/* 文字渐入效果 */
+.site-intro span {
+  opacity: 0;
+  transform: translateY(10px);
+  display: inline-block;
+  animation: fadeInUp 0.3s ease forwards;
 }
 
 /* 卡片整体容器，网格布局 */
@@ -93,12 +152,10 @@ body {
   justify-content: space-between;
   position: relative;
   transform-style: preserve-3d;
-  perspective: 2000px;
-  transition: all 0.3s cubic-bezier(0.2, 0, 0.2, 1);
-  transform-origin: center center;
-  backface-visibility: hidden;
-  will-change: transform, box-shadow;
-  transform: translateZ(0);
+  perspective: 1000px;
+  transition: transform 0.3s ease;
+  will-change: transform;
+  overflow: hidden;
   box-shadow: 
     0 5px 15px rgba(0, 255, 255, 0.15),
     0 0 20px rgba(0, 255, 255, 0.1),
@@ -147,44 +204,40 @@ body {
   transform: translate3d(0, -20px, 40px) rotateX(-12deg) rotateY(-15deg);
   animation: none;
   transition: all 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+  box-shadow: 
+    0 10px 20px rgba(0, 255, 255, 0.2),
+    0 0 30px rgba(0, 255, 255, 0.1),
+    inset 0 0 20px rgba(255, 255, 255, 0.3);
+
 }
 
-.nav-card:hover::before {
+/* 添加方向指示光效 */
+.nav-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 15px;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  border-radius: 20px;
   background: radial-gradient(
-    circle at 30% 30%,
-    rgba(255, 255, 255, 0.4) 0%,
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(0, 255, 234, 0.4) 0%,
     rgba(106, 182, 255, 0.2) 30%,
+    rgba(255, 255, 255, 0.1) 50%,
     transparent 70%
   );
   pointer-events: none;
   z-index: 1;
+  opacity: 0;
+  transition: all 0.3s ease;
+  filter: blur(15px);
+  transform: scale(0.8);
 }
 
-.nav-card:hover::after {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  border-radius: 15px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.5) 0%,
-    rgba(106, 182, 255, 0.3) 50%,
-    transparent 100%
-  );
-  filter: blur(8px);
-  opacity: 0.8;
-  z-index: -1;
-  pointer-events: none;
+.nav-card:hover::before {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .nav-card:hover img {
@@ -256,6 +309,14 @@ body {
   text-shadow: 0 2px 4px rgba(255, 255, 255, 0.6);
   transition: transform 0.3s ease;
   transform-style: preserve-3d;
+}
+
+/* 保持卡片内容的 3D 效果 */
+.nav-card img,
+.nav-card span {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
 }
 
 /* 头像模拟框的背景 */
@@ -560,11 +621,16 @@ body {
   margin-bottom: 20px; /* 与网站介绍文字的间距 */
 }
 
-.profile-name{
+.profile-name {
   font-size: 50px;
   font-weight: bold;
   color: rgba(252, 252, 252);
-  text-shadow: 0 2px 6px rgba(0, 255, 255, 0.6);
+  text-shadow: 
+    0 0 10px rgba(0, 255, 255, 0.8),
+    0 0 20px rgba(0, 255, 255, 0.6),
+    0 0 30px rgba(0, 255, 255, 0.4);
+  position: relative;
+  display: inline-block;
 }
 
 /* 头像样式 */

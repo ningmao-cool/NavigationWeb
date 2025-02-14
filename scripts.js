@@ -37,9 +37,17 @@ let interval;
 
 // 切换图片
 function nextSlide() {
-  images[currentIndex].classList.remove("active");
-  currentIndex = (currentIndex + 1) % images.length;
-  images[currentIndex].classList.add("active");
+    const currentImage = images[currentIndex];
+    currentImage.classList.add('leaving');  // 添加离开动画
+    currentImage.classList.remove('active');
+    
+    // 延迟移除 leaving 类，确保动画完成
+    setTimeout(() => {
+        currentImage.classList.remove('leaving');
+    }, 2000);  // 与 CSS 过渡时间相匹配
+    
+    currentIndex = (currentIndex + 1) % images.length;
+    images[currentIndex].classList.add('active');
 }
 
 // 设置轮播定时执行
@@ -1227,82 +1235,155 @@ function createFireworks() {
     }, i * 100);
   }
 }
-
-// Notes 相关的元素
-const notesLink = document.getElementById("notes-link");
-const notesModal = document.getElementById("notes-modal");
-const notesCloseBtn = document.querySelector(".notes-close-btn");
-const saveNoteBtn = document.getElementById("save-note-btn");
-const noteTitle = document.getElementById("note-title");
-const noteContent = document.getElementById("note-content");
-const notesContainer = document.querySelector(".notes-container");
-
-// 打开笔记模态框
-notesLink.addEventListener("click", (e) => {
-  e.preventDefault();
-  notesModal.style.display = "block";
-  renderNotes();
-});
-
-// 关闭笔记模态框
-notesCloseBtn.addEventListener("click", () => {
-  notesModal.style.display = "none";
-});
-
-// 点击模态框外部关闭
-window.addEventListener("click", (e) => {
-  if (e.target === notesModal) {
-    notesModal.style.display = "none";
-  }
-});
-
-// 保存笔记
-saveNoteBtn.addEventListener("click", () => {
-  const title = noteTitle.value.trim();
-  const content = noteContent.value.trim();
+document.querySelectorAll('.nav-card').forEach(card => {
+  let bounds = card.getBoundingClientRect();
   
-  if (!title || !content) {
-    alert("标题和内容不能为空！");
-    return;
-  }
-  
-  const note = {
-    id: Date.now(),
-    title,
-    content,
-    date: new Date().toLocaleString()
+  const updateMousePosition = (e) => {
+      const mouseX = e.clientX - bounds.left;
+      const mouseY = e.clientY - bounds.top;
+      
+      // 计算鼠标位置的百分比
+      const mouseXPercent = (mouseX / bounds.width) * 100;
+      const mouseYPercent = (mouseY / bounds.height) * 100;
+      
+      // 计算旋转角度
+      const rotateX = ((mouseY / bounds.height) - 0.5) * 25;
+      const rotateY = ((mouseX / bounds.width) - 0.5) * 35;
+      
+      // 更新光晕位置
+      card.style.setProperty('--mouse-x', `${mouseXPercent}%`);
+      card.style.setProperty('--mouse-y', `${mouseYPercent}%`);
+      
+      // 应用 3D 变换
+      card.style.transform = `
+          rotateX(${rotateX}deg)
+          rotateY(${rotateY}deg)
+          translateZ(10px)
+      `;
   };
   
-  const notes = JSON.parse(localStorage.getItem("notes") || "[]");
-  notes.unshift(note);
-  localStorage.setItem("notes", JSON.stringify(notes));
+  card.addEventListener('mouseenter', () => {
+      bounds = card.getBoundingClientRect();
+      card.style.transition = 'none';
+  });
   
-  noteTitle.value = "";
-  noteContent.value = "";
+  card.addEventListener('mousemove', updateMousePosition);
   
-  renderNotes();
+  card.addEventListener('mouseleave', () => {
+      card.style.transition = 'all 0.3s ease';
+      card.style.transform = 'rotateX(0) rotateY(0) translateZ(0)';
+      // 重置光晕位置到中心
+      card.style.setProperty('--mouse-x', '50%');
+      card.style.setProperty('--mouse-y', '50%');
+  });
 });
 
-// 渲染笔记列表
-function renderNotes() {
-  const notes = JSON.parse(localStorage.getItem("notes") || "[]");
-  notesContainer.innerHTML = notes.map(note => `
-    <div class="note-card">
-      <span class="delete-note" onclick="deleteNote(${note.id})">&times;</span>
-      <h3>${note.title}</h3>
-      <p>${note.content}</p>
-      <div class="note-date">${note.date}</div>
-    </div>
-  `).join("");
+// 打字机效果
+function typeWriter(element, text, speed = 100) {
+    element.textContent = '';
+    element.classList.add('typing'); // 添加正在打字的标记
+    let index = 0;
+    
+    function type() {
+        if (index < text.length) {
+            element.textContent += text[index];
+            index++;
+            setTimeout(type, speed);
+        } else {
+            element.classList.remove('typing'); // 移除正在打字的标记
+            element.classList.add('typing-done');
+        }
+    }
+    
+    type();
 }
 
-// 删除笔记
-window.deleteNote = function(id) {
-  if (!confirm("确定要删除这条笔记吗？")) return;
-  
-  let notes = JSON.parse(localStorage.getItem("notes") || "[]");
-  notes = notes.filter(note => note.id !== id);
-  localStorage.setItem("notes", JSON.stringify(notes));
-  
-  renderNotes();
-};
+// 按顺序执行多个打字效果
+function typeSequence(configs) {
+    let currentIndex = 0;
+    
+    function typeNext() {
+        if (currentIndex < configs.length) {
+            const config = configs[currentIndex];
+            const element = document.querySelector(config.selector);
+            if (element) {
+                // 清除之前的状态
+                document.querySelectorAll('.site-intro-line1, .site-intro-line2').forEach(el => {
+                    el.classList.remove('typing');
+                });
+                
+                typeWriter(element, config.text, config.speed);
+                setTimeout(() => {
+                    currentIndex++;
+                    typeNext();
+                }, (config.text.length * config.speed) + config.delay);
+            }
+        }
+    }
+    
+    typeNext();
+}
+
+// 页面加载完成后开始打字效果
+window.addEventListener('DOMContentLoaded', function() {
+    const typeConfigs = [
+        {
+            selector: '.site-intro-line1',
+            text: 'Welcome to this website',
+            speed: 100,
+            delay: 1000
+        },
+        {
+            selector: '.site-intro-line2',
+            text: 'A site that makes it easier to navigate to my work',
+            speed: 50,
+            delay: 1000
+        },
+        {
+            selector: '.site-intro-line3',
+            text: 'and my frequently used sites',
+            speed: 50,
+            delay: 1000
+        }
+    ];
+    
+    setTimeout(() => {
+        typeSequence(typeConfigs);
+    }, 1500);
+});
+
+// 处理导航到 blog 的跳转
+function handleBlogNavigation(e) {
+    const blogLinks = document.querySelectorAll('a[href*="124.71.1.69"]');
+    blogLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // 创建加载动画容器
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'loading-animation';
+            loadingDiv.style.display = 'flex';
+            document.body.appendChild(loadingDiv);
+            
+            // 初始化加载动画
+            let animLoader = lottie.loadAnimation({
+                container: loadingDiv,
+                renderer: "svg",
+                loop: true,
+                autoplay: true,
+                path: "assert/loader/Animation - 1736650972957.json"
+            });
+            
+            // 延迟后进行跳转
+            setTimeout(() => {
+                window.location.href = this.href;
+            }, 1000);
+        });
+    });
+}
+
+// 页面加载完成后初始化
+window.addEventListener('DOMContentLoaded', function() {
+    handleBlogNavigation();
+    // ... 其他现有的代码 ...
+});
