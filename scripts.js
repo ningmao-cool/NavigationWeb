@@ -1352,38 +1352,3 @@ window.addEventListener('DOMContentLoaded', function() {
     }, 1500);
 });
 
-// 处理导航到 blog 的跳转
-function handleBlogNavigation(e) {
-    const blogLinks = document.querySelectorAll('a[href*="124.71.1.69"]');
-    blogLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // 创建加载动画容器
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'loading-animation';
-            loadingDiv.style.display = 'flex';
-            document.body.appendChild(loadingDiv);
-            
-            // 初始化加载动画
-            let animLoader = lottie.loadAnimation({
-                container: loadingDiv,
-                renderer: "svg",
-                loop: true,
-                autoplay: true,
-                path: "assert/loader/Animation - 1736650972957.json"
-            });
-            
-            // 延迟后进行跳转
-            setTimeout(() => {
-                window.location.href = this.href;
-            }, 1000);
-        });
-    });
-}
-
-// 页面加载完成后初始化
-window.addEventListener('DOMContentLoaded', function() {
-    handleBlogNavigation();
-    // ... 其他现有的代码 ...
-});
