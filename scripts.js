@@ -3,6 +3,62 @@
  * @author 宁猫
  */
 
+document.addEventListener('DOMContentLoaded', () => {
+  // 首先初始化应用的核心功能
+  initializeApp();
+
+  // 然后初始化打字效果
+  const typeConfigs = [
+    {
+      selector: '.site-intro-line1',
+      text: 'Welcome to this website',
+      speed: 100,
+      delay: 1000
+    },
+    {
+      selector: '.site-intro-line2',
+      text: 'A site that makes it easier to navigate to my work',
+      speed: 50,
+      delay: 1000
+    },
+    {
+      selector: '.site-intro-line3',
+      text: 'and my frequently used sites',
+      speed: 50,
+      delay: 1000
+    }
+  ];
+  
+  setTimeout(() => {
+    typeSequence(typeConfigs);
+  }, 1500);
+});
+
+// 修改 initializeApp 函数
+function initializeApp() {
+  try {
+    // 1. 初始化日历
+    window.calendar = new Calendar();
+    
+    // 2. 初始化饼图
+    window.studyChart = new StudyChart();
+    
+    // 3. 获取历史记录
+    const history = JSON.parse(localStorage.getItem("studyHistory")) || [];
+    
+    // 4. 更新今日总时长
+    updateTodayTotalTime(history);
+    
+    // 5. 渲染历史记录
+    renderHistory();
+    
+    console.log('应用初始化成功');
+  } catch (error) {
+    console.error('应用初始化失败:', error);
+  }
+}
+
+// 删除其他位置的 DOMContentLoaded 监听器
 
 // 初始化加载动画
 let animLoader = lottie.loadAnimation({
@@ -358,20 +414,32 @@ const sidebar = document.getElementById("sidebar");
 
 // 打开学习模式
 studyModeBtn?.addEventListener("click", () => {
-  studyModeContainer.style.display = "flex"; 
+  studyModeContainer.style.display = "flex";
   setTimeout(() => {
     studyModeContainer.classList.add("open");
-  }, 10); 
-  renderHistory();
+    // 在打开学习模式时显示日历
+    if (window.calendar) {
+      window.calendar.showCalendar();
+    }
+    renderHistory();
+  }, 10);
 });
 
 // 关闭学习模式
 closeBtn.addEventListener("click", () => {
   studyModeContainer.classList.remove("open");
+  // 同步淡出日历
+  if (window.calendar) {
+    window.calendar.calendarView.classList.remove('show');
+  }
   studyModeContainer.addEventListener(
     "transitionend",
     () => {
       studyModeContainer.style.display = "none";
+      // 在 learning 完全隐藏后再隐藏日历
+      if (window.calendar) {
+        window.calendar.calendarView.style.display = 'none';
+      }
     },
     { once: true }
   ); 
@@ -381,10 +449,18 @@ closeBtn.addEventListener("click", () => {
 studyModeContainer.addEventListener("click", (event) => {
   if (event.target === studyModeContainer) {
     studyModeContainer.classList.remove("open");
+    // 同步淡出日历
+    if (window.calendar) {
+      window.calendar.calendarView.classList.remove('show');
+    }
     studyModeContainer.addEventListener(
       "transitionend",
       () => {
         studyModeContainer.style.display = "none";
+        // 在 learning 完全隐藏后再隐藏日历
+        if (window.calendar) {
+          window.calendar.calendarView.style.display = 'none';
+        }
       },
       { once: true }
     ); 
@@ -509,8 +585,20 @@ saveRecordBtn.addEventListener("click", () => {
   // 保存到localStorage
   localStorage.setItem("studyHistory", JSON.stringify(history));
 
+  // 先更新今日总时长
+  updateTodayTotalTime(history);
+
   renderHistory();
-  
+
+  // 更新日历数据
+  if (window.calendar) {
+    window.calendar.studyTimeData = window.calendar.getStudyTimeData();
+    window.calendar.renderCalendar();
+  }
+  if (window.studyChart) {
+    window.studyChart.updateChart();
+  }
+
   // 重置输入和计时器
   subjectInput.value = "";
   elapsedTime = 0;
@@ -526,18 +614,25 @@ resetTimerBtn.addEventListener("click", () => {
   timerDisplay.textContent = "00:00:00";
 });
 
-// 更新今天的总学习时间
-function updateTodayTotalTime(history) {
+// 修改 updateTodayTotalTime 函数，添加默认值处理
+function updateTodayTotalTime(history = []) {
+  if (!Array.isArray(history)) {
+    history = JSON.parse(localStorage.getItem("studyHistory")) || [];
+  }
+  
   const today = getCurrentDate();
   const todayRecords = history.filter(record => record.date === today);
+  
   const totalTodayMs = todayRecords.reduce((total, record) => {
     const [h, m, s] = record.duration.split(":").map(Number);
     return total + h * 3600 * 1000 + m * 60 * 1000 + s * 1000;
   }, 0);
   
-  const totalTodayFormatted = formatTimeFromMs(totalTodayMs);
   const todayTotalTimeDisplay = document.getElementById("today-total-time");
-  todayTotalTimeDisplay.textContent = totalTodayFormatted;
+  if (todayTotalTimeDisplay) {
+    const totalTodayFormatted = formatTimeFromMs(totalTodayMs);
+    todayTotalTimeDisplay.textContent = totalTodayFormatted;
+  }
 }
 
 // 渲染历史记录并计算今日学习时长
@@ -587,9 +682,7 @@ function renderHistory() {
     // 删除按钮功能
     const deleteBtn = card.querySelector(".delete-btn");
     deleteBtn.addEventListener("click", () => {
-      history.splice(index, 1);
-      localStorage.setItem("studyHistory", JSON.stringify(history));
-      renderHistory();
+      deleteRecord(index);
     });
 
     historyContainer.appendChild(card);
@@ -597,9 +690,6 @@ function renderHistory() {
 
   // 更新总时间显示
   updateTotalTimeDisplay(history);
-  
-  // 更新今天的总学习时间
-  updateTodayTotalTime(history);
 }
 
 
@@ -673,11 +763,23 @@ addCardBtn.addEventListener("click", () => {
   // 保存到localStorage
   localStorage.setItem("studyHistory", JSON.stringify(history));
 
+  // 先更新今日总时长
+  updateTodayTotalTime(history);
+
   renderHistory();
 
   // 清空输入字段
   subjectInput.value = "";
   durationInput.value = "";
+
+  // 更新日历数据
+  if (window.calendar) {
+    window.calendar.studyTimeData = window.calendar.getStudyTimeData();
+    window.calendar.renderCalendar();
+  }
+  if (window.studyChart) {
+    window.studyChart.updateChart();
+  }
 });
 
 // 验证时间格式的函数
@@ -1324,31 +1426,296 @@ function typeSequence(configs) {
     typeNext();
 }
 
-// 页面加载完成后开始打字效果
-window.addEventListener('DOMContentLoaded', function() {
-    const typeConfigs = [
-        {
-            selector: '.site-intro-line1',
-            text: 'Welcome to this website',
-            speed: 100,
-            delay: 1000
-        },
-        {
-            selector: '.site-intro-line2',
-            text: 'A site that makes it easier to navigate to my work',
-            speed: 50,
-            delay: 1000
-        },
-        {
-            selector: '.site-intro-line3',
-            text: 'and my frequently used sites',
-            speed: 50,
-            delay: 1000
-        }
-    ];
+class Calendar {
+  constructor() {
+    this.currentDate = new Date();
+    this.calendarView = document.getElementById('calendar-view');
+    this.calendarTitle = document.getElementById('calendar-title');
+    this.calendarGrid = document.querySelector('.calendar-grid');
+    this.prevMonthBtn = document.getElementById('prev-month');
+    this.nextMonthBtn = document.getElementById('next-month');
     
-    setTimeout(() => {
-        typeSequence(typeConfigs);
-    }, 1500);
-});
+    this.initializeEventListeners();
+    this.studyTimeData = this.getStudyTimeData();
+  }
+
+  initializeEventListeners() {
+    this.prevMonthBtn.addEventListener('click', () => this.changeMonth(-1));
+    this.nextMonthBtn.addEventListener('click', () => this.changeMonth(1));
+  }
+
+  showCalendar() {
+    this.calendarView.style.display = 'block';
+    this.renderCalendar();
+    requestAnimationFrame(() => {
+      this.calendarView.classList.add('show');
+    });
+  }
+
+  getStudyTimeData() {
+    const history = JSON.parse(localStorage.getItem('studyHistory')) || [];
+    const timeData = {};
+    
+    history.forEach(record => {
+      const date = record.date;
+      if (!timeData[date]) {
+        timeData[date] = 0;
+      }
+      
+      const [hours, minutes, seconds] = record.duration.split(':').map(Number);
+      timeData[date] += hours * 3600 + minutes * 60 + seconds;
+    });
+    
+    return timeData;
+  }
+
+  formatStudyTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
+  }
+
+  getColorIntensity(seconds) {
+    const maxSeconds = 8 * 3600; // 假设8小时是最大值
+    const intensity = Math.min(seconds / maxSeconds, 1);
+    return `rgba(106, 177, 247, ${intensity})`;
+  }
+
+  updateStats() {
+    // 计算总学习天数
+    const totalDays = Object.keys(this.studyTimeData).length;
+    document.getElementById('total-study-days').textContent = `${totalDays}天`;
+
+    // 计算当月总时长
+    const currentYear = this.currentDate.getFullYear();
+    const currentMonth = this.currentDate.getMonth() + 1;
+    let monthlyTotal = 0;
+
+    Object.entries(this.studyTimeData).forEach(([date, seconds]) => {
+      const [year, month] = date.split('-').map(Number);
+      if (year === currentYear && month === currentMonth) {
+        monthlyTotal += seconds;
+      }
+    });
+
+    const monthlyHours = Math.floor(monthlyTotal / 3600);
+    const monthlyMinutes = Math.floor((monthlyTotal % 3600) / 60);
+    document.getElementById('current-month-time').textContent = 
+      `${monthlyHours}小时${monthlyMinutes}分钟`;
+  }
+
+  renderCalendar() {
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth();
+    
+    // 修改月份显示格式
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    this.calendarTitle.textContent = `${monthNames[month]} ${year}`;
+    
+    // 清除现有的日期
+    const weekdaysCount = document.querySelectorAll('.weekday').length;
+    while (this.calendarGrid.children.length > weekdaysCount) {
+      this.calendarGrid.removeChild(this.calendarGrid.lastChild);
+    }
+    
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startingDay = firstDay.getDay();
+    
+    // 添加空白天数
+    for (let i = 0; i < startingDay; i++) {
+      const emptyDay = document.createElement('div');
+      emptyDay.className = 'calendar-day empty';
+      this.calendarGrid.appendChild(emptyDay);
+    }
+    
+    // 添加日期
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+      const dateDiv = document.createElement('div');
+      dateDiv.className = 'calendar-day';
+      dateDiv.textContent = day;
+      
+      const currentDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const studyTime = this.studyTimeData[currentDate] || 0;
+      
+      if (studyTime > 0) {
+        dateDiv.style.backgroundColor = this.getColorIntensity(studyTime);
+        dateDiv.setAttribute('data-study-time', this.formatStudyTime(studyTime));
+      }
+      
+      this.calendarGrid.appendChild(dateDiv);
+    }
+
+    // 在渲染日历后更新统计信息
+    this.updateStats();
+  }
+
+  changeMonth(delta) {
+    this.currentDate.setMonth(this.currentDate.getMonth() + delta);
+    this.renderCalendar();
+    // 切换月份时也会更新统计信息
+  }
+}
+
+// 添加饼图相关代码
+class StudyChart {
+  constructor() {
+    this.chart = null;
+    this.initChart();
+  }
+
+  getSubjectData() {
+    const history = JSON.parse(localStorage.getItem('studyHistory')) || [];
+    const subjectTimes = {};
+    
+    history.forEach(record => {
+      const subject = record.subject;
+      const [hours, minutes, seconds] = record.duration.split(':').map(Number);
+      const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+      
+      subjectTimes[subject] = (subjectTimes[subject] || 0) + totalSeconds;
+    });
+
+    // 转换为饼图数据格式
+    const labels = Object.keys(subjectTimes);
+    const data = Object.values(subjectTimes);
+    const colors = this.generateColors(labels.length);
+
+    return {
+      labels,
+      data,
+      colors
+    };
+  }
+
+  generateColors(count) {
+    const colors = [];
+    const baseHues = [200, 170, 130, 350, 280, 30]; // 预设一些好看的基础色调
+
+    for (let i = 0; i < count; i++) {
+      const hue = baseHues[i % baseHues.length];
+      const saturation = 65 + Math.random() * 10; // 65-75% 饱和度
+      const lightness = 65 + Math.random() * 10;  // 65-75% 亮度
+      colors.push(`hsla(${hue}, ${saturation}%, ${lightness}%, 0.85)`);
+    }
+    return colors;
+  }
+
+  formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
+  }
+
+  initChart() {
+    const ctx = document.getElementById('study-pie-chart').getContext('2d');
+    const { labels, data, colors } = this.getSubjectData();
+
+    this.chart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: colors,
+          borderWidth: 2,
+          borderColor: 'rgba(255, 255, 255, 0.9)',
+          hoverBorderWidth: 3,
+          hoverBorderColor: 'white',
+          spacing: 5,
+          borderRadius: 8,
+          offset: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '65%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              padding: 15,
+              usePointStyle: true,
+              pointStyle: 'circle',
+              font: {
+                size: 11,
+                weight: '600',  // 加粗字体
+                family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+              },
+              color: '#6afffa'  // 改为蓝色
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            titleColor: '#0077b6',  // 改为蓝色
+            bodyColor: '#0077b6',   // 改为蓝色
+            bodyFont: {
+              size: 12,
+              weight: '600'  // 加粗字体
+            },
+            borderColor: 'rgba(106, 177, 247, 0.2)',
+            borderWidth: 1,
+            padding: 10,
+            boxPadding: 5,
+            cornerRadius: 8,
+            callbacks: {
+              label: (context) => {
+                const value = context.raw;
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = ((value / total) * 100).toFixed(1);
+                const timeStr = this.formatTime(value);
+                return ` ${context.label}: ${timeStr} (${percentage}%)`;
+              }
+            }
+          }
+        },
+        animation: {
+          animateScale: true,
+          animateRotate: true,
+          duration: 1000,
+          easing: 'easeInOutQuart'
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        }
+      }
+    });
+  }
+
+  updateChart() {
+    const { labels, data, colors } = this.getSubjectData();
+    
+    this.chart.data.labels = labels;
+    this.chart.data.datasets[0].data = data;
+    this.chart.data.datasets[0].backgroundColor = colors;
+    
+    this.chart.update();
+  }
+}
+
+// 在删除记录时也需要更新
+function deleteRecord(index) {
+  let history = JSON.parse(localStorage.getItem("studyHistory")) || [];
+  history.splice(index, 1);
+  localStorage.setItem("studyHistory", JSON.stringify(history));
+  
+  // 先更新今日总时长
+  updateTodayTotalTime(history);
+  
+  renderHistory();
+  
+  // 更新日历和饼图
+  if (window.calendar) {
+    window.calendar.studyTimeData = window.calendar.getStudyTimeData();
+    window.calendar.renderCalendar();
+  }
+  if (window.studyChart) {
+    window.studyChart.updateChart();
+  }
+}
 

@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="styles.css" />
   <!-- 引入Lottie库 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.10/lottie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -276,7 +277,6 @@
         <button id="start-timer" class="timeFunctionBtn">start</button>
         <label for="duration-input" class="duration-label">Duration:</label>
         <input type="text" id="duration-input" placeholder="Please enter the duration (HH:MM:SS)." />
-
         <button id="add-card-btn" class="timeFunctionBtn">+</button>
       </div>
       <div class="timer-display" id="timer-display">00:00:00</div>
@@ -285,17 +285,51 @@
         <button id="save-record" class="timeFunctionBtn">store</button>
         <button id="reset-timer" class="timeFunctionBtn">reset</button>
       </div>
-      <span id="total-time">Total: 00:00:00</span>
       <div id="today-total">
         <h3>today: <span id="today-total-time">00:00:00</span></h3>
       </div>
       <div class="history-container" id="history-container">
       </div>
+      <!-- 添加饼图容器 -->
+      <div class="study-stats">
+        <div class="pie-chart-container">
+          <canvas id="study-pie-chart"></canvas>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- 日历视图容器移到这里 -->
+  <div id="calendar-view" class="calendar-view">
+    <span class="calendar-close-btn">&times;</span>
+    <div class="calendar-header">
+      <button id="prev-month">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M15 18l-6-6 6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h3 id="calendar-title"></h3>
+      <button id="next-month">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M9 18l6-6-6-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="calendar-grid">
+      <div class="weekday">Sun</div>
+      <div class="weekday">Mon</div>
+      <div class="weekday">Tue</div>
+      <div class="weekday">Wed</div>
+      <div class="weekday">Thu</div>
+      <div class="weekday">Fri</div>
+      <div class="weekday">Sat</div>
+    </div>
+    <div class="calendar-stats">
+      <span>学习天数: <span id="total-study-days">0天</span></span>
+      <span class="stats-divider">|</span>
+      <span>本月时长: <span id="current-month-time">0小时</span></span>
+    </div>
   </div>
-
-
 
   <!-- 联系方式弹窗 -->
   <div id="contact-mode" class="contact-mode-container">

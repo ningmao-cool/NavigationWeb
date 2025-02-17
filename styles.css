@@ -1093,6 +1093,7 @@ body.night-mode .site-intro {
   top: 0;
   left: 0;
   width: 100%;
+  border-radius: 15px;
   height: 100%;
   z-index: -1; 
   overflow: hidden;
@@ -1266,20 +1267,20 @@ label {
   top: 8px;
   left: 8px;
   font-size: 12px;
-  color: rgb(255, 167, 167);
+  color: #0099cc;
   font-weight: bold; /* 加粗字体 */
 }
 .history-card h4 {
   margin: 5px 0;
   font-size: 1rem;
-  color: #5395ff; /* 暖色调 */
+  color: #0099cc; /* 暖色调 */
   font-weight: bold;
 }
 
 .history-card p {
   margin: 5px 0;
   font-size: 0.9rem;
-  color: #555;
+  color: #6e6d6d;
 }
 /* 滚动条整体宽度 */
 ::-webkit-scrollbar {
@@ -1533,6 +1534,7 @@ label {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 25px;
   padding: 10px;
+
 }
 
 /* 单个 About 卡片 */
@@ -1544,6 +1546,8 @@ label {
   background: rgba(255, 255, 255, 0.1);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  cursor: pointer;
+
 }
 
 .about-card img {
@@ -2128,4 +2132,261 @@ label {
     max-width: 90%;
     max-height: 70vh;
   }
+}
+
+/* 日历视图样式 */
+.calendar-view {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 250px;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 15px;
+  padding: 25px;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(106, 177, 247, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.calendar-view.show {
+  opacity: 1;  /* 恢复这个设置 */
+}
+
+/* 添加媒体查询，在小屏幕下隐藏日历 */
+@media (max-width: 868px) {
+  .calendar-view {
+    display: none !important;
+  }
+  
+  .calendar-view.show {
+    display: none !important;
+  }
+}
+
+/* 其他日历相关样式保持不变 */
+.calendar-close-btn {
+  display: none;
+}
+
+/* 月份切换按钮和标题布局 */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.calendar-header h3 {
+  color: #0077b6;
+  font-size: 1.3em;
+  margin: 0;
+  font-weight: 600;
+  flex: 1;
+  text-align: center;
+  letter-spacing: 0.5px;  /* 增加字母间距 */
+}
+
+/* 月份切换按钮样式优化 */
+.calendar-header button {
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0077b6;
+  cursor: pointer;
+  border-radius: 50%;
+  background: rgba(106, 177, 247, 0.1);
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.calendar-header button svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.calendar-header button:hover {
+  background: rgba(106, 177, 247, 0.2);
+}
+
+.calendar-header button:hover svg {
+  transform: scale(1.2);
+}
+
+/* 日历网格样式修改 */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 15px;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: 600;
+  color: #0077b6;
+  padding: 5px;
+  font-size: 0.9em;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(106, 177, 247, 0.2);
+  border-radius: 8px;  /* 增加圆角 */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  color: #666;
+  font-size: 0.9em;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.calendar-day:not(.empty):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(106, 177, 247, 0.2);
+  border-color: rgba(106, 177, 247, 0.4);
+  background: rgba(106, 177, 247, 0.1);
+}
+
+.calendar-day.empty {
+  border: none;
+  background: none;
+}
+
+/* 日期悬停提示样式 */
+.calendar-day:hover::after {
+  content: attr(data-study-time);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(156, 197, 219, 0.9);
+  color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 优化历史卡片删除按钮样式 */
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.delete-btn::before,
+.delete-btn::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 2px;
+  background: #0099cc;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+
+.delete-btn::before {
+  transform: rotate(45deg);
+}
+
+.delete-btn::after {
+  transform: rotate(-45deg);
+}
+
+.history-card:hover .delete-btn {
+  opacity: 1;
+}
+
+.delete-btn:hover {
+  background: rgba(255, 107, 107, 0.2);
+  transform: rotate(90deg);
+}
+
+.delete-btn:hover::before,
+.delete-btn:hover::after {
+  background: #ff4444;
+  box-shadow: 0 0 8px rgba(255, 107, 107, 0.4);
+}
+
+.delete-btn:active {
+  transform: rotate(90deg) scale(0.95);
+}
+
+/* 日历统计信息样式 */
+.calendar-stats {
+  margin-top: 15px;
+  padding: 10px 0;
+  text-align: center;
+  font-size: 0.85em;
+  color: #666;
+  border-top: 1px solid rgba(106, 177, 247, 0.2);
+}
+
+.stats-divider {
+  margin: 0 10px;
+  color: #cccccc;
+}
+
+.calendar-stats span span {
+  color: #0099cc;
+  font-weight: 500;
+  margin-left: 3px;
+}
+
+/* 学习统计区域样式 */
+.study-stats {
+  position: absolute;
+  right: -350px;      /* 调整位置到右侧 */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 300px;      /* 只保留饼图的高度 */
+}
+
+.pie-chart-container {
+  width: 100%;
+  height: 100%;
+}
+
+
+
+/* 响应式隐藏 */
+@media (max-width: 1200px) {
+  .study-stats {
+    display: none;
+  }
+}
+
+/* 调整学习模式内容区域 */
+.study-mode-content {
+  position: relative;
+  overflow: visible;
 }
