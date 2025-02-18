@@ -2,7 +2,7 @@ export const animeList = [
     {
         id: 1,
         title: "龙与虎",
-        cover: "http://124.71.1.69:9001/api/v1/buckets/image/objects/download?preview=true&prefix=%E9%80%A2%E5%9D%82%E5%A4%A7%E6%B2%B3%2F%E9%80%A2%E5%9D%82%E5%A4%A7%E5%92%8C015_20250121_124411.jpg&version_id=null",
+        cover: "anime/逢坂大和015.jpg",
         genre: "恋爱",
         episodes: 26,
         rating: 10.0,
@@ -13,7 +13,7 @@ export const animeList = [
     {
         id: 2,
         title: "国家队",
-        cover: "http://124.71.1.69:9000/image/蓝色系/【哲风壁纸】02-不屑_20250218_134311.png",
+        cover: "anime/【哲风壁纸】02-不屑.png",
         genre: "恋爱",
         episodes: 24,
         rating: 9.8,
@@ -24,7 +24,7 @@ export const animeList = [
     {
         id: 3,
         title: "间谍过家家",
-        cover: "http://124.71.1.69:9000/image/蓝色系/【哲风壁纸】云-债券伪造者_20250218_134000.png",
+        cover: "anime/【哲风壁纸】云-债券伪造者.png",
         genre: "日常",
         episodes: 62,
         rating: 9.3,
@@ -35,7 +35,7 @@ export const animeList = [
     {
         id: 4,
         title: "不愉快的怪物庵",
-        cover: "http://124.71.1.69:9000/image/金色系/affbc778c62952bd5a31e9a551e9fb5_20250218_134735.jpg",
+        cover: "anime/affbc778c62952bd5a31e9a551e9fb5.jpg",
         genre: "日常",
         episodes: 26,
         rating: 9.9,
@@ -46,7 +46,7 @@ export const animeList = [
     {
         id: 5,
         title: "你的名字",
-        cover: "http://124.71.1.69:9000/image/蓝色系/【哲风壁纸】你的名字-宫水三叶 (1) (1)_20250122_140818.png",
+        cover: "anime/【哲风壁纸】你的名字-宫水三叶 (1).png",
         genre: "恋爱",
         episodes: 1,
         rating: 9.7,
@@ -57,7 +57,7 @@ export const animeList = [
     {
         id: 6,
         title: "中二病也要谈恋爱",
-        cover: "http://124.71.1.69:9000/image/蓝色系/六花_20250122_141147.png",
+        cover: "anime/六花_141147.png",
         genre: "恋爱",
         episodes: 27,
         rating: 9.6,
