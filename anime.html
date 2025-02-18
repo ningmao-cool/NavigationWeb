@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="assert/img/icons8-navigation-48.png" type="image/png" />
+    <title>Anime Statistics</title>
+    <link rel="stylesheet" href="anime.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- 返回主页按钮 -->
+    <div class="back-home">
+        <a href="index.html">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+            返回主页
+        </a>
+    </div>
+
+    <div class="anime-container">
+        <!-- 标题区域 -->
+        <div class="header">
+            <h1>追番统计</h1>
+        </div>
+
+        <!-- 统计概览 -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <h3>已追番数</h3>
+                <p id="total-anime">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>观看总时长</h3>
+                <p id="total-time">0小时</p>
+            </div>
+            <div class="stat-card">
+                <h3>最爱类型</h3>
+                <p id="favorite-genre">-</p>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="charts-container">
+            <div class="chart-wrapper">
+                <h3>类型分布</h3>
+                <canvas id="genre-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- 番剧列表 -->
+        <div class="anime-list">
+            <h2>追番列表</h2>
+            <div class="list-filters">
+                <input type="text" id="search-anime" placeholder="搜索番剧...">
+                <select id="sort-anime">
+                    <option value="date-desc">按添加时间（降序）</option>
+                    <option value="date-asc">按添加时间（升序）</option>
+                    <option value="rating-desc">按评分（降序）</option>
+                    <option value="rating-asc">按评分（升序）</option>
+                </select>
+            </div>
+            <div class="anime-grid" id="anime-grid">
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="anime.js"></script>
+</body>
+</html> 

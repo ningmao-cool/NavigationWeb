@@ -2295,7 +2295,7 @@ label {
   align-items: center;
   justify-content: center;
   border: none;
-  background: rgba(255, 107, 107, 0.1);
+  background: rgba(107, 151, 255, 0.1);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
