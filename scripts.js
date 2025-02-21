@@ -527,7 +527,13 @@ function updateTotalTimeDisplay(history) {
 
   const totalTimeFormatted = formatTimeFromMs(totalTimeMs);
   const totalTimeDisplay = document.getElementById("total-time");  // 假设总时间显示在这个ID元素中
-  totalTimeDisplay.textContent = `Total Time: ${totalTimeFormatted}`;
+
+  // 检查元素是否存在
+  if (totalTimeDisplay) {
+    totalTimeDisplay.textContent = `Total Time: ${totalTimeFormatted}`;
+  } else {
+    console.warn("Element with ID 'total-time' not found.");
+  }
 }
 
 
@@ -593,10 +599,12 @@ saveRecordBtn.addEventListener("click", () => {
   // 更新日历数据
   if (window.calendar) {
     window.calendar.studyTimeData = window.calendar.getStudyTimeData();
+    console.log("Updated studyTimeData:", window.calendar.studyTimeData); // 调试输出
     window.calendar.renderCalendar();
   }
   if (window.studyChart) {
     window.studyChart.updateChart();
+    console.log("Chart updated"); // 调试输出
   }
 
   // 重置输入和计时器
@@ -775,10 +783,12 @@ addCardBtn.addEventListener("click", () => {
   // 更新日历数据
   if (window.calendar) {
     window.calendar.studyTimeData = window.calendar.getStudyTimeData();
+    console.log("Updated studyTimeData:", window.calendar.studyTimeData); // 调试输出
     window.calendar.renderCalendar();
   }
   if (window.studyChart) {
     window.studyChart.updateChart();
+    console.log("Chart updated"); // 调试输出
   }
 });
 
@@ -1712,10 +1722,12 @@ function deleteRecord(index) {
   // 更新日历和饼图
   if (window.calendar) {
     window.calendar.studyTimeData = window.calendar.getStudyTimeData();
+    console.log("Updated studyTimeData:", window.calendar.studyTimeData); // 调试输出
     window.calendar.renderCalendar();
   }
   if (window.studyChart) {
     window.studyChart.updateChart();
+    console.log("Chart updated"); // 调试输出
   }
 }
 
