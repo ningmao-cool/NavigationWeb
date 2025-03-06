@@ -414,14 +414,14 @@ const sidebar = document.getElementById("sidebar");
 
 // 打开学习模式
 studyModeBtn?.addEventListener("click", () => {
-  studyModeContainer.style.display = "flex";
+  studyModeContainer.style.display = "flex"; 
   setTimeout(() => {
     studyModeContainer.classList.add("open");
     // 在打开学习模式时显示日历
     if (window.calendar) {
       window.calendar.showCalendar();
     }
-    renderHistory();
+  renderHistory();
   }, 10);
 });
 
@@ -530,7 +530,7 @@ function updateTotalTimeDisplay(history) {
 
   // 检查元素是否存在
   if (totalTimeDisplay) {
-    totalTimeDisplay.textContent = `Total Time: ${totalTimeFormatted}`;
+  totalTimeDisplay.textContent = `Total Time: ${totalTimeFormatted}`;
   } else {
     console.warn("Element with ID 'total-time' not found.");
   }
@@ -606,7 +606,7 @@ saveRecordBtn.addEventListener("click", () => {
     window.studyChart.updateChart();
     console.log("Chart updated"); // 调试输出
   }
-
+  
   // 重置输入和计时器
   subjectInput.value = "";
   elapsedTime = 0;
@@ -639,7 +639,7 @@ function updateTodayTotalTime(history = []) {
   const todayTotalTimeDisplay = document.getElementById("today-total-time");
   if (todayTotalTimeDisplay) {
     const totalTodayFormatted = formatTimeFromMs(totalTodayMs);
-    todayTotalTimeDisplay.textContent = totalTodayFormatted;
+  todayTotalTimeDisplay.textContent = totalTodayFormatted;
   }
 }
 
